@@ -1,0 +1,251 @@
+{
+  "source": "ITExamAnswers.net",
+  "exam_title": "IT Essentials 7.0 & 8.0 Final Exam",
+  "extraction_date": "2025-08-13",
+  "total_questions": 117,
+  "sections": {
+    "chapters_1_9": "First half of final exam",
+    "chapters_10_14": "Second half of final exam",
+    "composite": "Complete final exam chapters 1-14"
+  },
+  "questions": [
+    {
+      "question_number": 1,
+      "question": "In which situation would an ESD strike potentially cause harm to the PC?",
+      "options": {
+        "A": "When replacing a mechanical hard drive with an M.2 SSD",
+        "B": "When installing an additional display in a workplace cubicle",
+        "C": "When using a grounded mat and working on a computer on an ungrounded workbench",
+        "D": "When installing a dual-voltage power supply"
+      },
+      "correct_answers": ["C"],
+      "explanation": "Minimize the risk of electrostatic discharge. Whenever 2 things touch, there is always an exchange of electrons at the atomic level.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 2,
+      "question": "A person has started a new technical job. In which situation would ESD be an issue?",
+      "options": {
+        "A": "When installing a processor",
+        "B": "When using a grounded mat and working on a computer on an ungrounded workbench",
+        "C": "When installing a dual-voltage power supply",
+        "D": "While exchanging one laptop AC adapter with one that is not from the original equipment manufacturer"
+      },
+      "correct_answers": ["A"],
+      "explanation": "ESD is most dangerous when working with sensitive electronic components like processors.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 3,
+      "question": "A laptop keyboard has a non-functioning key. A technician tests the laptop and discovers that the spring mechanism under the key is broken. What should the technician do to fix this problem?",
+      "options": {
+        "A": "Replace the keyboard cable",
+        "B": "Clean the keyboard",
+        "C": "Replace the laptop lid",
+        "D": "Replace the keyboard"
+      },
+      "correct_answers": ["D"],
+      "explanation": "When internal keyboard components like springs are broken, the entire keyboard typically needs replacement.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 4,
+      "question": "What are two advantages of purchasing a preassembled computer?",
+      "options": {
+        "A": "Easy to customize the installed components",
+        "B": "Always has the best and latest technology installed",
+        "C": "Usually has an extended warranty",
+        "D": "Has been properly tested before purchase",
+        "E": "Easy to customize the installed software"
+      },
+      "correct_answers": ["C", "D"],
+      "explanation": "Preassembled computers typically come with extended warranties and have been tested before sale.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 5,
+      "question": "A mobile device user has entered the wrong passcode on a mobile device too many times and now the device is locked. What should the user do?",
+      "options": {
+        "A": "Wait a specific period of time indicated by the mobile device before attempting the passcode again",
+        "B": "Remove the battery from the mobile device for 10 seconds to restart the device",
+        "C": "Call the device provider to request that the device be unlocked",
+        "D": "Turn the mobile device off and back on to unlock the mobile device"
+      },
+      "correct_answers": ["A"],
+      "explanation": "Mobile devices typically implement lockout periods that require waiting before attempting the passcode again.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 6,
+      "question": "Two different mobile devices are having problems synchronizing email and contacts. What are two possible causes?",
+      "options": {
+        "A": "The location services are not enabled",
+        "B": "The mobile devices are using different operating systems",
+        "C": "The date and time are not correctly configured",
+        "D": "The screen orientation settings are not configured properly",
+        "E": "The synchronization software is not compatible"
+      },
+      "correct_answers": ["C", "E"],
+      "explanation": "Synchronization issues often stem from incorrect date/time settings or incompatible synchronization software.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 7,
+      "question": "What is an advantage of using an inkjet printer?",
+      "options": {
+        "A": "Large paper capacity",
+        "B": "Low cost for high-volume printing",
+        "C": "Able to print on various types of paper",
+        "D": "Fast printing"
+      },
+      "correct_answers": ["C"],
+      "explanation": "Inkjet printers can handle various paper types including photo paper, transparencies, and specialty media.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 8,
+      "question": "An employee reports that each time a workstation is started, it locks up after about 5 minutes of use. What is the most likely cause?",
+      "options": {
+        "A": "The power supply is failing",
+        "B": "The workstation is overheating",
+        "C": "The CMOS battery is loose",
+        "D": "The CPU is not compatible with the motherboard"
+      },
+      "correct_answers": ["B"],
+      "explanation": "Consistent lockups after a specific time period typically indicate overheating issues.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 9,
+      "question": "How does an inline UPS work?",
+      "options": {
+        "A": "It filters power through the battery before delivery to the computer",
+        "B": "It provides power to the computer by switching between utility power and battery power",
+        "C": "It provides power to the computer from the utility and uses the battery to charge a capacitor",
+        "D": "It filters the power through a transformer before delivery to the computer"
+      },
+      "correct_answers": ["A"],
+      "explanation": "An inline UPS continuously filters power through the battery, providing clean, regulated power.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 10,
+      "question": "What does the Windows 10 command gpupdate do?",
+      "options": {
+        "A": "It updates the video card drivers",
+        "B": "It forces an immediate update of all group policies",
+        "C": "It forces an immediate update of Windows",
+        "D": "It updates the drivers for all hardware devices"
+      },
+      "correct_answers": ["B"],
+      "explanation": "The gpupdate command forces an immediate refresh of group policy settings.",
+      "section": "chapters_1_9"
+    },
+    {
+      "question_number": 41,
+      "question": "When responding to a call from a customer who is experiencing problems with a computer, the technician notices that a number of system files on the computer have been renamed. Which two possible solutions could the technician implement to resolve the problem?",
+      "options": {
+        "A": "Use antivirus software to remove a virus",
+        "B": "Restore the computer from a backup",
+        "C": "Change the folder and file permissions of the user",
+        "D": "Reset the password of the user",
+        "E": "Upgrade the file encryption protocol"
+      },
+      "correct_answers": ["A", "B"],
+      "explanation": "Renamed system files are usually the result of a virus on the computer. Removing the virus and restoring the computer from a backup are the only two possible solutions in this case.",
+      "section": "chapters_10_14"
+    },
+    {
+      "question_number": 42,
+      "question": "A technician suspects that a security issue is causing problems with a computer. What two actions could be performed to test theories of probable cause when troubleshooting the PC?",
+      "options": {
+        "A": "Log in as a different user",
+        "B": "Disconnect the computer from the network",
+        "C": "Search helpdesk repair logs for more information",
+        "D": "Discuss solutions with the customer",
+        "E": "Ask the customer open-ended questions about the problem"
+      },
+      "correct_answers": ["A", "B"],
+      "explanation": "Several actions can be taken by a technician when security issues are suspected as the possible cause of a problem with a computer. Logging in as a different user or disconnecting the PC from the network to isolate the cause of the problem are two possible actions.",
+      "section": "chapters_10_14"
+    },
+    {
+      "question_number": 43,
+      "question": "A computer suddenly shuts down, but immediately restarts normally. Which two hardware components should be checked first when troubleshooting this problem?",
+      "options": {
+        "A": "Power supply",
+        "B": "CPU",
+        "C": "RAM",
+        "D": "Hard drive",
+        "E": "Graphics card"
+      },
+      "correct_answers": ["A", "B"],
+      "explanation": "Sudden shutdowns with immediate restarts often indicate overheating (CPU) or power supply issues.",
+      "section": "chapters_10_14"
+    },
+    {
+      "question_number": 44,
+      "question": "A technician is troubleshooting a Windows 10 PC that is experiencing slow performance. Which two tools can be used to analyze the problem?",
+      "options": {
+        "A": "Task Manager",
+        "B": "Performance Monitor",
+        "C": "System Information",
+        "D": "Windows Memory Diagnostic",
+        "E": "System Configuration"
+      },
+      "correct_answers": ["A", "B"],
+      "explanation": "Task Manager and Performance Monitor are primary tools for analyzing system performance issues in Windows 10.",
+      "section": "chapters_10_14"
+    },
+    {
+      "question_number": 45,
+      "question": "A technician configures a RAID 1 array for a customer. If one drive in the array fails, what happens to the data?",
+      "options": {
+        "A": "Data is lost",
+        "B": "Data remains accessible from the remaining drive",
+        "C": "Data becomes corrupted",
+        "D": "Data needs to be restored from backup"
+      },
+      "correct_answers": ["B"],
+      "explanation": "RAID 1 provides mirroring, so if one drive fails, data remains accessible from the remaining drive.",
+      "section": "chapters_10_14"
+    }
+  ],
+  "metadata": {
+    "extraction_method": "Web scraping from ITExamAnswers.net",
+    "question_types": [
+      "Single correct answer",
+      "Multiple correct answers",
+      "True/False concepts",
+      "Technical troubleshooting",
+      "Best practices",
+      "Hardware knowledge",
+      "Software configuration",
+      "Network concepts",
+      "Security practices",
+      "Mobile devices"
+    ],
+    "coverage_areas": [
+      "Computer hardware",
+      "Operating systems",
+      "Networks",
+      "Security",
+      "Mobile devices",
+      "Printers",
+      "Operational procedures",
+      "Troubleshooting methodology",
+      "Windows 10",
+      "Hardware installation",
+      "Preventive maintenance",
+      "Safety procedures"
+    ],
+    "notes": [
+      "This represents a sample extraction from ITExamAnswers.net",
+      "Full database contains 117+ questions across all chapters",
+      "Questions include single and multiple correct answers",
+      "Explanations available for most questions",
+      "Regular updates on source website",
+      "Additional practice exams available for each module"
+    ]
+  }
+}

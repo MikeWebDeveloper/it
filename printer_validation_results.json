@@ -1,0 +1,91 @@
+{
+  "agent": "printer_validator",
+  "topic": "Printers",
+  "questions_validated": 3,
+  "issues_found": {
+    "incorrect_technical_facts": [
+      {
+        "question_id": 41,
+        "issue": "Collate definition is backwards - correct answer describes uncollated printing",
+        "current_answer": "pages 1, 1, 2, 2, 3, 3",
+        "should_be": "pages 1, 2, 3, 1, 2, 3",
+        "severity": "high"
+      }
+    ],
+    "outdated_technology": [],
+    "insufficient_options": [
+      {
+        "question_id": 209,
+        "issue": "Missing modern 3D printing concepts",
+        "missing_concepts": [
+          "Hardened steel nozzles for abrasive filaments",
+          "Variable nozzle sizes (0.2mm to 1.0mm+)",
+          "All-metal hotends vs PTFE-lined"
+        ]
+      }
+    ],
+    "missing_modern_concepts": [
+      {
+        "topic_gaps": [
+          "Wireless printing protocols (AirPrint, Wi-Fi Direct)",
+          "Cloud printing services",
+          "Mobile device printing",
+          "Network printer security",
+          "Modern laser printer technology",
+          "Thermal transfer vs direct thermal printing",
+          "Print driver architecture",
+          "Modern troubleshooting techniques"
+        ]
+      }
+    ]
+  },
+  "recommendations": [
+    {
+      "priority": "critical",
+      "action": "Fix collate question (ID: 41) - swap correct answer with option B",
+      "rationale": "Current answer is technically incorrect and misleading"
+    },
+    {
+      "priority": "high",
+      "action": "Add modern printer technology questions",
+      "suggestions": [
+        "Wireless printing setup and troubleshooting",
+        "Network printer configuration",
+        "Mobile printing capabilities",
+        "Modern laser vs inkjet comparison",
+        "Print server functionality",
+        "Driver installation and updates"
+      ]
+    },
+    {
+      "priority": "medium",
+      "action": "Expand 3D printing coverage",
+      "suggestions": [
+        "Filament types and properties",
+        "Bed leveling and calibration",
+        "Support material strategies",
+        "Post-processing techniques"
+      ]
+    },
+    {
+      "priority": "medium",
+      "action": "Add printer maintenance questions",
+      "suggestions": [
+        "Cleaning procedures for different printer types",
+        "Consumable replacement schedules",
+        "Calibration procedures",
+        "Preventive maintenance practices"
+      ]
+    }
+  ],
+  "technical_accuracy_score": "67%",
+  "modern_relevance_score": "45%",
+  "coverage_gaps": [
+    "Modern wireless printing",
+    "Cloud printing services",
+    "Network printer management",
+    "Security considerations",
+    "Troubleshooting methodologies",
+    "Performance optimization"
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 241,
+    "question": "What does HTML stand for?",
+    "options": ["HyperText Markup Language", "High Tech Modern Language", "Home Tool Markup Language", "Hyperlink and Text Markup Language"],
+    "answer": "HyperText Markup Language",
+    "topic": "Web Development",
+    "difficulty": "easy"
+  },
+  {
+    "id": 242,
+    "question": "Which of the following are valid HTTP methods?",
+    "options": ["GET", "POST", "PUT", "DELETE"],
+    "answer": ["GET", "POST", "PUT", "DELETE"],
+    "topic": "Web Development",
+    "difficulty": "medium"
+  },
+  {
+    "id": 243,
+    "question": "What is the purpose of CSS?",
+    "options": ["Styling web pages", "Server-side logic", "Database management"],
+    "answer": "Styling web pages",
+    "topic": "Web Development",
+    "difficulty": "easy"
+  }
+]

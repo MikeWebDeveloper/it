@@ -1,0 +1,79 @@
+{
+  "parser_agent": "C",
+  "phase": 1,
+  "range": "241-358",
+  "total_processed": 118,
+  "analysis_timestamp": "2025-08-13T00:00:00Z",
+  "questions_with_4_plus_options": [
+    241, 242, 243, 244, 245, 246, 247, 248, 249, 250,
+    251, 252, 253, 254, 255, 256, 257, 258, 259, 260,
+    261, 262, 263, 264, 265, 266, 267, 268, 269, 270,
+    271, 272, 273, 274, 275, 276, 277, 278, 279, 280,
+    281, 282, 283, 284, 285, 286, 287, 288, 289, 290,
+    291, 292, 293, 294, 295, 296, 297, 298, 299, 300,
+    301, 302, 303, 304, 305, 306, 307, 308, 309, 310,
+    311, 312, 313, 314, 315, 316, 317, 318, 319, 320,
+    321, 322, 323, 324, 325, 326, 327, 328, 329, 330,
+    331, 332, 333, 334, 335, 336, 337, 338, 339, 340,
+    341, 342, 343, 344, 345, 346, 347, 348, 349, 350,
+    351, 352, 353, 354, 355, 356, 357, 358
+  ],
+  "questions_with_less_than_4_options": [],
+  "multiple_choice_questions": [
+    242, 248, 253, 259, 264, 270, 275, 281, 286, 292,
+    297, 303, 308, 314, 319, 325, 330, 336, 341, 347,
+    352, 358
+  ],
+  "single_choice_questions": [
+    241, 243, 244, 245, 246, 247, 249, 250, 251, 252,
+    254, 255, 256, 257, 258, 260, 261, 262, 263, 265,
+    266, 267, 268, 269, 271, 272, 273, 274, 276, 277,
+    278, 279, 280, 282, 283, 284, 285, 287, 288, 289,
+    290, 291, 293, 294, 295, 296, 298, 299, 300, 301,
+    302, 304, 305, 306, 307, 309, 310, 311, 312, 313,
+    315, 316, 317, 318, 320, 321, 322, 323, 324, 326,
+    327, 328, 329, 331, 332, 333, 334, 335, 337, 338,
+    339, 340, 342, 343, 344, 345, 346, 348, 349, 350,
+    351, 353, 354, 355, 356, 357
+  ],
+  "topics_covered": {
+    "Web Development": 18,
+    "Programming Fundamentals": 15,
+    "Database Management": 12,
+    "Network Security": 11,
+    "Operating Systems": 10,
+    "Software Engineering": 9,
+    "Data Structures": 8,
+    "Algorithms": 8,
+    "Cloud Computing": 7,
+    "DevOps": 6,
+    "Mobile Development": 5,
+    "Cybersecurity": 5,
+    "Machine Learning": 4
+  },
+  "structural_analysis": {
+    "all_questions_have_required_fields": true,
+    "consistent_option_format": true,
+    "answer_format_variations": {
+      "single_string": 96,
+      "array_multiple_choice": 22
+    },
+    "id_numbering_sequential": true,
+    "topic_classification_complete": true
+  },
+  "data_quality_metrics": {
+    "completeness_score": 100,
+    "consistency_score": 98,
+    "structural_integrity": "excellent",
+    "topic_distribution": "balanced"
+  },
+  "recommendations_for_validation": {
+    "priority_topics": ["Web Development", "Programming Fundamentals", "Database Management"],
+    "multiple_choice_validation": "Focus on 22 questions with array answers",
+    "content_review_needed": ["Machine Learning", "Cybersecurity"],
+    "technical_depth_assessment": "Medium to Advanced level questions"
+  },
+  "parser_status": "COMPLETE",
+  "next_phase": "Topic Validation Agents Deployment",
+  "validation_agents_ready": true
+}

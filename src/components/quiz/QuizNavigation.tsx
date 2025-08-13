@@ -105,9 +105,11 @@ export function QuizNavigation({
           variant={hasAnswer ? "default" : "outline"}
           size="sm"
           onClick={onNext}
+          disabled={!hasAnswer}
           className={cn(
             "flex items-center gap-1 md:gap-2 min-h-[40px] md:min-h-[48px] px-2 md:px-4",
             "text-xs md:text-sm",
+            "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-muted",
             !hasAnswer && "text-muted-foreground"
           )}
         >

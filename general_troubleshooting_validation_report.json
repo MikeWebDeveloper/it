@@ -1,0 +1,102 @@
+{
+  "agent": "general_troubleshooting_validator",
+  "topic": "General IT & Troubleshooting",
+  "questions_validated": 63,
+  "breakdown": {
+    "general_it": 34,
+    "troubleshooting": 29
+  },
+  "issues_found": {
+    "incorrect_methodology": [
+      {
+        "id": 23,
+        "severity": "HIGH",
+        "issue": "Includes 'Randomly replace components one at a time until the problem is solved' as an option",
+        "explanation": "Violates CompTIA systematic troubleshooting methodology. Random replacement is explicitly against best practices.",
+        "correction_needed": "Remove random option, replace with systematic approach like 'Research vendor documentation for similar issues'"
+      }
+    ],
+    "unprofessional_practices": [
+      {
+        "id": 64,
+        "severity": "CRITICAL", 
+        "issue": "Correct answer is 'Bury it' for monitor disposal",
+        "explanation": "Burying electronic waste is illegal, environmentally harmful, and violates all professional standards. Answer should be 'Recycle following local regulations'",
+        "correction_needed": "Change correct answer from 'Bury it' to 'Recycle following local regulations'"
+      }
+    ],
+    "missing_steps": [
+      {
+        "id": 97,
+        "severity": "MEDIUM",
+        "issue": "Printer troubleshooting lacks customer communication considerations",
+        "explanation": "Focuses only on technical solution without acknowledging user experience or communication protocols",
+        "correction_needed": "Include customer notification and explanation steps in troubleshooting workflow"
+      }
+    ],
+    "insufficient_options": [
+      {
+        "id": 20,
+        "severity": "LOW",
+        "issue": "Only 2 options provided ('dust', 'rust')",
+        "explanation": "Insufficient for proper assessment difficulty and discrimination",
+        "correction_needed": "Add options like 'humidity', 'temperature' to create 4-option question"
+      },
+      {
+        "id": 133,
+        "severity": "LOW", 
+        "issue": "Only 2 options provided for optical drive question",
+        "explanation": "Below standard for professional certification assessment",
+        "correction_needed": "Add additional plausible storage capacity options"
+      }
+    ]
+  },
+  "recommendations": [
+    "CRITICAL: Fix question 64 - change answer from 'Bury it' to 'Recycle following local regulations'",
+    "Align all troubleshooting questions with CompTIA 6-step methodology: Identify → Theory → Test → Plan → Implement → Verify",
+    "Remove any random or trial-and-error approaches from troubleshooting options",
+    "Ensure all disposal questions follow EPA and local environmental regulations", 
+    "Include customer communication protocols in service desk scenarios",
+    "Add documentation and verification steps to troubleshooting workflows",
+    "Implement minimum 4 options per question for adequate assessment rigor",
+    "Incorporate ITIL service management principles for professional IT support",
+    "Add change management procedures for system modification scenarios",
+    "Include escalation procedures for complex technical issues",
+    "Emphasize preventive maintenance schedules and proactive support"
+  ],
+  "methodology_compliance": {
+    "comptia_troubleshooting_model": "Mostly compliant with 1 violation (Q23)",
+    "itil_service_management": "Basic compliance, needs enhancement",
+    "professional_communication": "Adequate but could be strengthened",
+    "environmental_regulations": "CRITICAL violation in Q64",
+    "documentation_practices": "Generally good, some gaps"
+  },
+  "quality_assessment": {
+    "overall_score": "75/100",
+    "strengths": [
+      "Good coverage of systematic troubleshooting steps",
+      "Appropriate difficulty progression",
+      "Realistic scenarios and problems",
+      "Clear question wording"
+    ],
+    "critical_issues": [
+      "Question 64 promotes illegal disposal practices",
+      "Question 23 includes anti-methodology option"
+    ],
+    "improvement_areas": [
+      "Customer service integration",
+      "Change management procedures", 
+      "Escalation protocols",
+      "Preventive maintenance emphasis"
+    ]
+  },
+  "validation_summary": {
+    "total_questions": 63,
+    "critical_issues": 1,
+    "high_priority_issues": 1,
+    "medium_priority_issues": 1,
+    "low_priority_issues": 2,
+    "compliance_rate": "92%",
+    "recommendation": "Address critical Q64 immediately, then systematic methodology improvements"
+  }
+}

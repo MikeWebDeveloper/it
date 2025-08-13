@@ -1,0 +1,288 @@
+{
+  "description": "Critical fixes for IT quiz questions database - Phase 3 comprehensive patches",
+  "version": "1.0.0",
+  "date": "2025-08-13",
+  "total_fixes": 23,
+  "categories": [
+    "hardware_safety_disposal",
+    "network_port_protocols", 
+    "bios_hardware_facts",
+    "os_commands",
+    "network_security_facts",
+    "printer_definitions",
+    "missing_options",
+    "categorization"
+  ],
+  "patches": [
+    {
+      "id": "fix_q64_monitor_disposal",
+      "target": "questions[63]",
+      "operation": "replace", 
+      "field": "correct_answer",
+      "old_value": "Bury it.",
+      "new_value": "Recycle following local regulations.",
+      "reasoning": "Environmental safety - monitors contain hazardous materials and must be recycled properly",
+      "category": "hardware_safety_disposal",
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q64_topic",
+      "target": "questions[63]", 
+      "operation": "replace",
+      "field": "topic",
+      "old_value": "General IT",
+      "new_value": "Hardware Safety",
+      "reasoning": "Question is specifically about hardware disposal safety",
+      "category": "categorization",
+      "priority": "high"
+    },
+    {
+      "id": "fix_q65_power_supply_disposal",
+      "target": "questions[64]",
+      "operation": "replace",
+      "field": "correct_answer", 
+      "old_value": "Burn it.",
+      "new_value": "Recycle following local regulations.",
+      "reasoning": "Power supplies contain hazardous materials and must be recycled properly",
+      "category": "hardware_safety_disposal",
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q65_topic",
+      "target": "questions[64]",
+      "operation": "replace", 
+      "field": "topic",
+      "old_value": "Hardware",
+      "new_value": "Hardware Safety",
+      "reasoning": "Question is about hardware disposal safety procedures",
+      "category": "categorization", 
+      "priority": "high"
+    },
+    {
+      "id": "fix_q66_ram_disposal",
+      "target": "questions[65]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "Destroy it with a hammer.",
+      "new_value": "Recycle following local regulations.", 
+      "reasoning": "RAM contains precious metals and should be recycled, not destroyed",
+      "category": "hardware_safety_disposal",
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q66_topic",
+      "target": "questions[65]",
+      "operation": "replace",
+      "field": "topic", 
+      "old_value": "Hardware",
+      "new_value": "Hardware Safety",
+      "reasoning": "Question is about hardware disposal safety procedures",
+      "category": "categorization",
+      "priority": "high"
+    },
+    {
+      "id": "fix_q67_motherboard_disposal", 
+      "target": "questions[66]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "Seal in a plastic bag before putting in the garbage.",
+      "new_value": "Recycle following local regulations.",
+      "reasoning": "Motherboards contain hazardous materials and valuable metals for recycling",
+      "category": "hardware_safety_disposal",
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q67_topic",
+      "target": "questions[66]",
+      "operation": "replace",
+      "field": "topic",
+      "old_value": "Hardware", 
+      "new_value": "Hardware Safety",
+      "reasoning": "Question is about hardware disposal safety procedures",
+      "category": "categorization",
+      "priority": "high"
+    },
+    {
+      "id": "fix_q41_collate_definition",
+      "target": "questions[40]",
+      "operation": "replace", 
+      "field": "correct_answer",
+      "old_value": "pages 1, 1, 2, 2, 3, 3", 
+      "new_value": "pages 1, 2, 3, 1, 2, 3",
+      "reasoning": "Collate means to sort pages into complete sets - 1,2,3,1,2,3 not 1,1,2,2,3,3",
+      "category": "printer_definitions",
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q8_missing_options",
+      "target": "questions[7]",
+      "operation": "replace",
+      "field": "options",
+      "old_value": ["cache", "main memory"],
+      "new_value": ["cache", "main memory", "ROM", "Flash memory"],
+      "reasoning": "Question needs 4 options minimum, ROM is the correct answer for boot instructions",
+      "category": "missing_options", 
+      "priority": "high"
+    },
+    {
+      "id": "fix_q8_correct_answer",
+      "target": "questions[7]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "main memory",
+      "new_value": "ROM",
+      "reasoning": "ROM (Read-Only Memory) holds boot instructions, not main memory",
+      "category": "bios_hardware_facts",
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q80_port_427",
+      "target": "questions[79]", 
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "SMB/CIFS",
+      "new_value": "SLP (Service Location Protocol)",
+      "reasoning": "Port 427 is for SLP, not SMB/CIFS which uses port 445",
+      "category": "network_port_protocols",
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q80_add_options",
+      "target": "questions[79]",
+      "operation": "replace", 
+      "field": "options",
+      "old_value": ["SMB/CIFS", "SMTP"],
+      "new_value": ["SMB/CIFS", "SMTP", "SLP (Service Location Protocol)", "HTTPS"],
+      "reasoning": "Need 4 options minimum, add correct answer SLP",
+      "category": "missing_options",
+      "priority": "high"
+    },
+    {
+      "id": "fix_q80_topic",
+      "target": "questions[79]",
+      "operation": "replace",
+      "field": "topic", 
+      "old_value": "Mobile Devices",
+      "new_value": "Networking",
+      "reasoning": "Network port question belongs in Networking category",
+      "category": "categorization",
+      "priority": "high"
+    },
+    {
+      "id": "fix_q81_port_53", 
+      "target": "questions[80]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "SMTP",
+      "new_value": "DNS",
+      "reasoning": "Port 53 is for DNS, not SMTP which uses port 25/587",
+      "category": "network_port_protocols", 
+      "priority": "critical"
+    },
+    {
+      "id": "fix_q81_add_dns_option",
+      "target": "questions[80]",
+      "operation": "replace",
+      "field": "options",
+      "old_value": ["SMTP", "DHCP", "TFTP"],
+      "new_value": ["SMTP", "DHCP", "TFTP", "DNS"],
+      "reasoning": "Add DNS as correct option for port 53",
+      "category": "missing_options",
+      "priority": "high"
+    },
+    {
+      "id": "fix_ipv6_q82",
+      "target": "questions[81]",
+      "operation": "replace",
+      "field": "correct_answer", 
+      "old_value": "2001:db80:0:1::80:1",
+      "new_value": "2001:db8::a0b0:8:1",
+      "reasoning": "Correct IPv6 compression: 2001:0db8:0000:0000:0000:a0b0:0008:0001 = 2001:db8::a0b0:8:1",
+      "category": "network_security_facts",
+      "priority": "high"
+    },
+    {
+      "id": "fix_ipv6_q83",
+      "target": "questions[82]", 
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "fe80:9:20::b000:290",
+      "new_value": "fe80:9ea:0:2200::fe0:290",
+      "reasoning": "Correct IPv6 compression: fe80:09ea:0000:2200:0000:0000:0fe0:0290 = fe80:9ea:0:2200::fe0:290", 
+      "category": "network_security_facts",
+      "priority": "high"
+    },
+    {
+      "id": "fix_ipv6_q84",
+      "target": "questions[83]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "200:420:110:c4b::910:0:90",
+      "new_value": "2002:42:10:c400::909",
+      "reasoning": "Correct IPv6 compression: 2002:0042:0010:c400:0000:0000:0000:0909 = 2002:42:10:c400::909",
+      "category": "network_security_facts", 
+      "priority": "high"
+    },
+    {
+      "id": "fix_ipv6_q85",
+      "target": "questions[84]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "2002:4200::25:1090:0:99",
+      "new_value": "2002:420:c4:1008:25:190::990",
+      "reasoning": "Correct IPv6 compression: 2002:0420:00c4:1008:0025:0190:0000:0990 = 2002:420:c4:1008:25:190::990",
+      "category": "network_security_facts",
+      "priority": "high" 
+    },
+    {
+      "id": "fix_ipv6_q86",
+      "target": "questions[85]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "2001:db8:1::ab8:0:1", 
+      "new_value": "2001:db8::ab8:1:0:1000",
+      "reasoning": "Correct IPv6 compression: 2001:0db8:0000:0000:0ab8:0001:0000:1000 = 2001:db8::ab8:1:0:1000",
+      "category": "network_security_facts",
+      "priority": "high"
+    },
+    {
+      "id": "fix_ipv6_q87",
+      "target": "questions[86]",
+      "operation": "verify_correct",
+      "field": "correct_answer",
+      "current_value": "fe80::220:b3f:f0e0:29",
+      "reasoning": "This answer is already correct for fe80:0000:0000:0000:0220:0b3f:f0e0:0029",
+      "category": "network_security_facts",
+      "priority": "low"
+    },
+    {
+      "id": "fix_ipv6_q88", 
+      "target": "questions[87]",
+      "operation": "replace",
+      "field": "correct_answer",
+      "old_value": "fe80:9:20::b000:290",
+      "new_value": "fe80:9ea0::2020:0:bf:e0:9290", 
+      "reasoning": "Correct IPv6 compression: fe80:9ea0:0000:2020:0000:00bf:00e0:9290 = fe80:9ea0::2020:0:bf:e0:9290",
+      "category": "network_security_facts",
+      "priority": "high"
+    }
+  ],
+  "validation_rules": {
+    "hardware_safety": "All disposal questions must recommend proper recycling following local regulations",
+    "network_ports": "Port numbers must match correct protocols: 53=DNS, 80=HTTP, 443=HTTPS, 25=SMTP, 427=SLP", 
+    "ipv6_compression": "IPv6 addresses must follow RFC 5952 compression rules",
+    "minimum_options": "All questions must have at least 4 options unless specifically designed otherwise",
+    "topic_categorization": "Questions must be categorized by primary technical domain"
+  },
+  "implementation_notes": {
+    "backup_required": true,
+    "testing_required": true,
+    "validation_steps": [
+      "Apply patches to copy of questions.json",
+      "Validate JSON structure integrity", 
+      "Verify all answers are technically correct",
+      "Test question rendering in UI",
+      "Deploy to production after approval"
+    ]
+  }
+}

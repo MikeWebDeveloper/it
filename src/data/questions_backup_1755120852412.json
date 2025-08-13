@@ -26,13 +26,7 @@
     "question_types": [
       "single_choice",
       "multiple_choice"
-    ],
-    "fixes_applied": {
-      "date": "2025-08-13T21:36:37.870Z",
-      "total_fixes": 28,
-      "critical_fixes": 11,
-      "version": "1.0.0"
-    }
+    ]
   },
   "questions": [
     {
@@ -146,12 +140,10 @@
       "question": "Which memory module used to hold instructions for booting a PC and loading the OS, but is still used on adapters even though the memory contents cannot be changed?",
       "options": [
         "cache",
-        "main memory",
-        "ROM",
-        "Flash memory"
+        "main memory"
       ],
-      "correct_answer": "ROM",
-      "explanation": "ROM (Read-Only Memory) stands for read-only memory and holds the initial boot instructions for a PC. While the contents cannot be changed, ROM is still used on adapters and for BIOS/UEFI firmware.",
+      "correct_answer": "main memory",
+      "explanation": "ROM stands for read-only memory.",
       "topic": "Hardware",
       "difficulty": "medium"
     },
@@ -691,7 +683,7 @@
         "pages 3, 3, 2, 2, 1, 1",
         "pages 3, 2, 1, 3, 2, 1"
       ],
-      "correct_answer": "pages 1, 2, 3, 1, 2, 3",
+      "correct_answer": "pages 1, 1, 2, 2, 3, 3",
       "explanation": "The collate feature enables a printer to sort multiple copies of a document with the proper page order for each copy.",
       "topic": "Printers",
       "difficulty": "medium"
@@ -1048,8 +1040,8 @@
         "Take it to the garbage dump.",
         "Burn it."
       ],
-      "correct_answer": "Recycle following local regulations.",
-      "topic": "Hardware Safety",
+      "correct_answer": "Bury it.",
+      "topic": "General IT",
       "difficulty": "medium"
     },
     {
@@ -1062,8 +1054,8 @@
         "Recycle following local regulations.",
         "Bury it."
       ],
-      "correct_answer": "Recycle following local regulations.",
-      "topic": "Hardware Safety",
+      "correct_answer": "Burn it.",
+      "topic": "Hardware",
       "difficulty": "medium"
     },
     {
@@ -1076,8 +1068,8 @@
         "Bury it.",
         "Recycle following local regulations."
       ],
-      "correct_answer": "Recycle following local regulations.",
-      "topic": "Hardware Safety",
+      "correct_answer": "Destroy it with a hammer.",
+      "topic": "Hardware",
       "difficulty": "medium"
     },
     {
@@ -1090,8 +1082,8 @@
         "Give it to your neighbor.",
         "Destroy it with a hammer."
       ],
-      "correct_answer": "Recycle following local regulations.",
-      "topic": "Hardware Safety",
+      "correct_answer": "Seal in a plastic bag before putting in the garbage.",
+      "topic": "Hardware",
       "difficulty": "medium"
     },
     {
@@ -1272,14 +1264,11 @@
       "question": "A client packet is received by a server. The packet has a destination port number of 427. What service application is the client requesting?",
       "options": [
         "SMB/CIFS",
-        "SMTP",
-        "SLP (Service Location Protocol)",
-        "HTTPS"
+        "SMTP"
       ],
-      "correct_answer": "SLP (Service Location Protocol)",
-      "topic": "Networking",
-      "difficulty": "medium",
-      "explanation": "Port 427 is used by SLP (Service Location Protocol) for service discovery. SMB/CIFS uses port 445, SMTP uses port 25/587."
+      "correct_answer": "SMB/CIFS",
+      "topic": "Mobile Devices",
+      "difficulty": "medium"
     },
     {
       "id": 81,
@@ -1288,13 +1277,11 @@
       "options": [
         "SMTP",
         "DHCP",
-        "TFTP",
-        "DNS"
+        "TFTP"
       ],
-      "correct_answer": "DNS",
+      "correct_answer": "SMTP",
       "topic": "Mobile Devices",
-      "difficulty": "medium",
-      "explanation": "Port 53 is the standard port for DNS (Domain Name System) queries. SMTP uses port 25/587, DHCP uses ports 67/68."
+      "difficulty": "medium"
     },
     {
       "id": 82,
@@ -1306,7 +1293,7 @@
         "2001:db8::ab8:1:0:1000",
         "2001:db80:::1::80:1"
       ],
-      "correct_answer": "2001:db8::a0b0:8:1",
+      "correct_answer": "2001:db80:0:1::80:1",
       "topic": "General IT",
       "difficulty": "medium"
     },
@@ -1334,7 +1321,7 @@
         "2002:42::25:1090:0:99",
         "2002:42:10:c400::909"
       ],
-      "correct_answer": "2002:42:10:c400::909",
+      "correct_answer": "200:420:110:c4b::910:0:90",
       "topic": "General IT",
       "difficulty": "medium"
     },
@@ -1348,7 +1335,7 @@
         "2002:42:10:c400::909",
         "2002:42::25:1090:0:99"
       ],
-      "correct_answer": "2002:420:c4:1008:25:190::990",
+      "correct_answer": "2002:4200::25:1090:0:99",
       "topic": "General IT",
       "difficulty": "medium"
     },
@@ -1362,7 +1349,7 @@
         "2001:db8:0:1::8:1",
         "2001:db8::ab8:1:0:1000"
       ],
-      "correct_answer": "2001:db8::ab8:1:0:1000",
+      "correct_answer": "2001:db8::a0b0:8:1",
       "topic": "General IT",
       "difficulty": "medium"
     },
@@ -1390,7 +1377,7 @@
         "fe80:9ea0::2020:0:bf:e0:9290",
         "fe80::0220:0b3f:f0e0:0029"
       ],
-      "correct_answer": "fe80:9ea0::2020:0:bf:e0:9290",
+      "correct_answer": "fe80:9:20::b000:290",
       "topic": "General IT",
       "difficulty": "medium"
     },
