@@ -8,15 +8,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { CategorySelector } from '@/components/quiz/CategorySelector'
 import { QuizConfig, QuizConfiguration } from '@/components/quiz/QuizConfig'
-import { PageTransition } from '@/components/animations/PageTransition'
 import { 
   Trophy, 
   Target, 
   BookOpen,
   Sun,
   Moon,
-  BarChart3,
-  RotateCcw
+  BarChart3
 } from 'lucide-react'
 import questionData from '@/data/questions.json'
 import { useTheme } from 'next-themes'
@@ -27,7 +25,6 @@ type ViewMode = 'home' | 'categories' | 'config'
 export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('home')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [mounted, setMounted] = useState(false)
   
   const { 
     userProgress, 
@@ -41,7 +38,6 @@ export default function Home() {
   // Load questions on mount
   useEffect(() => {
     setQuestions(questionData.questions)
-    setMounted(true)
   }, [setQuestions])
 
   const handleQuickStart = (mode: 'practice' | 'timed' | 'review') => {
@@ -89,9 +85,8 @@ export default function Home() {
 
   if (viewMode === 'categories') {
     return (
-      <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-          <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <Button
@@ -105,13 +100,8 @@ export default function Home() {
                 size="sm"
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className="rounded-full"
-                suppressHydrationWarning
               >
-                {mounted ? (
-                  theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />
-                ) : (
-                  <Sun className="w-4 h-4" />
-                )}
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </Button>
             </div>
             <h1 className="text-3xl font-bold mb-2">Choose Your Topics</h1>
@@ -132,32 +122,28 @@ export default function Home() {
               </Button>
             </div>
           )}
-          </div>
         </div>
-      </PageTransition>
+      </div>
     )
   }
 
   if (viewMode === 'config') {
     return (
-      <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-          <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <QuizConfig
-              selectedCategories={selectedCategories}
-              onStartQuiz={handleStartConfiguredQuiz}
-              onBack={() => setViewMode('categories')}
-            />
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+          <QuizConfig
+            selectedCategories={selectedCategories}
+            onStartQuiz={handleStartConfiguredQuiz}
+            onBack={() => setViewMode('categories')}
+          />
         </div>
-      </PageTransition>
+      </div>
     )
   }
 
   return (
-    <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -176,13 +162,8 @@ export default function Home() {
                 size="sm"
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className="rounded-full"
-                suppressHydrationWarning
               >
-                {mounted ? (
-                  theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />
-                ) : (
-                  <Sun className="w-4 h-4" />
-                )}
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </Button>
             </div>
           </div>
@@ -191,7 +172,7 @@ export default function Home() {
             IT Quiz App
           </h1>
           <p className="text-lg text-muted-foreground mb-4">
-            Master IT Essentials with 350+ interactive questions
+            Master IT Essentials with {questionData.exam_info.total_questions} interactive questions
           </p>
           <div className="flex flex-wrap gap-2 justify-center">
             {questionData.exam_info.topics.slice(0, 5).map(topic => (
@@ -259,16 +240,16 @@ export default function Home() {
             </p>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Button
-                onClick={() => router.push('/practice-config')}
+                onClick={() => handleQuickStart('practice')}
                 className="h-auto p-4 flex flex-col items-center gap-2"
                 variant="outline"
               >
                 <BookOpen className="w-6 h-6" />
                 <div className="text-center">
                   <div className="font-semibold">Practice Mode</div>
-                  <div className="text-xs text-muted-foreground">Customizable practice • No time limit</div>
+                  <div className="text-xs text-muted-foreground">10 questions • No time limit</div>
                 </div>
               </Button>
               
@@ -293,18 +274,6 @@ export default function Home() {
                 <div className="text-center">
                   <div className="font-semibold">Review Mode</div>
                   <div className="text-xs text-muted-foreground">Focus on weak areas</div>
-                </div>
-              </Button>
-
-              <Button
-                onClick={() => router.push('/flashcards')}
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                variant="outline"
-              >
-                <RotateCcw className="w-6 h-6" />
-                <div className="text-center">
-                  <div className="font-semibold">Flashcards</div>
-                  <div className="text-xs text-muted-foreground">Interactive study cards</div>
                 </div>
               </Button>
             </div>
@@ -332,13 +301,12 @@ export default function Home() {
             </Button>
             <div className="mt-3 text-center">
               <p className="text-xs text-muted-foreground">
-                Select from 11+ topics • Configure difficulty • Set custom timing
+                Select from {questionData.exam_info.topics.length} topics • Configure difficulty • Set custom timing
               </p>
             </div>
           </CardContent>
         </Card>
-        </div>
       </div>
-    </PageTransition>
+    </div>
   )
 }

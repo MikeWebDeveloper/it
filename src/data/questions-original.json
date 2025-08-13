@@ -1,0 +1,679 @@
+{
+  "exam_info": {
+    "title": "IT Essentials 7.0 8.0 Course Final Exam – Composite (Chapters 1-14)",
+    "source": "ITExamAnswers.net",
+    "total_questions": 50,
+    "topics": ["Hardware", "Networking", "Printers", "Troubleshooting", "Security", "Operating Systems", "Mobile Devices", "Cloud Computing", "Virtualization"]
+  },
+  "questions": [
+    {
+      "number": 1,
+      "question": "In which situation would an ESD strike potentially cause harm to the PC?",
+      "options": [
+        "when replacing a mechanical hard drive with an M.2 SSD",
+        "when installing an additional display in a workplace cubicle", 
+        "when using a grounded mat and working on a computer on an ungrounded workbench",
+        "when installing a dual-voltage power supply"
+      ],
+      "correct_answer": "when installing RAM",
+      "explanation": "Minimize the risk of electrostatic discharge. Whenever 2 things touch, there is always an exchange of electrons at the atomic level. Most of the time, this exchange is so negligible that you don't notice it, but even tiny bolts of static electricity can fry your RAM modules. In fact, any electrical component in your computer has a chance to be damaged by static electricity.",
+      "topic": "Hardware Safety"
+    },
+    {
+      "number": 2,
+      "question": "A person has started a new technical job. In which situation would ESD be an issue?",
+      "options": [
+        "when installing a processor",
+        "when using a grounded mat and working on a computer on an ungrounded workbench",
+        "when installing a dual-voltage power supply",
+        "while exchanging one laptop AC adapter with one that is not from the original equipment manufacturer"
+      ],
+      "correct_answer": "when installing a processor",
+      "explanation": "ESD can damage sensitive electronic components like processors during installation.",
+      "topic": "Hardware Safety"
+    },
+    {
+      "number": 3,
+      "question": "A technician is about to begin preventive maintenance on a company PC. In which situation would ESD be an issue?",
+      "options": [
+        "when replacing a motherboard",
+        "while attaching speakers to a surround sound card",
+        "when using a grounded mat and working on a computer on an ungrounded workbench",
+        "when installing a dual-voltage power supply"
+      ],
+      "correct_answer": "when replacing a motherboard",
+      "explanation": "Motherboards contain sensitive electronic components that can be damaged by ESD.",
+      "topic": "Hardware Safety"
+    },
+    {
+      "number": 4,
+      "question": "An instructor has given a student an assignment to assemble a PC. In which situation should the student be aware that ESD is an issue?",
+      "options": [
+        "when installing RAM",
+        "when working in a corporate environment that has carpet installed under tower PCs",
+        "when using a grounded mat and working on a computer on an ungrounded workbench",
+        "when installing a dual-voltage power supply"
+      ],
+      "correct_answer": "when installing RAM",
+      "explanation": "RAM modules are sensitive to ESD and can be damaged during installation.",
+      "topic": "Hardware Safety"
+    },
+    {
+      "number": 5,
+      "question": "What two motherboard components control the system boot operations? (Choose two.)",
+      "options": [
+        "BIOS chip",
+        "UEFI chip", 
+        "Northbridge chip",
+        "Southbridge chip",
+        "CPU"
+      ],
+      "correct_answer": ["BIOS chip", "UEFI chip"],
+      "explanation": "System boot services are provided by the motherboard BIOS and UEFI chips.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 6,
+      "question": "A technician is upgrading an ATX motherboard with another ATX motherboard. Which component might be affected by this and need to be upgraded and bought as an additional purchase?",
+      "options": [
+        "BIOS",
+        "chipset",
+        "CMOS battery",
+        "CPU",
+        "PCIe adapter"
+      ],
+      "correct_answer": "CPU",
+      "explanation": "The motherboard, CPU, and power supply must be compatible.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 7,
+      "question": "A customer has requested that a PC be built that will support eSATA. Which component should be checked to be sure that this feature is supported?",
+      "options": [
+        "CPU",
+        "chipset",
+        "hard disk",
+        "RAM module"
+      ],
+      "correct_answer": "chipset",
+      "explanation": "The chipset on a motherboard consists of integrated circuits that control how system hardware interacts with the CPU and motherboard. It also provides the capability and features needed, such as the maximum memory supported on the motherboard, multiple USB ports, eSATA connections, surround sound, and video.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 8,
+      "question": "Which memory module used to hold instructions for booting a PC and loading the OS, but is still used on adapters even though the memory contents cannot be changed?",
+      "options": [
+        "RAM",
+        "ROM",
+        "cache",
+        "main memory"
+      ],
+      "correct_answer": "ROM",
+      "explanation": "ROM stands for read-only memory.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 9,
+      "question": "What is a characteristic of DDR SDRAM?",
+      "options": [
+        "It transfers data twice per clock cycle compared to once per clock cycle for SDRAM.",
+        "DDR SDRAM modules have double the number of pins of SDRAM memory modules.",
+        "It is dynamic memory whereas SDRAM is static memory.",
+        "It operates at double the voltage of SDRAM memory."
+      ],
+      "correct_answer": "It transfers data twice per clock cycle compared to once per clock cycle for SDRAM.",
+      "explanation": "DDR SDRAM transfers data twice per clock cycle, whereas SDRAM transfers data once each clock cycle. Both DDR SDRAM and SDRAM are forms of dynamic memory. The difference in data transfer rate between DDR SDRAM and SDRAM is not determined by the number of pins, nor the operating voltage.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 10,
+      "question": "What are two safety hazards when dealing with laser printers? (Choose two.)",
+      "options": [
+        "high voltage",
+        "hot components",
+        "heavy metals",
+        "proprietary power bricks",
+        "unwieldy card cages"
+      ],
+      "correct_answer": ["high voltage", "hot components"],
+      "explanation": "Laser printers require high voltage when initially powered on and to charge the drum in preparation for writing data to the drum. This high voltage requirement is why most laser printers are not normally connected to a UPS. A laser printer also has a fuser assembly used to apply heat and pressure to the toner to permanently attach it to the paper. The laser printer must be unplugged and the fuser assembly must be allowed to cool before working inside the printer.",
+      "topic": "Printers"
+    },
+    {
+      "number": 11,
+      "question": "Which component requires a technician to install screws externally through the PC case?",
+      "options": [
+        "RAM",
+        "CPU",
+        "motherboard",
+        "power supply"
+      ],
+      "correct_answer": "power supply",
+      "explanation": "The power supply commonly has four screws that attach from outside the case through case holes into screw holes on the power supply.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 12,
+      "question": "A technician is installing an internal HDD. To which motherboard connector will the technician connect the data cable?",
+      "options": [
+        "ATX",
+        "PCI",
+        "PWR_SW",
+        "SATA"
+      ],
+      "correct_answer": "SATA",
+      "explanation": "Internal hard drives are commonly SATA drives that have a data cable that extends from the drive to a motherboard SATA connector.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 13,
+      "question": "Refer to the exhibit. A technician has been asked to install a video card. Which section of the motherboard will the technician use to install the card?",
+      "options": [
+        "section A",
+        "section B", 
+        "section C",
+        "section D"
+      ],
+      "correct_answer": "section C",
+      "explanation": "Graphics cards, also known as video cards, are installed into a PCIe x16 expansion slot. The expansion slots on a motherboard are located near the motherboard ports.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 14,
+      "question": "When a PC is being assembled, what component is connected to the motherboard with a SATA cable?",
+      "options": [
+        "the optical drive",
+        "the network interface card",
+        "the video card",
+        "the power supply"
+      ],
+      "correct_answer": "the optical drive",
+      "explanation": "SATA cables, or serial ATA cables, are used to carry data from drives to the motherboard.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 15,
+      "question": "A technician is troubleshooting a computer that is experiencing hardware failure detected by the BIOS. What is one way this failure is indicated?",
+      "options": [
+        "The computer automatically boots into Safe Mode and displays a warning on the screen.",
+        "The screen flashes with a red background and displays a warning message.",
+        "The computer emits a pattern of beeps indicating the failing device.",
+        "The computer returns an error message that indicates the I/O address of the failing device."
+      ],
+      "correct_answer": "The computer emits a pattern of beeps indicating the failing device.",
+      "explanation": "Beep codes are a result of POST and these vary between computer vendors based on what BIOS is installed.",
+      "topic": "Troubleshooting"
+    },
+    {
+      "number": 16,
+      "question": "Which three features can be configured in the BIOS settings to secure a computer? (Choose three.)",
+      "options": [
+        "MAC filtering",
+        "drive encryption",
+        "TPM",
+        "file encryption", 
+        "TKIP key",
+        "passwords"
+      ],
+      "correct_answer": ["drive encryption", "TPM", "passwords"],
+      "explanation": "Passwords, drive encryption, and TPM are BIOS configurable security features. File encryption, TKIP key, and MAC filtering are security features not configured within BIOS.",
+      "topic": "Security"
+    },
+    {
+      "number": 17,
+      "question": "What is the purpose of RAID adapters?",
+      "options": [
+        "to allow older PCI technology expansion slots to be used",
+        "to provide enhanced audio and graphic capabilities",
+        "to connect multiple storage devices for redundancy or speed",
+        "to connect peripheral devices to a PC to improve performance"
+      ],
+      "correct_answer": "to connect multiple storage devices for redundancy or speed",
+      "explanation": "RAID 0 allows \"striping\" or writing data across two hard drives, but provides no redundancy. The other RAID versions provide redundancy.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 18,
+      "question": "When a new motherboard is being installed, between which two components must thermal compound be applied? (Choose two.)",
+      "options": [
+        "CPU",
+        "RAM",
+        "chassis", 
+        "heat sink",
+        "chipset",
+        "motherboard"
+      ],
+      "correct_answer": ["CPU", "heat sink"],
+      "explanation": "You must apply thermal compound between the new CPU and the heat sink/fan assembly to avoid overheating the CPU. The thermal paste helps to conduct heat from the CPU to the heat sink.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 19,
+      "question": "What is the purpose of a Safety Data Sheet?",
+      "options": [
+        "to specify procedures for dealing with potentially hazardous materials",
+        "to specify procedures in designing and building common computer systems",
+        "to specify procedures for the operation of sensitive components and prevention of electrostatic discharge",
+        "to specify procedures in the use of humidity control and prevention of moisture damage"
+      ],
+      "correct_answer": "to specify procedures for dealing with potentially hazardous materials",
+      "explanation": "A Safety Data Sheet is a fact sheet that summarizes information about material identification, including hazardous ingredients that can affect personal health, fire hazards, and first-aid requirements. The SDS explains how to dispose of potentially hazardous materials in the safest manner.",
+      "topic": "Safety"
+    },
+    {
+      "number": 20,
+      "question": "Which negative environmental factor does cleaning the inside of a computer reduce?",
+      "options": [
+        "dust",
+        "EMI",
+        "rust",
+        "ESD"
+      ],
+      "correct_answer": "dust",
+      "explanation": "Accumulated dust inside the computer can prevent the flow of air and can hinder cooling.",
+      "topic": "Maintenance"
+    },
+    {
+      "number": 21,
+      "question": "What is a recommended procedure to follow when cleaning computer components?",
+      "options": [
+        "Remove the CPU before cleaning.",
+        "Blow compressed air on cooling fans so that they will spin when dust is being removed.",
+        "Use window cleaner on LCD screens.",
+        "Hold cans of compressed air upright while spraying."
+      ],
+      "correct_answer": "Hold cans of compressed air upright while spraying.",
+      "explanation": "When using compressed air, keep the can upright to prevent the fluid from leaking onto computer components.",
+      "topic": "Maintenance"
+    },
+    {
+      "number": 22,
+      "question": "On the production floor, a furniture plant has laptops for process monitoring and reporting. The production floor environment is around 80 degrees Fahrenheit (27 degrees Celsius). The humidity level is fairly high around 70 percent. Fans are mounted in the ceiling for air circulation. Wood dust is prevalent. Which condition is most likely to adversely affect a laptop that is used in this environment?",
+      "options": [
+        "the temperature",
+        "the humidity",
+        "the air flow",
+        "the dust"
+      ],
+      "correct_answer": "the dust",
+      "explanation": "Most laptops are created to be tolerant of a wide range of humidity levels and room temperatures. Dust, however, can cause overheating and failures.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 23,
+      "question": "After a technician tests a theory of probable causes, what two actions should the technician take if the testing did not identify an exact cause? (Choose two.)",
+      "options": [
+        "Establish a new theory of probable causes.",
+        "Randomly replace components one at a time until the problem is solved.",
+        "Document each test tried that did not correct the problem.",
+        "Verify full system functionality.",
+        "Test all remaining possible causes starting with the most complex."
+      ],
+      "correct_answer": ["Establish a new theory of probable causes.", "Document each test tried that did not correct the problem."],
+      "explanation": "If the exact cause of the problem has not been determined after you have tested all your theories, establish a new theory of probable causes and test it.",
+      "topic": "Troubleshooting"
+    },
+    {
+      "number": 24,
+      "question": "What would happen if a PC that contains a power supply that does not automatically adjust for input voltage is set to 230 volts and attaches to an outlet in the United States?",
+      "options": [
+        "The power supply would explode.",
+        "The PC would not turn on.",
+        "The PC would display an error code.",
+        "The PC would emit a series of beeps."
+      ],
+      "correct_answer": "The PC would not turn on.",
+      "explanation": "In the United States, the wall outlet electrical power is standardized at 120 volts AC.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 25,
+      "question": "Which type of network spans a single building or campus and provides services and applications to people within a common organizational structure?",
+      "options": [
+        "PAN",
+        "WAN",
+        "LAN",
+        "MAN"
+      ],
+      "correct_answer": "LAN",
+      "explanation": "A LAN is smaller or more contained than a WAN, which can span several cities. A MAN is usually contained in one city. A PAN is a very small network of devices that are located in close proximity to one another, usually within range of a single person.",
+      "topic": "Networking"
+    },
+    {
+      "number": 26,
+      "question": "What are two types of wired high-speed Internet connections? (Choose two.)",
+      "options": [
+        "cable",
+        "satellite",
+        "cellular",
+        "DSL",
+        "dial-up"
+      ],
+      "correct_answer": ["cable", "DSL"],
+      "explanation": "Cable and DSL Internet technologies both use physical cabling to provide an Internet connection to a residence or a small business. Although dial-up is a wired technology, it does not provide a high-speed Internet connection. Satellite and cellular connections provide a wireless Internet connection.",
+      "topic": "Networking"
+    },
+    {
+      "number": 27,
+      "question": "In what two situations would UDP be better than TCP as the preferred transport protocol? (Choose two.)",
+      "options": [
+        "when applications need to guarantee that a packet arrives intact, in sequence, and unduplicated",
+        "when a faster delivery mechanism is needed",
+        "when delivery overhead is not an issue",
+        "when applications do not need to guarantee delivery of the data",
+        "when destination port numbers are dynamic"
+      ],
+      "correct_answer": ["when a faster delivery mechanism is needed", "when applications do not need to guarantee delivery of the data"],
+      "explanation": "UDP is a very simple transport layer protocol that does not guarantee delivery. Devices on both ends of the conversation are not required to keep track of the conversation. UDP is used as the transport protocol for applications that need a speedy, best-effort delivery.",
+      "topic": "Networking"
+    },
+    {
+      "number": 28,
+      "question": "The current IP configuration of a small company is done manually and is time-consuming. Because of increased network growth, a technician needs a simpler way for IP configuration of workstations. Which service would simplify the workstation IP configuration task?",
+      "options": [
+        "APIPA",
+        "DHCP",
+        "DNS", 
+        "ICMP"
+      ],
+      "correct_answer": "DHCP",
+      "explanation": "In networks with more than a few hosts, DHCP simplifies the addressing process. A DHCP server automatically assigns host IP addresses.",
+      "topic": "Networking"
+    },
+    {
+      "number": 29,
+      "question": "A company is looking for a next-generation firewall that provides VPN functionality, IDS/IPS functionality, and DoS/DDoS protection. Which device would be best suited for this task?",
+      "options": [
+        "multipurpose device",
+        "router",
+        "endpoint management server",
+        "UTM",
+        "TPM"
+      ],
+      "correct_answer": "UTM",
+      "explanation": "A universal threat management (UTM) device is a security device that can provide firewall, IDS/IPS, and proxy server functionality as well as email filtering and DoS/DDoS protection.",
+      "topic": "Security"
+    },
+    {
+      "number": 30,
+      "question": "A student is helping a friend with a home computer that can no longer access the Internet. Upon investigation, the student discovers that the computer has been assigned the IP address 169.254.100.88. What could cause a computer to get such an IP address?",
+      "options": [
+        "static IP addressing with incomplete information",
+        "interference from surrounding devices",
+        "reduced computer power supply output",
+        "unreachable DHCP server"
+      ],
+      "correct_answer": "unreachable DHCP server",
+      "explanation": "When a PC does not have a static IP address or cannot pick one up from a DHCP server, Windows will automatically assign the PC an IP address using APIPA, that uses the range of addresses 169.254.0.0 to 169.254.255.255.",
+      "topic": "Networking"
+    },
+    {
+      "number": 31,
+      "question": "What three values must be added to the IPv4 properties of a NIC in order for a computer to have basic connectivity with the network? (Choose three.)",
+      "options": [
+        "subnet mask",
+        "DHCP server address",
+        "domain name",
+        "default gateway",
+        "speed and duplex",
+        "IP address"
+      ],
+      "correct_answer": ["subnet mask", "default gateway", "IP address"],
+      "explanation": "The IP address, subnet mask, and default gateway address values should be added to the NIC properties in order for the computer to have basic network connectivity.",
+      "topic": "Networking"
+    },
+    {
+      "number": 32,
+      "question": "A device has an IPv6 address of 2001:0DB8:75a3:0214:0607:1234:aa10:ba01 /64. What is the host identifier of the device?",
+      "options": [
+        "2001:0DB8:75a3",
+        "0607:1234:aa10:ba01",
+        "2001:0DB8",
+        "ba01"
+      ],
+      "correct_answer": "0607:1234:aa10:ba01",
+      "explanation": "An IPv6 address is made up of 128 bits that are represented as eight blocks of four hexadecimal digits that are called hextets. The /64 network prefix indicates that the first 64 bits represent the network portion. The last 64 bits represent the host identifier: 0607:1234:aa10:ba01.",
+      "topic": "Networking"
+    },
+    {
+      "number": 33,
+      "question": "How can a user prevent specific applications from accessing a Windows computer over a network?",
+      "options": [
+        "Enable MAC address filtering.",
+        "Disable automatic IP address assignment.",
+        "Block specific TCP or UDP ports in Windows Firewall.",
+        "Change default usernames and passwords."
+      ],
+      "correct_answer": "Block specific TCP or UDP ports in Windows Firewall.",
+      "explanation": "Network applications have specific TCP or UDP ports that can be left open or blocked in Windows Firewall.",
+      "topic": "Security"
+    },
+    {
+      "number": 34,
+      "question": "A technician has been asked to configure Wi-Fi calling on a corporate mobile device. In which situation would this feature be most advantageous?",
+      "options": [
+        "in an emergency situation and no minutes are left on the phone",
+        "when sending WEA updates",
+        "when in an area with poor cellular coverage",
+        "in a store transaction making a payment using the mobile device"
+      ],
+      "correct_answer": "when in an area with poor cellular coverage",
+      "explanation": "Wi-Fi calling uses a Wi-Fi network to make voice calls. It is very useful in areas with poor cellular coverage.",
+      "topic": "Mobile Devices"
+    },
+    {
+      "number": 35,
+      "question": "Which statement is true about laptops?",
+      "options": [
+        "Most of the internal components that are designed for laptops cannot be used for desktops.",
+        "Laptop motherboards have standard form factors.",
+        "Laptops use fewer components than desktops use.",
+        "Laptop CPUs do not use cooling devices."
+      ],
+      "correct_answer": "Most of the internal components that are designed for laptops cannot be used for desktops.",
+      "explanation": "Laptop internal components are designed with a small form factor and are proprietary. Although a laptop CPU uses less power, it needs a cooling device (heat sink and fan).",
+      "topic": "Hardware"
+    },
+    {
+      "number": 36,
+      "question": "Which standard provides a bridge between laptop hardware and the operating system and a way for technicians to configure power management schemes to get the best performance?",
+      "options": [
+        "ACPI",
+        "PCIe",
+        "Bluetooth",
+        "802.11"
+      ],
+      "correct_answer": "ACPI",
+      "explanation": "The Advanced Configuration and Power Interface (ACPI) standard has specific sleep states that can be assigned to a device in order to conserve power.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 37,
+      "question": "Which two laptop components are considered replaceable by the customer. (Choose two.)",
+      "options": [
+        "battery",
+        "integrated card reader",
+        "mini-PCIe module",
+        "RAM",
+        "display"
+      ],
+      "correct_answer": ["battery", "RAM"],
+      "explanation": "Customer-replaceable units (CRUs) do not typically require a lot of technical skill to replace. RAM and a battery are two examples of a CRU.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 38,
+      "question": "A user wants to synchronize some apps, movies, music, and ebooks between mobile devices. What are the two types of connections used to synchronize this type of data? (Choose two.)",
+      "options": [
+        "cellular",
+        "Wi-Fi",
+        "USB",
+        "Bluetooth",
+        "NFC"
+      ],
+      "correct_answer": ["Wi-Fi", "USB"],
+      "explanation": "Because of the amount of data transferred during video synchronization, synchronization occurs through either a Wi-Fi connection or a wired USB connection.",
+      "topic": "Mobile Devices"
+    },
+    {
+      "number": 39,
+      "question": "A technician is explaining the differences between inkjet printers and laser printers to a customer. Which two comparisons should the technician make? (Choose two.)",
+      "options": [
+        "Inkjet printers are less expensive as an initial purchase than laser printers.",
+        "A laser printer is significantly slower than an inkjet printer.",
+        "Both laser and inkjet printers produce poor quality images.",
+        "The laser printer output is dry after printing, but an inkjet printer may still have wet ink on the paper after printing.",
+        "Inkjet printers use plain paper to make economical prints, but laser printers require more expensive thermal paper."
+      ],
+      "correct_answer": ["Inkjet printers are less expensive as an initial purchase than laser printers.", "The laser printer output is dry after printing, but an inkjet printer may still have wet ink on the paper after printing."],
+      "explanation": "Inkjet printers are usually less expensive than laser printers initially. Laser printer output is dry after printing, while inkjet output may still have wet ink for a few seconds.",
+      "topic": "Printers"
+    },
+    {
+      "number": 40,
+      "question": "A user chooses the collate option and prints two copies of a three-page document. What is the order in which the pages are printed?",
+      "options": [
+        "pages 1, 1, 2, 2, 3, 3",
+        "pages 1, 2, 3, 1, 2, 3",
+        "pages 3, 3, 2, 2, 1, 1",
+        "pages 3, 2, 1, 3, 2, 1"
+      ],
+      "correct_answer": "pages 1, 2, 3, 1, 2, 3",
+      "explanation": "The collate feature enables a printer to sort multiple copies of a document with the proper page order for each copy.",
+      "topic": "Printers"
+    },
+    {
+      "number": 41,
+      "question": "A color laser printer is used to print documents with graphics and photographs. Users are complaining that printing takes too long. Which component of the printer should be upgraded in order to improve printing performance?",
+      "options": [
+        "CPU",
+        "RAM",
+        "hard drive",
+        "toner cartridges"
+      ],
+      "correct_answer": "RAM",
+      "explanation": "Because documents with graphics and photographs generate much larger print jobs, the printing process will run more efficiently if the printer memory is adequate to store the entire job before the job starts.",
+      "topic": "Printers"
+    },
+    {
+      "number": 42,
+      "question": "What service is available for Windows to provide software print server services to MAC OS clients?",
+      "options": [
+        "Bonjour Print Server",
+        "Print to XPS",
+        "Apple AirPort Extreme",
+        "Apple AirPrint"
+      ],
+      "correct_answer": "Bonjour Print Server",
+      "explanation": "Bonjour Printer Server from Apple comes with MAC OS X and is a free download for Windows users to be used as a software print server.",
+      "topic": "Printers"
+    },
+    {
+      "number": 43,
+      "question": "Which three components are typically found in laser printer maintenance kits? (Choose three.)",
+      "options": [
+        "fuser assembly",
+        "primary corona",
+        "pickup rollers",
+        "transfer rollers",
+        "secondary corona",
+        "paper trays"
+      ],
+      "correct_answer": ["fuser assembly", "pickup rollers", "transfer rollers"],
+      "explanation": "Laser printer maintenance kits typically contain components that wear and can be installed with minimal disassembly of the printer.",
+      "topic": "Printers"
+    },
+    {
+      "number": 44,
+      "question": "A technician is installing a new printer in a cool, damp environment. After the printer cabling is done, and the software and print driver are installed, the printer test page jams. What is the most likely cause of the print failure?",
+      "options": [
+        "incorrect printer driver",
+        "too much humidity",
+        "not enough printer memory",
+        "loose printer cables"
+      ],
+      "correct_answer": "too much humidity",
+      "explanation": "Paper jams are commonly caused when the paper being used is dirty, affected by humidity, or is the wrong type of paper for the printer.",
+      "topic": "Printers"
+    },
+    {
+      "number": 45,
+      "question": "A data center has recently updated a physical server to host multiple operating systems on a single CPU. The data center can now provide each customer with a separate web server without having to allocate an actual discrete server for each customer. What is the networking trend that is being implemented by the data center in this situation?",
+      "options": [
+        "BYOD",
+        "virtualization",
+        "maintaining communication integrity",
+        "online collaboration"
+      ],
+      "correct_answer": "virtualization",
+      "explanation": "Virtualization technology can run several different operating systems in parallel on a single CPU.",
+      "topic": "Virtualization"
+    },
+    {
+      "number": 46,
+      "question": "How does virtualization help with disaster recovery within a data center?",
+      "options": [
+        "Power is always provided.",
+        "Less energy is consumed.",
+        "Server provisioning is faster.",
+        "Hardware does not have to be identical."
+      ],
+      "correct_answer": "Hardware does not have to be identical.",
+      "explanation": "Virtualization provides hardware independence which means the disaster recovery site does not have to have the exact equipment as the equipment in production.",
+      "topic": "Virtualization"
+    },
+    {
+      "number": 47,
+      "question": "Which two hypervisors are suitable to support virtual machines in a data center? (Choose two.)",
+      "options": [
+        "Virtual PC",
+        "VMware Fusion",
+        "VMware ESX/ESXi",
+        "Oracle VM VirtualBox",
+        "Microsoft Hyper-V 2012"
+      ],
+      "correct_answer": ["VMware ESX/ESXi", "Microsoft Hyper-V 2012"],
+      "explanation": "VMware ESX/ESXi and Microsoft Hyper-V 2012 are Type 1 hypervisors that have direct access to the hardware resources and are used to support enterprise VMs in data centers.",
+      "topic": "Virtualization"
+    },
+    {
+      "number": 48,
+      "question": "Which Cloud computing service would be best for an organization that needs to collaboratively create applications and deliver them over the web?",
+      "options": [
+        "PaaS",
+        "IaaS",
+        "SaaS",
+        "ITaaS"
+      ],
+      "correct_answer": "PaaS",
+      "explanation": "Platform as a service (PaaS) provides a collaborative environment where multiple developers can create software and host an application through a Cloud provider.",
+      "topic": "Cloud Computing"
+    },
+    {
+      "number": 49,
+      "question": "Which statement describes a feature of SDRAM?",
+      "options": [
+        "It requires constant power to function.",
+        "Its connector always has 240 pins.",
+        "It can process overlapping instructions in parallel.",
+        "It is able to support two writes and two reads per CPU clock cycle."
+      ],
+      "correct_answer": "It can process overlapping instructions in parallel.",
+      "explanation": "SDRAM (Synchronous Dynamic RAM) works in synchronization with the memory bus and has higher transfer rates because it can process overlapping instructions in parallel.",
+      "topic": "Hardware"
+    },
+    {
+      "number": 50,
+      "question": "A technician is troubleshooting a server that displays the error message \"RAID not found\" after a power outage over the weekend. What is a possible cause for this?",
+      "options": [
+        "The BIOS firmware needs updating.",
+        "The FSB settings have changed and are wrong.",
+        "The external RAID controller is not receiving power.",
+        "The CPU multiplier is set too high."
+      ],
+      "correct_answer": "The external RAID controller is not receiving power.",
+      "explanation": "The loss of the RAID controller can be caused by the external RAID controller not receiving power, incorrect BIOS settings, failure of the RAID controller or incorrect drivers for the RAID controller.",
+      "topic": "Hardware"
+    }
+  ]
+}
