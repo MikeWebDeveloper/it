@@ -28,39 +28,41 @@ export function QuizNavigation({
 
   return (
     <div className={cn(
-      "flex items-center justify-between gap-4 w-full max-w-2xl mx-auto",
-      "px-4 py-6",
+      "flex items-center justify-between gap-2 md:gap-4 w-full max-w-2xl mx-auto",
+      "px-2 py-3 md:px-4 md:py-6",
       className
     )}>
       {/* Previous button */}
       <Button
         variant="outline"
-        size="lg"
+        size="sm"
         onClick={onPrevious}
         disabled={isFirstQuestion}
         className={cn(
-          "flex items-center gap-2 min-h-[48px]",
-          "disabled:opacity-50 disabled:cursor-not-allowed"
+          "flex items-center gap-1 md:gap-2 min-h-[40px] md:min-h-[48px] px-2 md:px-4",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
+          "text-xs md:text-sm"
         )}
       >
-        <ChevronLeft className="w-4 h-4" />
-        Previous
+        <ChevronLeft className="w-3 h-3 md:w-4 md:h-4" />
+        <span className="hidden sm:inline">Previous</span>
+        <span className="sm:hidden">Prev</span>
       </Button>
 
       {/* Question indicator dots */}
-      <div className="flex items-center gap-1 flex-1 justify-center max-w-xs overflow-x-auto">
-        {Array.from({ length: Math.min(totalQuestions, 10) }, (_, i) => {
+      <div className="flex items-center gap-0.5 md:gap-1 flex-1 justify-center max-w-xs overflow-x-auto px-1">
+        {Array.from({ length: Math.min(totalQuestions, 8) }, (_, i) => {
           // For large question sets, show first few, current area, and last few
           let questionIndex = i
-          if (totalQuestions > 10) {
-            if (i < 3) {
+          if (totalQuestions > 8) {
+            if (i < 2) {
               questionIndex = i
-            } else if (i >= 7) {
-              questionIndex = totalQuestions - (10 - i)
+            } else if (i >= 6) {
+              questionIndex = totalQuestions - (8 - i)
             } else {
               // Show questions around current
-              const start = Math.max(3, currentIndex - 1)
-              questionIndex = start + (i - 3)
+              const start = Math.max(2, currentIndex - 1)
+              questionIndex = start + (i - 2)
             }
           }
 
@@ -68,7 +70,7 @@ export function QuizNavigation({
             <div
               key={questionIndex}
               className={cn(
-                "w-2 h-2 rounded-full transition-colors duration-200",
+                "w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-colors duration-200",
                 {
                   'bg-primary': questionIndex === currentIndex,
                   'bg-muted-foreground/40': questionIndex !== currentIndex,
@@ -77,47 +79,49 @@ export function QuizNavigation({
             />
           )
         })}
-        {totalQuestions > 10 && (
-          <span className="text-xs text-muted-foreground ml-1">
-            {currentIndex + 1}/{totalQuestions}
-          </span>
-        )}
+        <span className="text-[10px] md:text-xs text-muted-foreground ml-1">
+          {currentIndex + 1}/{totalQuestions}
+        </span>
       </div>
 
       {/* Next/Complete button */}
       {isLastQuestion ? (
         <Button
-          size="lg"
+          size="sm"
           onClick={onComplete}
           disabled={!hasAnswer}
           className={cn(
-            "flex items-center gap-2 min-h-[48px]",
+            "flex items-center gap-1 md:gap-2 min-h-[40px] md:min-h-[48px] px-2 md:px-4",
             "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600",
-            "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-muted"
+            "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-muted",
+            "text-xs md:text-sm"
           )}
         >
-          <Check className="w-4 h-4" />
+          <Check className="w-3 h-3 md:w-4 md:h-4" />
           Complete
         </Button>
       ) : (
         <Button
           variant={hasAnswer ? "default" : "outline"}
-          size="lg"
+          size="sm"
           onClick={onNext}
           className={cn(
-            "flex items-center gap-2 min-h-[48px]",
+            "flex items-center gap-1 md:gap-2 min-h-[40px] md:min-h-[48px] px-2 md:px-4",
+            "text-xs md:text-sm",
             !hasAnswer && "text-muted-foreground"
           )}
         >
           {hasAnswer ? (
             <>
-              Next
-              <ChevronRight className="w-4 h-4" />
+              <span className="hidden sm:inline">Next</span>
+              <span className="sm:hidden">Next</span>
+              <ChevronRight className="w-3 h-3 md:w-4 md:h-4" />
             </>
           ) : (
             <>
-              Skip
-              <SkipForward className="w-4 h-4" />
+              <span className="hidden sm:inline">Skip</span>
+              <span className="sm:hidden">Skip</span>
+              <SkipForward className="w-3 h-3 md:w-4 md:h-4" />
             </>
           )}
         </Button>

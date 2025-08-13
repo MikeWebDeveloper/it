@@ -45,7 +45,7 @@ export function AnswerChoice({
       disabled={disabled}
       className={cn(
         // Base styles
-        "w-full p-4 text-left rounded-lg border-2 transition-all duration-200",
+        "w-full p-3 md:p-4 text-left rounded-lg border-2 transition-all duration-200",
         "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
         "active:scale-[0.98] disabled:active:scale-100",
         

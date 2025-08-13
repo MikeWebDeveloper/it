@@ -58,6 +58,7 @@ interface QuestionCardProps {
   selectedAnswer?: string | string[]
   onAnswerSelect: (answer: string | string[]) => void
   showResult?: boolean
+  hasAllRequiredAnswers?: boolean
   className?: string
 }
 
@@ -68,6 +69,7 @@ export function QuestionCard({
   selectedAnswer,
   onAnswerSelect,
   showResult = false,
+  hasAllRequiredAnswers = true,
   className
 }: QuestionCardProps) {
   const progress = ((currentIndex + 1) / totalQuestions) * 100
@@ -102,12 +104,13 @@ export function QuestionCard({
         "w-full max-w-2xl mx-auto",
         "border-0 shadow-lg bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-background/95",
         "hover:shadow-xl transition-shadow duration-300",
+        "h-full flex flex-col", // Make card flexible for mobile
         className
       )}>
-      <CardHeader className="space-y-4 pb-4">
+      <CardHeader className="space-y-3 md:space-y-4 pb-3 md:pb-4 px-3 md:px-6 pt-3 md:pt-6">
         {/* Progress and question number */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center justify-between text-xs md:text-sm text-muted-foreground">
             <span>Question {currentIndex + 1} of {totalQuestions}</span>
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
@@ -142,21 +145,47 @@ export function QuestionCard({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.4 }}
         >
-          <CardTitle className="text-lg leading-relaxed font-medium">
+          <CardTitle className="text-base md:text-lg leading-relaxed font-medium">
             {question.question}
           </CardTitle>
         </motion.div>
         
         {isMultipleChoice && (
-          <p className="text-sm text-muted-foreground">
-            Select all that apply
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Select all that apply ({Array.isArray(question.correct_answer) ? question.correct_answer.length : '?'} correct answers)
+            </p>
+            <div className="flex items-center justify-between">
+              {Array.isArray(selectedAnswer) && selectedAnswer.length > 0 ? (
+                <div className="flex items-center gap-2">
+                  <p className="text-xs font-medium text-primary">
+                    Selected: {selectedAnswer.length} of {Array.isArray(question.correct_answer) ? question.correct_answer.length : '?'}
+                  </p>
+                  {hasAllRequiredAnswers ? (
+                    <div className="flex items-center gap-1 text-green-600">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-xs font-medium">Ready to continue</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1 text-amber-600">
+                      <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                      <span className="text-xs">Select {(Array.isArray(question.correct_answer) ? question.correct_answer.length : 0) - selectedAnswer.length} more</span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Select all {Array.isArray(question.correct_answer) ? question.correct_answer.length : '?'} options to continue
+                </p>
+              )}
+            </div>
+          </div>
         )}
       </CardHeader>
       
-      <CardContent className="space-y-3 pt-0">
+      <CardContent className="space-y-2 md:space-y-3 pt-0 px-3 md:px-6 pb-3 md:pb-6">
         {/* Answer options */}
-        <div className="space-y-3">
+        <div className="space-y-2 md:space-y-3">
           {question.options.map((option, index) => (
             <AnswerChoice
               key={index}

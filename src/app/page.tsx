@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { CategorySelector } from '@/components/quiz/CategorySelector'
 import { QuizConfig, QuizConfiguration } from '@/components/quiz/QuizConfig'
 import { PageTransition } from '@/components/animations/PageTransition'
+import { motion } from 'framer-motion'
 import { 
   Trophy, 
   Target, 
@@ -209,134 +210,273 @@ export default function Home() {
 
         {/* Progress Overview */}
         {userProgress.totalSessionsCompleted > 0 && (
-          <Card className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <Card className="mb-8 bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/20 dark:to-orange-950/20 border-yellow-200 dark:border-yellow-800">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200">
+                  <motion.div
+                    animate={{ rotate: [0, -10, 10, -10, 0] }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                  >
+                    <Trophy className="w-5 h-5 text-yellow-500" />
+                  </motion.div>
+                  Your Progress
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <motion.div 
+                    className="text-center"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4, duration: 0.3 }}
+                  >
+                    <motion.div 
+                      className="text-2xl font-bold text-primary"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.6, duration: 0.5 }}
+                    >
+                      {userProgress.totalSessionsCompleted}
+                    </motion.div>
+                    <div className="text-xs text-muted-foreground">Quizzes Completed</div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-center"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5, duration: 0.3 }}
+                  >
+                    <motion.div 
+                      className="text-2xl font-bold text-green-600"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.7, duration: 0.5 }}
+                    >
+                      {userProgress.streak}
+                    </motion.div>
+                    <div className="text-xs text-muted-foreground">Day Streak</div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-center"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6, duration: 0.3 }}
+                  >
+                    <motion.div 
+                      className="text-2xl font-bold text-blue-600"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                    >
+                      {totalTopics}
+                    </motion.div>
+                    <div className="text-xs text-muted-foreground">Topics Studied</div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-center"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.7, duration: 0.3 }}
+                  >
+                    <motion.div 
+                      className="text-2xl font-bold text-purple-600"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.9, duration: 0.5 }}
+                    >
+                      {masteredTopics}
+                    </motion.div>
+                    <div className="text-xs text-muted-foreground">Topics Mastered</div>
+                  </motion.div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Learn & Practice Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          <Card className="mb-8 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/20 dark:via-indigo-950/20 dark:to-purple-950/20 border-blue-200 dark:border-blue-800">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
-                Your Progress
+              <CardTitle className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <BookOpen className="w-5 h-5" />
+                </motion.div>
+                Learn & Practice
               </CardTitle>
+              <p className="text-sm text-blue-600 dark:text-blue-300">
+                Study and learn with immediate feedback and no pressure
+              </p>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">
-                    {userProgress.totalSessionsCompleted}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Quizzes Completed</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">
-                    {userProgress.streak}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Day Streak</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">
-                    {totalTopics}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Topics Studied</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">
-                    {masteredTopics}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Topics Mastered</div>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, duration: 0.4 }}
+                >
+                  <Button
+                    onClick={() => router.push('/practice-config')}
+                    className="h-auto p-4 flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
+                    variant="outline"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <BookOpen className="w-8 h-8 text-blue-600" />
+                    </motion.div>
+                    <div className="text-center">
+                      <div className="font-semibold text-blue-800 dark:text-blue-200">Practice Mode</div>
+                      <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                        Learn with instant feedback • Choose your topics
+                      </div>
+                    </div>
+                  </Button>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.4 }}
+                >
+                  <Button
+                    onClick={() => router.push('/flashcards')}
+                    className="h-auto p-4 flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
+                    variant="outline"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotateY: 180 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <RotateCcw className="w-8 h-8 text-indigo-600" />
+                    </motion.div>
+                    <div className="text-center">
+                      <div className="font-semibold text-blue-800 dark:text-blue-200">Flashcards</div>
+                      <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                        Interactive study cards • Swipe to flip
+                      </div>
+                    </div>
+                  </Button>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.4 }}
+                >
+                  <Button
+                    onClick={() => handleQuickStart('review')}
+                    className="h-auto p-4 flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
+                    variant="outline"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotate: -10 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <Trophy className="w-8 h-8 text-purple-600" />
+                    </motion.div>
+                    <div className="text-center">
+                      <div className="font-semibold text-blue-800 dark:text-blue-200">Review Mode</div>
+                      <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                        Focus on your weak areas • Improve accuracy
+                      </div>
+                    </div>
+                  </Button>
+                </motion.div>
               </div>
             </CardContent>
           </Card>
-        )}
+        </motion.div>
 
-        {/* Quick Start Options */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5" />
-              Quick Start
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Jump right into a quiz with default settings
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Button
-                onClick={() => router.push('/practice-config')}
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                variant="outline"
-              >
-                <BookOpen className="w-6 h-6" />
-                <div className="text-center">
-                  <div className="font-semibold">Practice Mode</div>
-                  <div className="text-xs text-muted-foreground">Customizable practice • No time limit</div>
-                </div>
-              </Button>
-              
-              <Button
-                onClick={() => handleQuickStart('timed')}
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                variant="outline"
-              >
-                <Target className="w-6 h-6" />
-                <div className="text-center">
-                  <div className="font-semibold">Timed Quiz</div>
-                  <div className="text-xs text-muted-foreground">10 questions • 15 minutes</div>
-                </div>
-              </Button>
-              
-              <Button
-                onClick={() => handleQuickStart('review')}
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                variant="outline"
-              >
-                <Trophy className="w-6 h-6" />
-                <div className="text-center">
-                  <div className="font-semibold">Review Mode</div>
-                  <div className="text-xs text-muted-foreground">Focus on weak areas</div>
-                </div>
-              </Button>
-
-              <Button
-                onClick={() => router.push('/flashcards')}
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                variant="outline"
-              >
-                <RotateCcw className="w-6 h-6" />
-                <div className="text-center">
-                  <div className="font-semibold">Flashcards</div>
-                  <div className="text-xs text-muted-foreground">Interactive study cards</div>
-                </div>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Custom Quiz */}
-        <Card className="bg-gradient-to-r from-primary/10 via-blue-500/10 to-purple-500/10 border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5" />
-              Custom Quiz
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Choose specific topics, question count, difficulty, and timing
-            </p>
-          </CardHeader>
-          <CardContent>
-            <Button 
-              size="lg" 
-              onClick={handleCustomQuiz}
-              className="w-full"
-            >
-              Create Custom Quiz
-            </Button>
-            <div className="mt-3 text-center">
-              <p className="text-xs text-muted-foreground">
-                Select from 11+ topics • Configure difficulty • Set custom timing
+        {/* Test Your Knowledge Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <Card className="mb-8 bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 dark:from-green-950/20 dark:via-emerald-950/20 dark:to-teal-950/20 border-green-200 dark:border-green-800">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 15 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Target className="w-5 h-5" />
+                </motion.div>
+                Test Your Knowledge
+              </CardTitle>
+              <p className="text-sm text-green-600 dark:text-green-300">
+                Challenge yourself with timed quizzes and exams
               </p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7, duration: 0.4 }}
+                >
+                  <Button
+                    onClick={() => handleQuickStart('timed')}
+                    className="h-auto p-4 flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-green-200 dark:border-green-800 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
+                    variant="outline"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.3, rotate: 360 }}
+                      transition={{ type: "spring", stiffness: 400, duration: 0.8 }}
+                    >
+                      <Target className="w-8 h-8 text-green-600" />
+                    </motion.div>
+                    <div className="text-center">
+                      <div className="font-semibold text-green-800 dark:text-green-200">Quick Quiz</div>
+                      <div className="text-xs text-green-600 dark:text-green-400 mt-1">
+                        10 questions • 15 minutes • Test your speed
+                      </div>
+                    </div>
+                  </Button>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8, duration: 0.4 }}
+                >
+                  <Button 
+                    onClick={handleCustomQuiz}
+                    className="h-auto p-4 flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-green-200 dark:border-green-800 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
+                    variant="outline"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotate: [0, -10, 10, -10, 0] }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <Trophy className="w-8 h-8 text-emerald-600" />
+                    </motion.div>
+                    <div className="text-center">
+                      <div className="font-semibold text-green-800 dark:text-green-200">Custom Exam</div>
+                      <div className="text-xs text-green-600 dark:text-green-400 mt-1">
+                        Choose topics • Set difficulty • Timed challenge
+                      </div>
+                    </div>
+                  </Button>
+                </motion.div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
         </div>
       </div>
     </PageTransition>

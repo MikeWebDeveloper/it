@@ -69,3 +69,71 @@ export interface Achievement {
   unlockedAt: string
   category: 'streak' | 'accuracy' | 'speed' | 'topic' | 'milestone'
 }
+
+export interface LearningSession {
+  id: string
+  mode: 'practice' | 'flashcards' | 'review'
+  questionsStudied: number
+  correctAnswers: number
+  timeSpent: number
+  topicsStudied: string[]
+  date: string
+  completedAt: string
+}
+
+export interface ExamSession {
+  id: string
+  mode: 'timed' | 'custom'
+  totalQuestions: number
+  correctAnswers: number
+  accuracy: number
+  timeSpent: number
+  timeLimit?: number
+  topicBreakdown: Record<string, { total: number; correct: number; accuracy: number }>
+  date: string
+  completedAt: string
+  score: number
+}
+
+export interface LearningStatistics {
+  totalLearningTime: number // in minutes
+  totalQuestionsStudied: number
+  totalCorrectInLearning: number
+  flashcardsReviewed: number
+  practiceSessionsCompleted: number
+  reviewSessionsCompleted: number
+  dailyLearningStreak: number
+  averageAccuracyInPractice: number
+  topicLearningProgress: Record<string, {
+    timeSpent: number
+    questionsStudied: number
+    correctAnswers: number
+    lastStudied: string
+    masteryLevel: 'beginner' | 'intermediate' | 'advanced'
+  }>
+  weeklyLearningGoal: number // minutes per week
+  weeklyProgress: number // current week progress
+  learningHistory: LearningSession[]
+}
+
+export interface ExamStatistics {
+  totalExamsCompleted: number
+  totalExamQuestions: number
+  totalCorrectInExams: number
+  averageExamAccuracy: number
+  averageExamTime: number
+  bestExamScore: number
+  worstExamScore: number
+  examStreak: number // consecutive passing exams (>= 70%)
+  timedQuizzesCompleted: number
+  customExamsCompleted: number
+  topicExamPerformance: Record<string, {
+    examsTaken: number
+    averageAccuracy: number
+    bestScore: number
+    lastExamDate: string
+  }>
+  monthlyExamGoal: number // exams per month
+  monthlyProgress: number // current month progress
+  examHistory: ExamSession[]
+}
