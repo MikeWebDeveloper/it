@@ -104,16 +104,15 @@ export function QuizEngine({ mode }: QuizEngineProps) {
   const currentQuestion = currentSession?.questions[currentSession?.currentQuestionIndex]
   const selectedAnswer = currentQuestion ? currentSession?.answers[currentQuestion.id] : undefined
   
-  // Check if question has a valid answer
+  // Check if question has a valid answer (for UI - can user proceed?)
   const hasAnswer = useMemo(() => {
     if (!currentSession || !currentQuestion || selectedAnswer === undefined || selectedAnswer === null) return false
     
-    // For multiple choice questions (array correct_answer), require ALL correct answers
+    // For multiple choice questions, check if user selected required NUMBER of answers
     if (Array.isArray(currentQuestion.correct_answer)) {
       if (!Array.isArray(selectedAnswer)) return false
-      // Check if user selected all required answers
-      return selectedAnswer.length === currentQuestion.correct_answer.length &&
-             currentQuestion.correct_answer.every(answer => selectedAnswer.includes(answer))
+      // Allow proceeding when correct number of answers selected (not necessarily correct ones)
+      return selectedAnswer.length === currentQuestion.correct_answer.length
     }
     
     // For single answer questions, just check if we have an answer

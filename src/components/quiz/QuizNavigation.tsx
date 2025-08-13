@@ -68,7 +68,7 @@ export function QuizNavigation({
 
           return (
             <div
-              key={questionIndex}
+              key={`dot-${i}-${questionIndex}`}
               className={cn(
                 "w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-colors duration-200",
                 {
