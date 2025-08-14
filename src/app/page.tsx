@@ -9,18 +9,17 @@ import { Badge } from '@/components/ui/badge'
 import { CategorySelector } from '@/components/quiz/CategorySelector'
 import { QuizConfig, QuizConfiguration } from '@/components/quiz/QuizConfig'
 import { PageTransition } from '@/components/animations/PageTransition'
+import { AnimatedThemeToggle } from '@/components/ui/AnimatedThemeToggle'
+import { StudySessionTimer } from '@/components/ui/StudySessionTimer'
 import { motion } from 'framer-motion'
 import { 
   Trophy, 
   Target, 
   BookOpen,
-  Sun,
-  Moon,
   BarChart3,
   RotateCcw
 } from 'lucide-react'
 import questionData from '@/data/questions.json'
-import { useTheme } from 'next-themes'
 import { shuffleArray } from '@/lib/utils'
 
 type ViewMode = 'home' | 'categories' | 'config'
@@ -28,7 +27,6 @@ type ViewMode = 'home' | 'categories' | 'config'
 export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('home')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [mounted, setMounted] = useState(false)
   
   const { 
     userProgress, 
@@ -36,13 +34,11 @@ export default function Home() {
     startQuiz 
   } = useQuizStore()
   
-  const { setTheme, theme } = useTheme()
   const router = useRouter()
 
   // Load questions on mount
   useEffect(() => {
     setQuestions(questionData.questions)
-    setMounted(true)
   }, [setQuestions])
 
   const handleQuickStart = (mode: 'practice' | 'timed' | 'review') => {
@@ -101,19 +97,7 @@ export default function Home() {
               >
                 ← Back to Home
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="rounded-full"
-                suppressHydrationWarning
-              >
-                {mounted ? (
-                  theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />
-                ) : (
-                  <Sun className="w-4 h-4" />
-                )}
-              </Button>
+              <AnimatedThemeToggle variant="compact" size="sm" />
             </div>
             <h1 className="text-3xl font-bold mb-2">Choose Your Topics</h1>
             <p className="text-muted-foreground">
@@ -172,19 +156,7 @@ export default function Home() {
               >
                 <BarChart3 className="w-4 h-4" />
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="rounded-full"
-                suppressHydrationWarning
-              >
-                {mounted ? (
-                  theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />
-                ) : (
-                  <Sun className="w-4 h-4" />
-                )}
-              </Button>
+              <AnimatedThemeToggle variant="compact" size="sm" />
             </div>
           </div>
           
@@ -208,94 +180,126 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Progress Overview */}
+        {/* Progress Overview & Study Timer */}
         {userProgress.totalSessionsCompleted > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <Card className="mb-8 bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/20 dark:to-orange-950/20 border-yellow-200 dark:border-yellow-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200">
-                  <motion.div
-                    animate={{ rotate: [0, -10, 10, -10, 0] }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                    <Trophy className="w-5 h-5 text-yellow-500" />
-                  </motion.div>
-                  Your Progress
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <motion.div 
-                    className="text-center"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4, duration: 0.3 }}
-                  >
-                    <motion.div 
-                      className="text-2xl font-bold text-primary"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.6, duration: 0.5 }}
-                    >
-                      {userProgress.totalSessionsCompleted}
-                    </motion.div>
-                    <div className="text-xs text-muted-foreground">Quizzes Completed</div>
-                  </motion.div>
-                  <motion.div 
-                    className="text-center"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5, duration: 0.3 }}
-                  >
-                    <motion.div 
-                      className="text-2xl font-bold text-green-600"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.7, duration: 0.5 }}
-                    >
-                      {userProgress.streak}
-                    </motion.div>
-                    <div className="text-xs text-muted-foreground">Day Streak</div>
-                  </motion.div>
-                  <motion.div 
-                    className="text-center"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.6, duration: 0.3 }}
-                  >
-                    <motion.div 
-                      className="text-2xl font-bold text-blue-600"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8, duration: 0.5 }}
-                    >
-                      {totalTopics}
-                    </motion.div>
-                    <div className="text-xs text-muted-foreground">Topics Studied</div>
-                  </motion.div>
-                  <motion.div 
-                    className="text-center"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.7, duration: 0.3 }}
-                  >
-                    <motion.div 
-                      className="text-2xl font-bold text-purple-600"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.9, duration: 0.5 }}
-                    >
-                      {masteredTopics}
-                    </motion.div>
-                    <div className="text-xs text-muted-foreground">Topics Mastered</div>
-                  </motion.div>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+              {/* Progress Overview */}
+              <div className="xl:col-span-2">
+                <Card className="h-full bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/20 dark:to-orange-950/20 border-yellow-200 dark:border-yellow-800">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200">
+                      <motion.div
+                        animate={{ rotate: [0, -10, 10, -10, 0] }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                      >
+                        <Trophy className="w-5 h-5 text-yellow-500" />
+                      </motion.div>
+                      Your Progress
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.4, duration: 0.3 }}
+                      >
+                        <motion.div 
+                          className="text-2xl font-bold text-primary"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.6, duration: 0.5 }}
+                        >
+                          {userProgress.totalSessionsCompleted}
+                        </motion.div>
+                        <div className="text-xs text-muted-foreground">Quizzes Completed</div>
+                      </motion.div>
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5, duration: 0.3 }}
+                      >
+                        <motion.div 
+                          className="text-2xl font-bold text-green-600"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.7, duration: 0.5 }}
+                        >
+                          {userProgress.streak}
+                        </motion.div>
+                        <div className="text-xs text-muted-foreground">Day Streak</div>
+                      </motion.div>
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.6, duration: 0.3 }}
+                      >
+                        <motion.div 
+                          className="text-2xl font-bold text-blue-600"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.8, duration: 0.5 }}
+                        >
+                          {totalTopics}
+                        </motion.div>
+                        <div className="text-xs text-muted-foreground">Topics Studied</div>
+                      </motion.div>
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.7, duration: 0.3 }}
+                      >
+                        <motion.div 
+                          className="text-2xl font-bold text-purple-600"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.9, duration: 0.5 }}
+                        >
+                          {masteredTopics}
+                        </motion.div>
+                        <div className="text-xs text-muted-foreground">Topics Mastered</div>
+                      </motion.div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Study Session Timer */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
+                <StudySessionTimer 
+                  showStats={true}
+                  className="h-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20 border-indigo-200 dark:border-indigo-800"
+                />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Study Timer for new users */}
+        {userProgress.totalSessionsCompleted === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mb-8"
+          >
+            <StudySessionTimer 
+              showStats={true}
+              className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20 border-indigo-200 dark:border-indigo-800"
+            />
           </motion.div>
         )}
 
@@ -326,6 +330,7 @@ export default function Home() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4, duration: 0.4 }}
+                  className="space-y-3"
                 >
                   <Button
                     onClick={() => router.push('/practice-config')}
@@ -342,6 +347,27 @@ export default function Home() {
                       <div className="font-semibold text-blue-800 dark:text-blue-200">Practice Mode</div>
                       <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
                         Learn with instant feedback • Choose your topics
+                      </div>
+                    </div>
+                  </Button>
+                  
+                  <Button
+                    onClick={() => router.push('/adaptive-practice')}
+                    className="h-auto p-3 flex items-center gap-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800 hover:from-purple-100 hover:to-pink-100 dark:hover:from-purple-950/40 dark:hover:to-pink-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
+                    variant="outline"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-md flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">AI</span>
+                      </div>
+                    </motion.div>
+                    <div className="text-left">
+                      <div className="text-sm font-semibold text-purple-800 dark:text-purple-200">Adaptive Practice</div>
+                      <div className="text-xs text-purple-600 dark:text-purple-400">
+                        AI-powered • Focus on weak areas
                       </div>
                     </div>
                   </Button>

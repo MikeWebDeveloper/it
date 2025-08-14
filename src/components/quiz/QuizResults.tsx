@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { DifficultyBadge } from '@/components/ui/DifficultyBadge'
+import { AchievementNotificationManager } from '@/components/ui/AchievementNotification'
+import { QuestionNavigationMap } from './QuestionNavigationMap'
+import { getDifficultyStats } from '@/lib/difficulty'
 import { 
   Trophy, 
   Target, 
@@ -18,7 +22,12 @@ import {
 import { formatTime } from '@/lib/utils'
 
 export function QuizResults() {
-  const { currentSession, resetSession } = useQuizStore()
+  const { 
+    currentSession, 
+    resetSession, 
+    newAchievements, 
+    clearNewAchievements 
+  } = useQuizStore()
 
   if (!currentSession || !currentSession.completed) {
     return null
@@ -61,10 +70,22 @@ export function QuizResults() {
 
   const scoreInfo = getScoreBadge(score)
   const ScoreIcon = scoreInfo.icon
+  
+  // Calculate difficulty statistics
+  const difficultyStats = getDifficultyStats(questions)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <>
+      {/* Achievement Notifications */}
+      {newAchievements.length > 0 && (
+        <AchievementNotificationManager
+          achievements={newAchievements}
+          onAchievementsShown={clearNewAchievements}
+        />
+      )}
+      
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-24 h-24 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
@@ -121,6 +142,84 @@ export function QuizResults() {
           </CardContent>
         </Card>
 
+        {/* Difficulty Breakdown */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5" />
+              Difficulty Breakdown
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+                <div className="flex items-center gap-2">
+                  <DifficultyBadge difficulty="easy" variant="compact" animated={false} />
+                  <span className="text-sm font-medium">Easy Questions</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-bold text-green-700 dark:text-green-400">
+                    {difficultyStats.counts.easy}
+                  </div>
+                  <div className="text-xs text-green-600 dark:text-green-500">
+                    {difficultyStats.percentages.easy}%
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                <div className="flex items-center gap-2">
+                  <DifficultyBadge difficulty="medium" variant="compact" animated={false} />
+                  <span className="text-sm font-medium">Medium Questions</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-bold text-yellow-700 dark:text-yellow-400">
+                    {difficultyStats.counts.medium}
+                  </div>
+                  <div className="text-xs text-yellow-600 dark:text-yellow-500">
+                    {difficultyStats.percentages.medium}%
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800">
+                <div className="flex items-center gap-2">
+                  <DifficultyBadge difficulty="hard" variant="compact" animated={false} />
+                  <span className="text-sm font-medium">Hard Questions</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-bold text-red-700 dark:text-red-400">
+                    {difficultyStats.counts.hard}
+                  </div>
+                  <div className="text-xs text-red-600 dark:text-red-500">
+                    {difficultyStats.percentages.hard}%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Question Navigation Map */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5" />
+              Question Overview
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <QuestionNavigationMap
+              questions={questions}
+              currentIndex={-1} // No current question in results
+              answers={answers}
+              onNavigate={() => {}} // No navigation in results
+              showResults={true}
+              compact={false}
+            />
+          </CardContent>
+        </Card>
+
         {/* Question Review */}
         <Card className="mb-8">
           <CardHeader>
@@ -152,6 +251,11 @@ export function QuizResults() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="font-medium">Question {index + 1}</span>
+                      <DifficultyBadge 
+                        question={question}
+                        variant="compact"
+                        animated={false}
+                      />
                       <Badge variant="outline" className="text-xs">
                         {question.topic}
                       </Badge>
@@ -242,7 +346,8 @@ export function QuizResults() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

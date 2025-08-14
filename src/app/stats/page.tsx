@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/useQuizStore'
 import { Button } from '@/components/ui/button'
@@ -18,21 +18,31 @@ import {
   ArrowLeft,
   CheckCircle2,
   XCircle,
-  Sun,
-  Moon,
   Filter,
   BookOpen,
   History,
-  Brain
+  Brain,
+  Award
 } from 'lucide-react'
 import questionData from '@/data/questions.json'
-import { useTheme } from 'next-themes'
+import { AchievementsPanel } from '@/components/achievements/AchievementsPanel'
+import { AnimatedThemeToggle } from '@/components/ui/AnimatedThemeToggle'
+import { StatsSkeleton } from '@/components/skeletons'
 
 export default function StatsPage() {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const { userProgress, sessionHistory } = useQuizStore()
-  const { setTheme, theme } = useTheme()
   const router = useRouter()
+
+  // Simulate loading stats calculation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1200) // Slightly longer for stats calculation feel
+
+    return () => clearTimeout(timer)
+  }, [])
 
   // Calculate overall statistics
   const totalQuestions = userProgress.totalQuestions
@@ -76,6 +86,11 @@ export default function StatsPage() {
     advanced: topicStats.filter(t => t.masteryLevel === 'advanced').length
   }
 
+  // Show loading skeleton while calculating stats
+  if (isLoading) {
+    return <StatsSkeleton variant="calculating" />
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -100,34 +115,31 @@ export default function StatsPage() {
               </p>
             </div>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="rounded-full"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </Button>
+          <AnimatedThemeToggle variant="compact" size="sm" />
         </div>
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
-              Overview
+              <span className="hidden sm:inline">Overview</span>
             </TabsTrigger>
             <TabsTrigger value="learning" className="flex items-center gap-2">
               <Brain className="w-4 h-4" />
-              Learning
+              <span className="hidden sm:inline">Learning</span>
             </TabsTrigger>
             <TabsTrigger value="topics" className="flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
-              Topics
+              <span className="hidden sm:inline">Topics</span>
+            </TabsTrigger>
+            <TabsTrigger value="achievements" className="flex items-center gap-2">
+              <Award className="w-4 h-4" />
+              <span className="hidden sm:inline">Achievements</span>
             </TabsTrigger>
             <TabsTrigger value="history" className="flex items-center gap-2">
               <History className="w-4 h-4" />
-              History
+              <span className="hidden sm:inline">History</span>
             </TabsTrigger>
           </TabsList>
 
@@ -341,6 +353,11 @@ export default function StatsPage() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Achievements Tab */}
+          <TabsContent value="achievements" className="space-y-6">
+            <AchievementsPanel userProgress={userProgress} />
           </TabsContent>
         </Tabs>
       </div>

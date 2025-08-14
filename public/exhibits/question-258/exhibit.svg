@@ -1,0 +1,80 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5f5" stroke="#d0d0d0" stroke-width="2"/>
+  
+  <!-- Document window -->
+  <rect x="50" y="50" width="700" height="500" fill="#ffffff" stroke="#cccccc" stroke-width="2" rx="5"/>
+  
+  <!-- Title bar -->
+  <rect x="50" y="50" width="700" height="40" fill="#0078d4" stroke="#005a9e" stroke-width="1"/>
+  <text x="70" y="75" fill="#ffffff" font-family="Segoe UI" font-size="14" font-weight="bold">Technical Support Case File - Level 1 to Level 2 Escalation</text>
+  
+  <!-- Close button -->
+  <rect x="710" y="60" width="20" height="20" fill="#ff5f56" rx="2"/>
+  <text x="720" y="73" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="12" font-weight="bold">×</text>
+  
+  <!-- Document header -->
+  <rect x="70" y="110" width="660" height="60" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1"/>
+  <text x="90" y="130" fill="#333333" font-family="Arial" font-size="12" font-weight="bold">CASE ID: TKT-2023-4567</text>
+  <text x="400" y="130" fill="#333333" font-family="Arial" font-size="12" font-weight="bold">DATE: December 15, 2023</text>
+  <text x="90" y="150" fill="#333333" font-family="Arial" font-size="12" font-weight="bold">CUSTOMER: Acme Corporation - Finance Dept</text>
+  <text x="400" y="150" fill="#333333" font-family="Arial" font-size="12" font-weight="bold">PRIORITY: Medium</text>
+  
+  <!-- Problem description section -->
+  <text x="90" y="200" fill="#333333" font-family="Arial" font-size="14" font-weight="bold">PROBLEM DESCRIPTION:</text>
+  <text x="90" y="220" fill="#666666" font-family="Arial" font-size="11">Customer reports intermittent application crashes in financial software.</text>
+  <text x="90" y="235" fill="#666666" font-family="Arial" font-size="11">Error occurs during end-of-month processing with large datasets.</text>
+  <text x="90" y="250" fill="#666666" font-family="Arial" font-size="11">System specifications: Windows 10 Pro, 16GB RAM, Intel i7-9700K</text>
+  
+  <!-- Configuration details section -->
+  <text x="90" y="280" fill="#333333" font-family="Arial" font-size="14" font-weight="bold">SYSTEM CONFIGURATION:</text>
+  <text x="90" y="300" fill="#666666" font-family="Arial" font-size="11">Database Server: SQL Server 2019 Express</text>
+  <text x="90" y="315" fill="#666666" font-family="Arial" font-size="11">Application Version: FinancePro v8.2.1</text>
+  
+  <!-- Sensitive information section (highlighted) -->
+  <rect x="70" y="330" width="660" height="120" fill="#fff3cd" stroke="#ffeaa7" stroke-width="2"/>
+  <text x="90" y="350" fill="#333333" font-family="Arial" font-size="14" font-weight="bold">DATABASE CONNECTION STRING:</text>
+  <text x="90" y="370" fill="#856404" font-family="Courier New" font-size="10">Server=FIN-DB01;Database=FinanceDB;User ID=</text><text x="340" y="370" fill="#dc3545" font-family="Courier New" font-size="10" font-weight="bold">admin_user</text><text x="420" y="370" fill="#856404" font-family="Courier New" font-size="10">;</text>
+  <text x="90" y="385" fill="#856404" font-family="Courier New" font-size="10">Password=</text><text x="160" y="385" fill="#dc3545" font-family="Courier New" font-size="10" font-weight="bold">P@ssw0rd123!Finance$</text><text x="310" y="385" fill="#856404" font-family="Courier New" font-size="10">;Integrated Security=false;</text>
+  
+  <text x="90" y="410" fill="#333333" font-family="Arial" font-size="14" font-weight="bold">ADMIN CREDENTIALS:</text>
+  <text x="90" y="425" fill="#856404" font-family="Courier New" font-size="10">Local Admin: </text><text x="190" y="425" fill="#dc3545" font-family="Courier New" font-size="10" font-weight="bold">administrator</text><text x="290" y="425" fill="#856404" font-family="Courier New" font-size="10"> / </text><text x="310" y="425" fill="#dc3545" font-family="Courier New" font-size="10" font-weight="bold">Admin2023!@#</text>
+  <text x="90" y="440" fill="#856404" font-family="Courier New" font-size="10">Domain Admin: </text><text x="190" y="440" fill="#dc3545" font-family="Courier New" font-size="10" font-weight="bold">ACME\svc_finance</text><text x="310" y="440" fill="#856404" font-family="Courier New" font-size="10"> / </text><text x="330" y="440" fill="#dc3545" font-family="Courier New" font-size="10" font-weight="bold">$erv1ce@cc0unt!</text>
+  
+  <!-- Warning icon -->
+  <circle cx="650" cy="390" r="25" fill="#dc3545" stroke="#a71e2e" stroke-width="2"/>
+  <text x="650" y="398" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="20" font-weight="bold">!</text>
+  <text x="650" y="425" text-anchor="middle" fill="#dc3545" font-family="Arial" font-size="10" font-weight="bold">SENSITIVE</text>
+  <text x="650" y="435" text-anchor="middle" fill="#dc3545" font-family="Arial" font-size="10" font-weight="bold">DATA</text>
+  
+  <!-- Actions taken section -->
+  <text x="90" y="480" fill="#333333" font-family="Arial" font-size="14" font-weight="bold">TROUBLESHOOTING ACTIONS PERFORMED:</text>
+  <text x="90" y="500" fill="#666666" font-family="Arial" font-size="11">✓ Verified system resources and memory usage</text>
+  <text x="90" y="515" fill="#666666" font-family="Arial" font-size="11">✓ Updated application to latest version</text>
+  <text x="90" y="530" fill="#666666" font-family="Arial" font-size="11">✓ Checked Windows Event Logs for errors</text>
+  
+  <!-- Privacy warning overlay -->
+  <rect x="200" y="200" width="400" height="200" fill="#dc3545" stroke="#a71e2e" stroke-width="3" rx="10" opacity="0.95"/>
+  <text x="400" y="240" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="18" font-weight="bold">⚠ PRIVACY VIOLATION ⚠</text>
+  
+  <text x="400" y="270" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="14" font-weight="bold">This document contains:</text>
+  <text x="220" y="295" fill="#ffffff" font-family="Arial" font-size="12">• Database passwords</text>
+  <text x="220" y="315" fill="#ffffff" font-family="Arial" font-size="12">• Admin credentials</text>
+  <text x="220" y="335" fill="#ffffff" font-family="Arial" font-size="12">• Service account passwords</text>
+  <text x="220" y="355" fill="#ffffff" font-family="Arial" font-size="12">• Customer sensitive information</text>
+  
+  <text x="400" y="385" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="12" font-weight="bold">SHOULD NOT BE SHARED</text>
+  
+  <!-- Correct action box -->
+  <rect x="100" y="420" width="600" height="100" fill="#d4edda" stroke="#c3e6cb" stroke-width="2" rx="5"/>
+  <text x="400" y="445" text-anchor="middle" fill="#155724" font-family="Arial" font-size="14" font-weight="bold">CORRECT HANDLING PROCEDURE:</text>
+  
+  <text x="120" y="465" fill="#155724" font-family="Arial" font-size="11">1. Remove all passwords and credentials before sharing</text>
+  <text x="120" y="480" fill="#155724" font-family="Arial" font-size="11">2. Replace sensitive data with placeholders like <password omitted></text>
+  <text x="120" y="495" fill="#155724" font-family="Arial" font-size="11">3. If credentials are needed, share through secure separate channel</text>
+  <text x="120" y="510" fill="#155724" font-family="Arial" font-size="11">4. Maintain customer privacy and security at all times</text>
+  
+  <!-- File should not be shared emphasis -->
+  <rect x="250" y="540" width="300" height="40" fill="#ffeb3b" stroke="#fbc02d" stroke-width="3" rx="20"/>
+  <text x="400" y="565" text-anchor="middle" fill="#f57f17" font-family="Arial" font-size="16" font-weight="bold">FILE SHOULD NOT BE SHARED</text>
+</svg>

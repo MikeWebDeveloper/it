@@ -228,7 +228,14 @@
       "correct_answer": "section A",
       "explanation": "Graphics cards, also known as video cards, are installed into a PCIe x16 expansion slot. The expansion slots on a motherboard are located near the motherboard ports.",
       "topic": "Hardware",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-13/exhibit.svg",
+        "alt": "Motherboard diagram showing different expansion slots including PCIe x16, PCIe x8, PCIe x4, and PCI legacy slots labeled as sections A, B, C, and D",
+        "caption": "Motherboard expansion slots diagram showing where different cards can be installed",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 14,
@@ -2433,7 +2440,14 @@
       ],
       "correct_answer": "Move the USB Key option to the top of boot order.",
       "topic": "Operating Systems",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-157/exhibit.svg",
+        "alt": "BIOS Setup Utility showing Boot Device Priority Order with CD/DVD Drive in 1st position, Hard Disk Drive in 2nd position, USB Key in 3rd position, and USB Hard Disk Drive in 4th position",
+        "caption": "BIOS boot order configuration showing USB Key needs to be moved to first position",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 158,
@@ -2530,7 +2544,14 @@
       ],
       "correct_answer": "Enable File and printer sharing in the Network and Sharing Center > Advanced sharing settings screen.",
       "topic": "Networking",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-164/exhibit.svg",
+        "alt": "Windows 10 Network and Sharing Center showing network diagram with connected computer and HP OfficeJet Pro 8110 printer, with Advanced sharing settings panel highlighting File and printer sharing is Off",
+        "caption": "Network and Sharing Center showing file and printer sharing must be enabled for shared printer access",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 165,
@@ -2556,7 +2577,14 @@
       ],
       "correct_answer": "The HP printer is off-line or disconnected.",
       "topic": "Troubleshooting",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-166/exhibit.svg",
+        "alt": "WordPad document window showing a Print to File dialog box requesting a filename to save as PayrollReport_Q4_2023.prn, with an offline HP Printer shown disconnected in the background",
+        "caption": "Print dialog showing file output instead of physical printer due to default printer being set to virtual printer",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 167,
@@ -2654,7 +2682,14 @@
         "VMware Workstation"
       ],
       "topic": "Cloud Computing",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-172/exhibit.svg",
+        "alt": "Virtualization environment diagram showing Type 2 hypervisor running on Windows 10 Pro host with three virtual machines - Ubuntu 20.04 LTS, Windows Server 2019, and CentOS 7 - each with their own applications and virtual hardware allocations",
+        "caption": "Type 2 hypervisor architecture showing hosted virtualization environment suitable for desktop hypervisors",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 173,
@@ -2668,7 +2703,14 @@
       ],
       "correct_answer": "The DHCP server is configured with the wrong default gateway address.",
       "topic": "Networking",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-173/exhibit.svg",
+        "alt": "Command prompt window showing ipconfig /all output with network configuration details including incorrect default gateway 192.168.1.100 instead of 192.168.1.1, with network topology diagram showing the routing issue",
+        "caption": "Network configuration showing wrong default gateway preventing internet access while local network remains functional",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 174,
@@ -2710,7 +2752,14 @@
       ],
       "correct_answer": "configure a wireless SSID and password",
       "topic": "General IT",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-176/exhibit.svg",
+        "alt": "TP-Link wireless router configuration interface showing Wireless Settings tab with Network Name (SSID) field containing PAYROLL_NETWORK_5G and wireless security options for configuring WiFi password",
+        "caption": "Wireless router admin panel for configuring SSID and password settings",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 177,
@@ -2827,7 +2876,14 @@
         "The $uname variable is an input variable defined within the script."
       ],
       "topic": "Operating Systems",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-184/exhibit.svg",
+        "alt": "Linux terminal showing shell script sample.sh with variable definitions and execution output, plus analysis panel showing HOSTNAME as local variable, uname as input parameter, HOME and DAY as environment variables",
+        "caption": "Linux shell script demonstrating different variable types - local variables, input parameters, and environment variables",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 185,
@@ -2896,7 +2952,14 @@
       ],
       "correct_answer": "The octal representation of the permissions for January is 755.",
       "topic": "General IT",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-189/exhibit.svg",
+        "alt": "Linux terminal showing ls -la output of ite_user home directory with file permissions, sizes, and dates. January directory shows drwxr-xr-x permissions with analysis panel showing octal 755 breakdown",
+        "caption": "Linux directory listing showing file permissions and octal permission calculation for January directory (755)",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 190,
@@ -2911,7 +2974,14 @@
       "correct_answer": "Text messages, news, photos and other content can be displayed in the different tiles.",
       "explanation": "The Windows Phone interface uses tiles to represent apps. Tiles are rectangular areas of a screen that identify the app and may also contain active content such as text messages, news feeds, and photos.",
       "topic": "Operating Systems",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-190/exhibit.svg",
+        "alt": "Windows Phone 8.1 start screen showing live tiles including Mail with message notifications, Calendar with date and meeting info, People with contact status, Photos with image count, News with headlines, and Weather with temperature",
+        "caption": "Windows Phone live tiles interface showing dynamic content updates within rectangular tile areas",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 191,
@@ -3160,7 +3230,14 @@
       ],
       "explanation": "Knowing what to do when a possible solution does not resolve the problem is part of a good troubleshooting strategy. If you implement a possible solution and it does not correct the problem, you should reverse the action that you just took and document that the possible solution did not solve the issue. Once that is complete, move on to test another potential solution or escalate the issue to the next level.",
       "topic": "Hardware",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-206/exhibit.svg",
+        "alt": "Troubleshooting flowchart showing systematic process from problem identification through data backup, memory replacement test, and decision point highlighting current step where memory replacement failed to resolve issue",
+        "caption": "Systematic troubleshooting process flowchart showing next actions when a solution attempt fails",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 207,
@@ -3218,7 +3295,12 @@
       ],
       "correct_answer": "i363539v2n1_Linux.png",
       "topic": "Command Line",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-210/exhibit.svg",
+        "alt": "Linux command output showing file permissions",
+        "caption": "File permissions output for analysis"
+      }
     },
     {
       "id": 211,
@@ -3248,7 +3330,14 @@
       "correct_answer": "video capture card",
       "explanation": "PCIe x16 slots are generally intended for use with Graphics Cards. Capture devices usually use PCIe 1x slots",
       "topic": "Hardware",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-212/exhibit.svg",
+        "alt": "PCIe expansion slots diagram showing graphics card with extensive cooling requiring two slot widths versus video capture card requiring only single slot width, with comparison table showing power usage and cooling requirements",
+        "caption": "Comparison of graphics cards vs video capture cards showing cooling requirements and slot usage",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 213,
@@ -3260,7 +3349,14 @@
       ],
       "correct_answer": "video capture card (false, also because no cooling is needed)",
       "topic": "Hardware",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-213/exhibit.svg",
+        "alt": "PCIe expansion slots diagram comparing graphics cards and video capture cards, showing graphics card with dual fans and heat sink occupying two slot widths while using single PCIe x16 connector, versus capture card using single slot",
+        "caption": "Graphics card cooling requirements causing two-slot usage despite single PCIe connector versus single-slot capture cards",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 214,
@@ -3959,7 +4055,14 @@
       "correct_answer": "This file should not be shared with the level two technician.",
       "explanation": "Customer privacy should be maintained. The easiest way to preserve it is removing any occurrence of passwords from the documentation that is being sent to another technician. If a client password is required to solve the problem, it should be sent to another technician through a specific document.",
       "topic": "Security",
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "exhibit": {
+        "src": "/exhibits/question-258/exhibit.svg",
+        "alt": "Technical support case file document containing customer information, database passwords, admin credentials, and service account passwords with privacy violation warning overlay highlighting that sensitive data should not be shared",
+        "caption": "Support case file containing sensitive customer data and passwords that violate privacy policies if shared",
+        "width": 800,
+        "height": 600
+      }
     },
     {
       "id": 259,

@@ -1,0 +1,148 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#333333" font-family="Arial" font-size="20" font-weight="bold">PCIe Slot Usage: Graphics vs Video Capture Cards</text>
+  
+  <!-- Motherboard outline -->
+  <rect x="80" y="80" width="640" height="450" fill="#2d5016" stroke="#1a3009" stroke-width="3" rx="10"/>
+  
+  <!-- Left side - Graphics Card Example -->
+  <text x="200" y="110" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="16" font-weight="bold">GRAPHICS CARD</text>
+  
+  <!-- PCIe x16 slot for graphics -->
+  <rect x="120" y="130" width="200" height="20" fill="#8b4513" stroke="#654321" stroke-width="1"/>
+  <text x="220" y="165" text-anchor="middle" fill="#333" font-family="Arial" font-size="11" font-weight="bold">PCIe x16 Slot</text>
+  
+  <!-- Graphics card -->
+  <rect x="100" y="120" width="280" height="70" fill="#333333" stroke="#000000" stroke-width="2" rx="5"/>
+  
+  <!-- Large cooling components on graphics card -->
+  <!-- Dual fans -->
+  <circle cx="150" cy="155" r="20" fill="#666666" stroke="#444444" stroke-width="2"/>
+  <circle cx="150" cy="155" r="15" fill="none" stroke="#888888" stroke-width="1"/>
+  <line x1="142" y1="147" x2="158" y2="163" stroke="#888888" stroke-width="2"/>
+  <line x1="158" y1="147" x2="142" y2="163" stroke="#888888" stroke-width="2"/>
+  
+  <circle cx="200" cy="155" r="20" fill="#666666" stroke="#444444" stroke-width="2"/>
+  <circle cx="200" cy="155" r="15" fill="none" stroke="#888888" stroke-width="1"/>
+  <line x1="192" y1="147" x2="208" y2="163" stroke="#888888" stroke-width="2"/>
+  <line x1="208" y1="147" x2="192" y2="163" stroke="#888888" stroke-width="2"/>
+  
+  <!-- Heat sink -->
+  <rect x="250" y="135" width="120" height="40" fill="#c0c0c0" stroke="#a0a0a0" stroke-width="1"/>
+  <line x1="255" y1="135" x2="255" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="260" y1="135" x2="260" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="265" y1="135" x2="265" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="270" y1="135" x2="270" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="275" y1="135" x2="275" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="280" y1="135" x2="280" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="285" y1="135" x2="285" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="290" y1="135" x2="290" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="295" y1="135" x2="295" y2="175" stroke="#808080" stroke-width="1"/>
+  <line x1="300" y1="135" x2="300" y2="175" stroke="#808080" stroke-width="1"/>
+  
+  <!-- Card extends into second slot -->
+  <rect x="120" y="200" width="200" height="20" fill="#ff9999" stroke="#ff6666" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="220" y="215" text-anchor="middle" fill="#cc0000" font-family="Arial" font-size="10" font-weight="bold">BLOCKED by cooling</text>
+  
+  <!-- Power requirement indicator -->
+  <rect x="320" y="115" width="8" height="20" fill="#ffff00" stroke="#cccc00" stroke-width="1"/>
+  <rect x="330" y="115" width="8" height="20" fill="#ffff00" stroke="#cccc00" stroke-width="1"/>
+  <text x="329" y="110" text-anchor="middle" fill="#999900" font-family="Arial" font-size="8">300W+</text>
+  
+  <!-- Right side - Video Capture Card Example -->
+  <text x="580" y="110" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="16" font-weight="bold">VIDEO CAPTURE CARD</text>
+  
+  <!-- PCIe x1 slot for capture card -->
+  <rect x="500" y="130" width="60" height="15" fill="#654321" stroke="#4a2c17" stroke-width="1"/>
+  <text x="530" y="160" text-anchor="middle" fill="#333" font-family="Arial" font-size="11" font-weight="bold">PCIe x1 Slot</text>
+  
+  <!-- Small capture card -->
+  <rect x="490" y="125" width="100" height="25" fill="#2e7d32" stroke="#1b5e20" stroke-width="2" rx="3"/>
+  
+  <!-- Small components on capture card -->
+  <rect x="500" y="130" width="15" height="15" fill="#1a1a1a"/>
+  <text x="507" y="140" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="6">DSP</text>
+  
+  <!-- Input/output ports -->
+  <rect x="520" y="132" width="8" height="11" fill="#4169e1"/>
+  <rect x="530" y="132" width="8" height="11" fill="#4169e1"/>
+  <rect x="540" y="132" width="8" height="11" fill="#ff6b35"/>
+  <rect x="550" y="132" width="8" height="11" fill="#ff6b35"/>
+  
+  <!-- Small heat spreader -->
+  <rect x="565" y="130" width="20" height="15" fill="#999999"/>
+  <line x1="567" y1="130" x2="567" y2="145" stroke="#666666" stroke-width="1"/>
+  <line x1="570" y1="130" x2="570" y2="145" stroke="#666666" stroke-width="1"/>
+  <line x1="573" y1="130" x2="573" y2="145" stroke="#666666" stroke-width="1"/>
+  <line x1="576" y1="130" x2="576" y2="145" stroke="#666666" stroke-width="1"/>
+  <line x1="579" y1="130" x2="579" y2="145" stroke="#666666" stroke-width="1"/>
+  <line x1="582" y1="130" x2="582" y2="145" stroke="#666666" stroke-width="1"/>
+  
+  <!-- Low power indicator -->
+  <text x="540" y="110" text-anchor="middle" fill="#4caf50" font-family="Arial" font-size="8">25W</text>
+  
+  <!-- Comparison table -->
+  <rect x="120" y="280" width="560" height="200" fill="#ffffff" stroke="#cccccc" stroke-width="2" rx="5"/>
+  <text x="400" y="305" text-anchor="middle" fill="#333333" font-family="Arial" font-size="16" font-weight="bold">Comparison: Graphics vs Capture Cards</text>
+  
+  <!-- Table headers -->
+  <rect x="130" y="320" width="150" height="30" fill="#e3f2fd" stroke="#2196f3" stroke-width="1"/>
+  <text x="205" y="340" text-anchor="middle" fill="#1976d2" font-family="Arial" font-size="12" font-weight="bold">Feature</text>
+  
+  <rect x="280" y="320" width="180" height="30" fill="#fff3e0" stroke="#ff9800" stroke-width="1"/>
+  <text x="370" y="340" text-anchor="middle" fill="#e65100" font-family="Arial" font-size="12" font-weight="bold">Graphics Card</text>
+  
+  <rect x="460" y="320" width="180" height="30" fill="#e8f5e8" stroke="#4caf50" stroke-width="1"/>
+  <text x="550" y="340" text-anchor="middle" fill="#2e7d32" font-family="Arial" font-size="12" font-weight="bold">Capture Card</text>
+  
+  <!-- Table rows -->
+  <!-- Slot type -->
+  <rect x="130" y="350" width="150" height="25" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="140" y="367" fill="#333" font-family="Arial" font-size="10" font-weight="bold">Slot Type</text>
+  <rect x="280" y="350" width="180" height="25" fill="#fff8e1" stroke="#ffcc02" stroke-width="1"/>
+  <text x="370" y="367" text-anchor="middle" fill="#333" font-family="Arial" font-size="10">PCIe x16</text>
+  <rect x="460" y="350" width="180" height="25" fill="#f1f8e9" stroke="#8bc34a" stroke-width="1"/>
+  <text x="550" y="367" text-anchor="middle" fill="#333" font-family="Arial" font-size="10">PCIe x1 or x4</text>
+  
+  <!-- Physical slots used -->
+  <rect x="130" y="375" width="150" height="25" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="140" y="392" fill="#333" font-family="Arial" font-size="10" font-weight="bold">Physical Slots</text>
+  <rect x="280" y="375" width="180" height="25" fill="#fff8e1" stroke="#ffcc02" stroke-width="1"/>
+  <text x="370" y="392" text-anchor="middle" fill="#ff6b6b" font-family="Arial" font-size="10" font-weight="bold">2 slots (cooling)</text>
+  <rect x="460" y="375" width="180" height="25" fill="#f1f8e9" stroke="#8bc34a" stroke-width="1"/>
+  <text x="550" y="392" text-anchor="middle" fill="#4caf50" font-family="Arial" font-size="10" font-weight="bold">1 slot only</text>
+  
+  <!-- Power consumption -->
+  <rect x="130" y="400" width="150" height="25" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="140" y="417" fill="#333" font-family="Arial" font-size="10" font-weight="bold">Power Usage</text>
+  <rect x="280" y="400" width="180" height="25" fill="#fff8e1" stroke="#ffcc02" stroke-width="1"/>
+  <text x="370" y="417" text-anchor="middle" fill="#333" font-family="Arial" font-size="10">75-300W+</text>
+  <rect x="460" y="400" width="180" height="25" fill="#f1f8e9" stroke="#8bc34a" stroke-width="1"/>
+  <text x="550" y="417" text-anchor="middle" fill="#333" font-family="Arial" font-size="10">10-25W</text>
+  
+  <!-- Cooling needs -->
+  <rect x="130" y="425" width="150" height="25" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="140" y="442" fill="#333" font-family="Arial" font-size="10" font-weight="bold">Cooling Needs</text>
+  <rect x="280" y="425" width="180" height="25" fill="#fff8e1" stroke="#ffcc02" stroke-width="1"/>
+  <text x="370" y="442" text-anchor="middle" fill="#ff6b6b" font-family="Arial" font-size="10" font-weight="bold">Extensive</text>
+  <rect x="460" y="425" width="180" height="25" fill="#f1f8e9" stroke="#8bc34a" stroke-width="1"/>
+  <text x="550" y="442" text-anchor="middle" fill="#4caf50" font-family="Arial" font-size="10" font-weight="bold">Minimal</text>
+  
+  <!-- Typical use -->
+  <rect x="130" y="450" width="150" height="25" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="140" y="467" fill="#333" font-family="Arial" font-size="10" font-weight="bold">Primary Use</text>
+  <rect x="280" y="450" width="180" height="25" fill="#fff8e1" stroke="#ffcc02" stroke-width="1"/>
+  <text x="370" y="467" text-anchor="middle" fill="#333" font-family="Arial" font-size="10">Gaming, Rendering</text>
+  <rect x="460" y="450" width="180" height="25" fill="#f1f8e9" stroke="#8bc34a" stroke-width="1"/>
+  <text x="550" y="467" text-anchor="middle" fill="#333" font-family="Arial" font-size="10">Video Recording</text>
+  
+  <!-- Answer highlight -->
+  <rect x="100" y="500" width="600" height="30" fill="#ffeb3b" stroke="#fbc02d" stroke-width="3" rx="15"/>
+  <text x="400" y="520" text-anchor="middle" fill="#f57f17" font-family="Arial" font-size="14" font-weight="bold">GRAPHICS CARDS require two slots for additional cooling systems</text>
+  
+  <!-- Note -->
+  <text x="400" y="550" text-anchor="middle" fill="#666666" font-family="Arial" font-size="11">Note: The question asks about cards requiring extra cooling despite having only one PCIe connector</text>
+</svg>

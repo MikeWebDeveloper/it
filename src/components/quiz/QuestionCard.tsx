@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { AnswerChoice } from './AnswerChoice'
+import { ExhibitDisplay } from './ExhibitDisplay'
+import { DifficultyBadge } from '@/components/ui/DifficultyBadge'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import { 
@@ -112,22 +114,35 @@ export function QuestionCard({
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs md:text-sm text-muted-foreground">
             <span>Question {currentIndex + 1} of {totalQuestions}</span>
-            <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.3, ease: "backOut" }}
-            >
-              <Badge 
-                variant="outline" 
-                className={cn(
-                  "text-xs font-medium border-2 flex items-center gap-1.5 px-2 py-1",
-                  topicColorClass
-                )}
+            <div className="flex items-center gap-2">
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.3, ease: "backOut" }}
               >
-                <IconComponent className="w-3 h-3" />
-                {question.topic}
-              </Badge>
-            </motion.div>
+                <DifficultyBadge 
+                  question={question}
+                  variant="default"
+                  animated={true}
+                />
+              </motion.div>
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.3, ease: "backOut" }}
+              >
+                <Badge 
+                  variant="outline" 
+                  className={cn(
+                    "text-xs font-medium border-2 flex items-center gap-1.5 px-2 py-1",
+                    topicColorClass
+                  )}
+                >
+                  <IconComponent className="w-3 h-3" />
+                  {question.topic}
+                </Badge>
+              </motion.div>
+            </div>
           </div>
           <motion.div
             initial={{ scaleX: 0 }}
@@ -149,6 +164,21 @@ export function QuestionCard({
             {question.question}
           </CardTitle>
         </motion.div>
+        
+        {/* Exhibit display */}
+        {question.exhibit && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
+            className="mt-4"
+          >
+            <ExhibitDisplay 
+              exhibit={question.exhibit} 
+              className="max-w-full"
+            />
+          </motion.div>
+        )}
         
         {isMultipleChoice && (
           <div className="space-y-2">

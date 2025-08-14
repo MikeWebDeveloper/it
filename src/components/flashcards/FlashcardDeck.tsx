@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback, useRef, useMemo } from 'react'
 import { Question } from '@/types/quiz'
 import { FlashcardCard } from './FlashcardCard'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,9 @@ import {
   Target
 } from 'lucide-react'
 import { useSwipeable } from 'react-swipeable'
+import { useKeyboardShortcuts, createFlashcardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { KeyboardShortcutsHelp } from '@/components/ui/KeyboardShortcutsHelp'
+import { useAudioHapticFeedback } from '@/hooks/useAudioHapticFeedback'
 
 interface FlashcardDeckProps {
   questions: Question[]
@@ -35,6 +38,10 @@ export function FlashcardDeck({
   const [studiedCards, setStudiedCards] = useState<Set<number>>(new Set())
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>(questions)
   const [startTime] = useState(Date.now())
+  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
+
+  // Audio and haptic feedback
+  const feedback = useAudioHapticFeedback()
 
   const currentQuestion = shuffledQuestions[currentIndex]
 
@@ -59,60 +66,70 @@ export function FlashcardDeck({
     
     if (currentIndex < shuffledQuestions.length - 1) {
       setCurrentIndex(currentIndex + 1)
+      feedback.onQuestionNavigation()
     } else {
       setIsComplete(true)
+      feedback.onQuizComplete()
       onComplete?.()
     }
-  }, [currentIndex, shuffledQuestions.length, onComplete])
+  }, [currentIndex, shuffledQuestions.length, onComplete, feedback])
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1)
+      feedback.onQuestionNavigation()
     }
-  }, [currentIndex])
+  }, [currentIndex, feedback])
 
-  const handleShuffle = () => {
+  const handleShuffle = useCallback(() => {
     const shuffled = [...questions].sort(() => Math.random() - 0.5)
     setShuffledQuestions(shuffled)
     setCurrentIndex(0)
     setStudiedCards(new Set())
     setIsComplete(false)
-  }
+    feedback.onButtonClick()
+  }, [questions, feedback])
 
-  const handleRestart = () => {
+  const handleRestart = useCallback(() => {
     setCurrentIndex(0)
     setStudiedCards(new Set())
     setIsComplete(false)
-  }
+    feedback.onButtonClick()
+  }, [feedback])
 
   const studyTime = Math.floor((Date.now() - startTime) / 1000 / 60)
   const completionRate = (studiedCards.size / shuffledQuestions.length) * 100
 
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      switch (event.code) {
-        case 'ArrowLeft':
-          event.preventDefault()
-          handlePrevious()
-          break
-        case 'ArrowRight':
-          event.preventDefault()
-          handleNext()
-          break
-        case 'Space':
-          event.preventDefault()
-          // Flip functionality would be handled by the FlashcardCard
-          break
-        case 'Escape':
-          event.preventDefault()
-          onExit?.()
-          break
-      }
-    }
+  // Flip card ref for keyboard shortcuts
+  const flipCardRef = useRef<{ flip: () => void } | null>(null)
 
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [currentIndex, shuffledQuestions.length, onExit, handleNext, handlePrevious])
+  const handleFlip = useCallback(() => {
+    flipCardRef.current?.flip()
+    feedback.onFlashcardFlip()
+  }, [feedback])
+
+  const handleExit = useCallback(() => {
+    if (window.confirm('Are you sure you want to exit flashcards? Your study progress will be saved.')) {
+      onExit?.()
+    }
+  }, [onExit])
+
+  // Keyboard shortcuts
+  const keyboardShortcuts = useMemo(() => createFlashcardShortcuts({
+    onPrevious: handlePrevious,
+    onNext: handleNext,
+    onFlip: handleFlip,
+    onExit: handleExit,
+    onShuffle: handleShuffle,
+    onHelp: () => setShowKeyboardHelp(true)
+  }), [handlePrevious, handleNext, handleFlip, handleExit, handleShuffle])
+
+  useKeyboardShortcuts({
+    shortcuts: keyboardShortcuts,
+    enabled: !showKeyboardHelp && !isComplete,
+    showToasts: false,
+    scope: 'global'
+  })
 
   if (isComplete) {
     return (
@@ -268,6 +285,7 @@ export function FlashcardDeck({
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <FlashcardCard
+              ref={flipCardRef}
               question={currentQuestion}
               currentIndex={currentIndex}
               totalQuestions={shuffledQuestions.length}
@@ -287,8 +305,19 @@ export function FlashcardDeck({
           <p>
             Use arrow keys to navigate • Space to flip • Swipe on mobile • ESC to exit
           </p>
+          <p className="mt-1">
+            Press <kbd className="px-1.5 py-0.5 text-xs bg-muted border rounded">Shift + ?</kbd> for all shortcuts
+          </p>
         </motion.div>
       </div>
+
+      {/* Keyboard Shortcuts Help */}
+      <KeyboardShortcutsHelp
+        shortcuts={keyboardShortcuts}
+        isOpen={showKeyboardHelp}
+        onClose={() => setShowKeyboardHelp(false)}
+        title="Flashcard Keyboard Shortcuts"
+      />
     </div>
   )
 }

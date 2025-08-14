@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useImperativeHandle, forwardRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Question } from '@/types/quiz'
+import { DifficultyBadge } from '@/components/ui/DifficultyBadge'
 import { cn } from '@/lib/utils'
 import { 
   Monitor, 
@@ -61,26 +62,31 @@ interface FlashcardCardProps {
   className?: string
 }
 
-export function FlashcardCard({
+export const FlashcardCard = forwardRef<{ flip: () => void }, FlashcardCardProps>(function FlashcardCard({
   question,
   currentIndex,
   totalQuestions,
   onNext,
   onPrevious,
   className
-}: FlashcardCardProps) {
+}, ref) {
   const [isFlipped, setIsFlipped] = useState(false)
   const [showExplanation, setShowExplanation] = useState(false)
 
   const IconComponent = topicIcons[question.topic] || Settings
   const topicColorClass = topicColors[question.topic] || topicColors['General IT']
 
-  const handleFlip = () => {
+  const handleFlip = useCallback(() => {
     setIsFlipped(!isFlipped)
     if (!isFlipped) {
       setShowExplanation(false)
     }
-  }
+  }, [isFlipped])
+
+  // Expose flip function through ref
+  useImperativeHandle(ref, () => ({
+    flip: handleFlip
+  }), [handleFlip])
 
   const handleNext = () => {
     setIsFlipped(false)
@@ -106,16 +112,23 @@ export function FlashcardCard({
           <span className="text-sm text-muted-foreground">
             Card {currentIndex + 1} of {totalQuestions}
           </span>
-          <Badge 
-            variant="outline" 
-            className={cn(
-              "text-xs font-medium border-2 flex items-center gap-1.5 px-2 py-1",
-              topicColorClass
-            )}
-          >
-            <IconComponent className="w-3 h-3" />
-            {question.topic}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <DifficultyBadge 
+              question={question}
+              variant="compact"
+              animated={true}
+            />
+            <Badge 
+              variant="outline" 
+              className={cn(
+                "text-xs font-medium border-2 flex items-center gap-1.5 px-2 py-1",
+                topicColorClass
+              )}
+            >
+              <IconComponent className="w-3 h-3" />
+              {question.topic}
+            </Badge>
+          </div>
         </div>
         <div className="w-full bg-muted rounded-full h-2">
           <div 
@@ -254,4 +267,4 @@ export function FlashcardCard({
       </div>
     </div>
   )
-}
+})

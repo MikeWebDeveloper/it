@@ -5,6 +5,13 @@ export interface Question {
   correct_answer: string | string[]
   explanation?: string
   topic: string
+  exhibit?: {
+    src: string
+    alt: string
+    caption?: string
+    width?: number
+    height?: number
+  }
 }
 
 export interface QuestionData {

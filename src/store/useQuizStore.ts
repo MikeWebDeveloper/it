@@ -2,8 +2,27 @@
 
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { QuizSession, QuizMode, Question, QuizStatistics, UserProgress, LearningStatistics, ExamStatistics } from '@/types/quiz'
+import { QuizSession, QuizMode, Question, QuizStatistics, UserProgress, LearningStatistics, ExamStatistics, Achievement } from '@/types/quiz'
 import { generateId } from '@/lib/utils'
+import { checkAchievements } from '@/lib/achievements'
+
+interface AudioHapticPreferences {
+  soundEnabled: boolean
+  soundVolume: number
+  hapticsEnabled: boolean
+  hapticsIntensity: number
+}
+
+interface StudySessionSettings {
+  sessionTimerEnabled: boolean
+  defaultSessionDuration: number // in minutes
+  breakReminderInterval: number // in minutes
+  breakDuration: number // in minutes
+  autoBreakEnabled: boolean
+  soundNotifications: boolean
+  longBreakInterval: number // after how many short breaks
+  longBreakDuration: number // in minutes
+}
 
 interface QuizState {
   // Current session state
@@ -18,21 +37,40 @@ interface QuizState {
   learningStats: LearningStatistics
   examStats: ExamStatistics
   
+  // Achievement system
+  newAchievements: Achievement[]
+  perfectStreakCount: number
+  
   // UI state
   isDarkMode: boolean
+  
+  // Audio & Haptic preferences
+  audioHapticPreferences: AudioHapticPreferences
+  
+  // Study Session Settings
+  studySessionSettings: StudySessionSettings
   
   // Actions
   startQuiz: (mode: QuizMode, questions: Question[], timeLimit?: number) => void
   answerQuestion: (questionId: number, answer: string | string[]) => void
   nextQuestion: () => void
   previousQuestion: () => void
+  goToQuestion: (index: number) => void
   completeQuiz: () => void
   
   // Settings
   toggleDarkMode: () => void
+  updateAudioHapticPreferences: (preferences: Partial<AudioHapticPreferences>) => void
+  updateStudySessionSettings: (settings: Partial<StudySessionSettings>) => void
   
   // Data management
   setQuestions: (questions: Question[]) => void
+  
+  // Achievement actions
+  clearNewAchievements: () => void
+  
+  // Manual save function for auto-save integration
+  saveProgress: () => Promise<void>
   
   // Reset
   resetSession: () => void
@@ -81,6 +119,24 @@ const initialExamStats: ExamStatistics = {
   examHistory: []
 }
 
+const initialAudioHapticPreferences: AudioHapticPreferences = {
+  soundEnabled: true,
+  soundVolume: 0.7,
+  hapticsEnabled: true,
+  hapticsIntensity: 0.8
+}
+
+const initialStudySessionSettings: StudySessionSettings = {
+  sessionTimerEnabled: true,
+  defaultSessionDuration: 25, // 25-minute Pomodoro sessions
+  breakReminderInterval: 25, // Remind for breaks every 25 minutes
+  breakDuration: 5, // 5-minute short breaks
+  autoBreakEnabled: false, // Don't force breaks
+  soundNotifications: true,
+  longBreakInterval: 4, // Long break after 4 short breaks
+  longBreakDuration: 15 // 15-minute long breaks
+}
+
 export const useQuizStore = create<QuizState>()(
   persist(
     (set) => ({
@@ -91,7 +147,11 @@ export const useQuizStore = create<QuizState>()(
       sessionHistory: [],
       learningStats: initialLearningStats,
       examStats: initialExamStats,
+      newAchievements: [],
+      perfectStreakCount: 0,
       isDarkMode: true, // Default to dark mode for better mobile learning
+      audioHapticPreferences: initialAudioHapticPreferences,
+      studySessionSettings: initialStudySessionSettings,
       
       // Start a new quiz session
       startQuiz: (mode: QuizMode, questions: Question[], timeLimit?: number) => {
@@ -163,6 +223,22 @@ export const useQuizStore = create<QuizState>()(
         })
       },
       
+      // Navigate to specific question
+      goToQuestion: (index: number) => {
+        set((state) => {
+          if (!state.currentSession) return state
+          
+          const clampedIndex = Math.max(0, Math.min(index, state.currentSession.questions.length - 1))
+          
+          return {
+            currentSession: {
+              ...state.currentSession,
+              currentQuestionIndex: clampedIndex
+            }
+          }
+        })
+      },
+      
       // Complete the current quiz
       completeQuiz: () => {
         set((state) => {
@@ -218,6 +294,22 @@ export const useQuizStore = create<QuizState>()(
           const updatedExamStats = !isLearningMode
             ? updateExamStatistics(state.examStats, session, stats)
             : state.examStats
+
+          // Check for new achievements
+          const isPerfectScore = accuracy === 100
+          const newPerfectStreak = isPerfectScore ? state.perfectStreakCount + 1 : 0
+          
+          const newAchievements = checkAchievements(
+            updatedProgress,
+            stats,
+            newPerfectStreak
+          )
+
+          // Add new achievements to user progress
+          const finalProgress = {
+            ...updatedProgress,
+            achievements: [...updatedProgress.achievements, ...newAchievements]
+          }
           
           return {
             currentSession: {
@@ -226,9 +318,11 @@ export const useQuizStore = create<QuizState>()(
               score: accuracy
             },
             sessionHistory: [...state.sessionHistory, stats],
-            userProgress: updatedProgress,
+            userProgress: finalProgress,
             learningStats: updatedLearningStats,
-            examStats: updatedExamStats
+            examStats: updatedExamStats,
+            newAchievements: [...state.newAchievements, ...newAchievements],
+            perfectStreakCount: newPerfectStreak
           }
         })
       },
@@ -238,9 +332,52 @@ export const useQuizStore = create<QuizState>()(
         set((state) => ({ isDarkMode: !state.isDarkMode }))
       },
       
+      // Update audio and haptic preferences
+      updateAudioHapticPreferences: (preferences: Partial<AudioHapticPreferences>) => {
+        set((state) => ({
+          audioHapticPreferences: {
+            ...state.audioHapticPreferences,
+            ...preferences
+          }
+        }))
+      },
+      
+      // Update study session settings
+      updateStudySessionSettings: (settings: Partial<StudySessionSettings>) => {
+        set((state) => ({
+          studySessionSettings: {
+            ...state.studySessionSettings,
+            ...settings
+          }
+        }))
+      },
+      
       // Set all questions
       setQuestions: (questions: Question[]) => {
         set({ allQuestions: questions })
+      },
+      
+      // Clear new achievements (after showing notifications)
+      clearNewAchievements: () => {
+        set({ newAchievements: [] })
+      },
+      
+      // Manual save function for auto-save integration
+      saveProgress: async () => {
+        // Since we're using persist middleware, the state is automatically saved
+        // This function exists for the auto-save hook to call and can be extended
+        // with additional save logic if needed (e.g., cloud sync)
+        return new Promise<void>((resolve, reject) => {
+          try {
+            // Small delay to simulate save operation
+            setTimeout(() => {
+              // In the future, this could sync to a cloud service
+              resolve()
+            }, 100)
+          } catch (error) {
+            reject(error)
+          }
+        })
       },
       
       // Reset current session
@@ -256,7 +393,10 @@ export const useQuizStore = create<QuizState>()(
         sessionHistory: state.sessionHistory,
         learningStats: state.learningStats,
         examStats: state.examStats,
+        perfectStreakCount: state.perfectStreakCount,
         isDarkMode: state.isDarkMode,
+        audioHapticPreferences: state.audioHapticPreferences,
+        studySessionSettings: state.studySessionSettings,
         allQuestions: state.allQuestions
       }),
       version: 1

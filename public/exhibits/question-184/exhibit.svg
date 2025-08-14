@@ -1,0 +1,84 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#000000"/>
+  
+  <!-- Terminal window -->
+  <rect x="50" y="50" width="700" height="500" fill="#000000" stroke="#333333" stroke-width="2"/>
+  
+  <!-- Title bar -->
+  <rect x="50" y="50" width="700" height="30" fill="#1f1f1f" stroke="#333333" stroke-width="1"/>
+  <text x="60" y="70" fill="#ffffff" font-family="Ubuntu Mono" font-size="12" font-weight="bold">user@ubuntu:~$ - Terminal</text>
+  
+  <!-- Terminal content -->
+  <text x="70" y="110" fill="#00ff00" font-family="Ubuntu Mono" font-size="11">user@ubuntu:~$ cat sample.sh</text>
+  
+  <!-- Script content -->
+  <text x="70" y="140" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">#!/bin/bash</text>
+  
+  <text x="70" y="160" fill="#888888" font-family="Ubuntu Mono" font-size="11"># Sample shell script demonstrating variables</text>
+  
+  <text x="70" y="190" fill="#ffff00" font-family="Ubuntu Mono" font-size="11">HOSTNAME</text><text x="140" y="190" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">=</text><text x="155" y="190" fill="#00ffff" font-family="Ubuntu Mono" font-size="11">"webserver01"</text>
+  
+  <text x="70" y="210" fill="#ffff00" font-family="Ubuntu Mono" font-size="11">uname</text><text x="120" y="210" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">=</text><text x="135" y="210" fill="#00ffff" font-family="Ubuntu Mono" font-size="11">"$1"</text>
+  
+  <text x="70" y="240" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">echo</text><text x="115" y="240" fill="#00ffff" font-family="Ubuntu Mono" font-size="11">"System Information for $HOSTNAME"</text>
+  <text x="70" y="260" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">echo</text><text x="115" y="260" fill="#00ffff" font-family="Ubuntu Mono" font-size="11">"Username: $uname"</text>
+  <text x="70" y="280" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">echo</text><text x="115" y="280" fill="#00ffff" font-family="Ubuntu Mono" font-size="11">"Current directory: $HOME"</text>
+  <text x="70" y="300" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">echo</text><text x="115" y="300" fill="#00ffff" font-family="Ubuntu Mono" font-size="11">"Today is: $DAY"</text>
+  
+  <!-- Command execution -->
+  <text x="70" y="340" fill="#00ff00" font-family="Ubuntu Mono" font-size="11">user@ubuntu:~$ ./sample.sh john</text>
+  
+  <!-- Output -->
+  <text x="70" y="370" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">System Information for webserver01</text>
+  <text x="70" y="390" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">Username: john</text>
+  <text x="70" y="410" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">Current directory: /home/user</text>
+  <text x="70" y="430" fill="#ffffff" font-family="Ubuntu Mono" font-size="11">Today is: Monday</text>
+  
+  <!-- Variable explanation box -->
+  <rect x="450" y="140" width="280" height="280" fill="#1a1a2e" stroke="#0f3460" stroke-width="2" rx="5"/>
+  <text x="590" y="165" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="14" font-weight="bold">Variable Analysis</text>
+  
+  <!-- HOSTNAME variable -->
+  <rect x="460" y="180" width="260" height="45" fill="#0f3460" stroke="#1e5f99" stroke-width="1" rx="3"/>
+  <text x="470" y="195" fill="#ffff00" font-family="Ubuntu Mono" font-size="10" font-weight="bold">$HOSTNAME</text>
+  <text x="470" y="210" fill="#cccccc" font-family="Arial" font-size="9">• Defined within script</text>
+  <text x="470" y="220" fill="#cccccc" font-family="Arial" font-size="9">• Local variable: "webserver01"</text>
+  
+  <!-- uname variable -->
+  <rect x="460" y="235" width="260" height="45" fill="#0f3460" stroke="#1e5f99" stroke-width="1" rx="3"/>
+  <text x="470" y="250" fill="#ffff00" font-family="Ubuntu Mono" font-size="10" font-weight="bold">$uname</text>
+  <text x="470" y="265" fill="#cccccc" font-family="Arial" font-size="9">• Input parameter ($1)</text>
+  <text x="470" y="275" fill="#cccccc" font-family="Arial" font-size="9">• Value: "john" (from command line)</text>
+  
+  <!-- HOME variable -->
+  <rect x="460" y="290" width="260" height="45" fill="#533483" stroke="#7b4397" stroke-width="1" rx="3"/>
+  <text x="470" y="305" fill="#ffff00" font-family="Ubuntu Mono" font-size="10" font-weight="bold">$HOME</text>
+  <text x="470" y="320" fill="#cccccc" font-family="Arial" font-size="9">• System environment variable</text>
+  <text x="470" y="330" fill="#cccccc" font-family="Arial" font-size="9">• Value: /home/user</text>
+  
+  <!-- DAY variable -->
+  <rect x="460" y="345" width="260" height="45" fill="#533483" stroke="#7b4397" stroke-width="1" rx="3"/>
+  <text x="470" y="360" fill="#ffff00" font-family="Ubuntu Mono" font-size="10" font-weight="bold">$DAY</text>
+  <text x="470" y="375" fill="#cccccc" font-family="Arial" font-size="9">• System environment variable</text>
+  <text x="470" y="385" fill="#cccccc" font-family="Arial" font-size="9">• Value: Monday</text>
+  
+  <!-- Arrows pointing to variables in script -->
+  <line x1="440" y1="190" x2="330" y2="190" stroke="#ffff00" stroke-width="2" marker-end="url(#yellowArrow)"/>
+  <line x1="440" y1="210" x2="200" y2="210" stroke="#ffff00" stroke-width="2" marker-end="url(#yellowArrow)"/>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="yellowArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ffff00"/>
+    </marker>
+  </defs>
+  
+  <!-- Command prompt -->
+  <text x="70" y="480" fill="#00ff00" font-family="Ubuntu Mono" font-size="11">user@ubuntu:~$ █</text>
+  
+  <!-- Legend -->
+  <rect x="60" y="460" width="350" height="30" fill="#1a1a2e" stroke="#0f3460" stroke-width="1" rx="3"/>
+  <text x="70" y="475" fill="#ffff00" font-family="Arial" font-size="9">Yellow: Local/Input variables</text>
+  <text x="220" y="475" fill="#bb86fc" font-family="Arial" font-size="9">Purple: Environment variables</text>
+</svg>

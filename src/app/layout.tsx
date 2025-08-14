@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { PWAInstaller } from "@/components/PWAInstaller";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -53,6 +54,29 @@ export default function RootLayout({
         >
           {children}
           <PWAInstaller />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: 'hsl(var(--card))',
+                color: 'hsl(var(--card-foreground))',
+                border: '1px solid hsl(var(--border))',
+              },
+              success: {
+                iconTheme: {
+                  primary: 'hsl(var(--primary))',
+                  secondary: 'hsl(var(--primary-foreground))',
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: 'hsl(var(--destructive))',
+                  secondary: 'hsl(var(--destructive-foreground))',
+                },
+              },
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>

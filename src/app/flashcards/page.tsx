@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { PageTransition } from '@/components/animations/PageTransition'
+import { FlashcardSkeleton, CategorySelectorSkeleton } from '@/components/skeletons'
 import { useTheme } from 'next-themes'
 import { Sun, Moon, BookOpen, Target } from 'lucide-react'
 import questionData from '@/data/questions.json'
@@ -21,12 +22,21 @@ export default function FlashcardsPage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [flashcardQuestions, setFlashcardQuestions] = useState<Question[]>([])
   const [mounted, setMounted] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   
   const { setTheme, theme } = useTheme()
   const router = useRouter()
 
   useEffect(() => {
     setMounted(true)
+    
+    // Simulate loading categories and questions
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 900)
+
+    return () => clearTimeout(timer)
   }, [])
 
   const handleCategorySelect = (categories: string[]) => {
@@ -36,16 +46,22 @@ export default function FlashcardsPage() {
   const handleStartFlashcards = () => {
     if (selectedCategories.length === 0) return
 
-    // Filter questions by selected categories
-    const categoryQuestions = questionData.questions.filter(q => 
-      selectedCategories.includes(q.topic)
-    )
+    setIsTransitioning(true)
     
-    // Shuffle questions for variety
-    const shuffledQuestions = shuffleArray(categoryQuestions)
-    
-    setFlashcardQuestions(shuffledQuestions)
-    setViewMode('flashcards')
+    // Simulate preparation time
+    setTimeout(() => {
+      // Filter questions by selected categories
+      const categoryQuestions = questionData.questions.filter(q => 
+        selectedCategories.includes(q.topic)
+      )
+      
+      // Shuffle questions for variety
+      const shuffledQuestions = shuffleArray(categoryQuestions)
+      
+      setFlashcardQuestions(shuffledQuestions)
+      setViewMode('flashcards')
+      setIsTransitioning(false)
+    }, 1000)
   }
 
   const handleBackToCategories = () => {
@@ -65,6 +81,11 @@ export default function FlashcardsPage() {
     return sum + questionData.questions.filter(q => q.topic === category).length
   }, 0)
 
+  // Show loading skeleton when transitioning to flashcards
+  if (isTransitioning) {
+    return <FlashcardSkeleton variant="shuffling" />
+  }
+
   if (viewMode === 'flashcards') {
     return (
       <FlashcardDeck
@@ -73,6 +94,32 @@ export default function FlashcardsPage() {
         onComplete={handleFlashcardsComplete}
         onExit={handleBackToCategories}
       />
+    )
+  }
+
+  // Show loading skeleton initially
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
+          {/* Header Skeleton */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div className="h-10 w-32 bg-muted rounded animate-pulse" />
+              <div className="h-10 w-10 bg-muted rounded-full animate-pulse" />
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-muted rounded-lg animate-pulse" />
+              <div>
+                <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+                <div className="h-4 w-64 bg-muted rounded animate-pulse" />
+              </div>
+            </div>
+          </div>
+
+          <CategorySelectorSkeleton />
+        </div>
+      </div>
     )
   }
 

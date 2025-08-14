@@ -1,0 +1,40 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Motherboard outline -->
+  <rect x="100" y="100" width="600" height="400" fill="#2d5016" stroke="#1a3009" stroke-width="3" rx="10"/>
+  
+  <!-- PCIe slots (sections) -->
+  <!-- Section A - PCIe x16 (video card slot) -->
+  <rect x="150" y="200" width="200" height="20" fill="#8b4513" stroke="#654321" stroke-width="1"/>
+  <text x="250" y="240" text-anchor="middle" fill="#000" font-family="Arial" font-size="16" font-weight="bold">Section A</text>
+  <text x="250" y="255" text-anchor="middle" fill="#666" font-family="Arial" font-size="12">PCIe x16</text>
+  
+  <!-- Section B - PCIe x8 -->
+  <rect x="150" y="280" width="100" height="15" fill="#8b4513" stroke="#654321" stroke-width="1"/>
+  <text x="200" y="320" text-anchor="middle" fill="#000" font-family="Arial" font-size="16" font-weight="bold">Section B</text>
+  <text x="200" y="335" text-anchor="middle" fill="#666" font-family="Arial" font-size="12">PCIe x8</text>
+  
+  <!-- Section C - PCIe x4 -->
+  <rect x="150" y="350" width="60" height="15" fill="#8b4513" stroke="#654321" stroke-width="1"/>
+  <text x="180" y="390" text-anchor="middle" fill="#000" font-family="Arial" font-size="16" font-weight="bold">Section C</text>
+  <text x="180" y="405" text-anchor="middle" fill="#666" font-family="Arial" font-size="12">PCIe x4</text>
+  
+  <!-- Section D - PCI Legacy -->
+  <rect x="150" y="420" width="80" height="15" fill="#654321" stroke="#4a2c17" stroke-width="1"/>
+  <text x="190" y="460" text-anchor="middle" fill="#000" font-family="Arial" font-size="16" font-weight="bold">Section D</text>
+  <text x="190" y="475" text-anchor="middle" fill="#666" font-family="Arial" font-size="12">PCI Legacy</text>
+  
+  <!-- Video card illustration -->
+  <rect x="380" y="140" width="280" height="120" fill="#333" stroke="#000" stroke-width="2" rx="5"/>
+  <text x="520" y="205" text-anchor="middle" fill="#fff" font-family="Arial" font-size="14" font-weight="bold">Video Card</text>
+  <text x="520" y="225" text-anchor="middle" fill="#ccc" font-family="Arial" font-size="12">(to be installed)</text>
+  
+  <!-- Arrow pointing to Section A -->
+  <path d="M 380 200 L 360 210 L 380 220 Z" fill="#ff6b6b" stroke="#e55656" stroke-width="1"/>
+  <line x1="360" y1="210" x2="350" y2="210" stroke="#ff6b6b" stroke-width="3"/>
+  
+  <!-- Title -->
+  <text x="400" y="50" text-anchor="middle" fill="#333" font-family="Arial" font-size="20" font-weight="bold">Motherboard Expansion Slots</text>
+  <text x="400" y="75" text-anchor="middle" fill="#666" font-family="Arial" font-size="14">Video Card Installation</text>
+</svg>
