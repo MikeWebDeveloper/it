@@ -26,8 +26,7 @@ import {
   AlertTriangle,
   BookOpen,
   TrendingUp,
-  Clock,
-  Target
+  Clock
 } from 'lucide-react'
 import questionData from '@/data/questions.json'
 import { cn } from '@/lib/utils'

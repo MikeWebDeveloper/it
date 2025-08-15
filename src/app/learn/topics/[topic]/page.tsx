@@ -4,7 +4,6 @@ import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { useQuizStore } from '@/store/useQuizStore'
-import { Question } from '@/types/quiz'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -20,14 +19,9 @@ import {
   Grid3X3, 
   List,
   BarChart3,
-  BookOpen,
-  Target,
-  Clock,
   TrendingUp,
-  Filter,
   Eye,
   Bookmark,
-  CheckCircle,
   Monitor, 
   Shield, 
   Network, 
@@ -230,10 +224,6 @@ export default function TopicDetailPage() {
   }
 
   const handleStartPracticeQuiz = () => {
-    const unstudiedQuestions = topicQuestions.filter(q => !studiedQuestions.has(q.id))
-    const questionsToUse = unstudiedQuestions.length > 0 ? unstudiedQuestions : topicQuestions
-    const randomQuestions = questionsToUse.sort(() => Math.random() - 0.5).slice(0, 10)
-    
     // Navigate to practice with pre-selected questions
     router.push(`/practice-config?topic=${encodeURIComponent(topic)}`)
   }

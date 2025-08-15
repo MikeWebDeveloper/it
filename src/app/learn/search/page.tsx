@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/useQuizStore'
 import { Question } from '@/types/quiz'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { PageTransition } from '@/components/animations/PageTransition'
@@ -15,19 +15,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   ArrowLeft, 
   Search, 
-  Filter, 
   BarChart3,
   X,
   BookOpen,
   Target,
   Clock,
-  TrendingUp,
   Lightbulb,
   FileText,
   Tag
 } from 'lucide-react'
 import questionData from '@/data/questions.json'
-import { cn } from '@/lib/utils'
 
 type SearchFilter = 'all' | 'question' | 'options' | 'explanation' | 'topic'
 

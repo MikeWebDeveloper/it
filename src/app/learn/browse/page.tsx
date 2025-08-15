@@ -3,9 +3,8 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/useQuizStore'
-import { Question } from '@/types/quiz'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { PageTransition } from '@/components/animations/PageTransition'
@@ -15,7 +14,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   ArrowLeft, 
   Search, 
-  Filter, 
   Grid3X3, 
   List,
   SortAsc,
@@ -34,7 +32,7 @@ type FilterOption = 'all' | 'bookmarked' | 'studied' | 'unstudied'
 
 export default function QuestionBrowser() {
   const router = useRouter()
-  const { setQuestions, learningStats } = useQuizStore()
+  const { setQuestions } = useQuizStore()
   const [mounted, setMounted] = useState(false)
   
   // Filter and search state
@@ -365,7 +363,7 @@ export default function QuestionBrowser() {
                     : "space-y-6"
                 )}
               >
-                {paginatedQuestions.map((question, index) => (
+                {paginatedQuestions.map((question) => (
                   <LearnCard
                     key={question.id}
                     question={question}

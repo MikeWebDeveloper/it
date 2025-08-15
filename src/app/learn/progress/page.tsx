@@ -19,7 +19,6 @@ import {
   BookOpen,
   Trophy,
   Calendar,
-  Eye,
   Bookmark,
   CheckCircle,
   Star,
@@ -175,14 +174,6 @@ export default function LearningProgress() {
 
   const earnedAchievements = achievements.filter(a => a.earned)
   const nextAchievements = achievements.filter(a => !a.earned).slice(0, 3)
-
-  const getMasteryColor = (level: string) => {
-    switch (level) {
-      case 'advanced': return 'text-green-600 dark:text-green-400'
-      case 'intermediate': return 'text-yellow-600 dark:text-yellow-400'
-      default: return 'text-gray-600 dark:text-gray-400'
-    }
-  }
 
   const getMasteryBadgeColor = (level: string) => {
     switch (level) {

@@ -13,14 +13,12 @@ import { AnimatedThemeToggle } from '@/components/ui/AnimatedThemeToggle'
 import { LearnCard } from '@/components/learn/LearnCard'
 import { motion } from 'framer-motion'
 import { 
-  ArrowLeft, 
-  ArrowRight,
+  ArrowLeft,
   BarChart3,
   ChevronLeft,
   ChevronRight,
   BookOpen,
   Target,
-  Clock,
   Share2,
   Shuffle,
   List,
@@ -170,7 +168,7 @@ export default function QuestionDetailPage() {
     if (navigator.share) {
       try {
         await navigator.share(shareData)
-      } catch (err) {
+      } catch {
         // Fallback to clipboard
         await navigator.clipboard.writeText(window.location.href)
       }

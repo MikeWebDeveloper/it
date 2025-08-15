@@ -5,7 +5,6 @@ import { Question } from '@/types/quiz'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { DifficultyBadge } from '@/components/ui/DifficultyBadge'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { 

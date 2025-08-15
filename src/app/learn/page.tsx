@@ -18,14 +18,13 @@ import {
   Grid3X3,
   Filter,
   Clock,
-  TrendingUp,
-  Users
+  TrendingUp
 } from 'lucide-react'
 import questionData from '@/data/questions.json'
 
 export default function LearnHub() {
   const router = useRouter()
-  const { userProgress, learningStats, setQuestions } = useQuizStore()
+  const { learningStats, setQuestions } = useQuizStore()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
