@@ -201,37 +201,98 @@ export function FeedbackOverlay({
                 </motion.div>
               </div>
 
-              {/* Answer Comparison */}
+              {/* Answer Comparison - Enhanced for Multiple Choice */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 className="space-y-4"
               >
-                {!isCorrect && (
-                  <div className="space-y-3">
+                {Array.isArray(question.correct_answer) ? (
+                  // Multiple choice detailed feedback
+                  <div className="space-y-4">
                     <div>
-                      <h3 className="font-semibold text-sm text-muted-foreground mb-2">Your Answer:</h3>
+                      <h3 className="font-semibold text-sm text-muted-foreground mb-3">Answer Analysis:</h3>
                       <div className="space-y-2">
-                        {userAnswerArray.map((answer, index) => (
-                          <Badge key={index} variant="destructive" className="mr-2">
-                            {answer}
-                          </Badge>
-                        ))}
+                        {userAnswerArray.map((answer, index) => {
+                          const isCorrectChoice = correctAnswer.includes(answer)
+                          return (
+                            <div key={index} className="flex items-center gap-2">
+                              <Badge 
+                                variant={isCorrectChoice ? "default" : "destructive"}
+                                className={cn(
+                                  "flex items-center gap-1",
+                                  isCorrectChoice ? "bg-green-600" : ""
+                                )}
+                              >
+                                {isCorrectChoice ? (
+                                  <CheckCircle2 className="w-3 h-3" />
+                                ) : (
+                                  <XCircle className="w-3 h-3" />
+                                )}
+                                {answer}
+                              </Badge>
+                              <span className="text-xs text-muted-foreground">
+                                {isCorrectChoice ? "Correct choice" : "Incorrect choice"}
+                              </span>
+                            </div>
+                          )
+                        })}
                       </div>
                     </div>
                     
-                    <div>
-                      <h3 className="font-semibold text-sm text-muted-foreground mb-2">Correct Answer:</h3>
-                      <div className="space-y-2">
-                        {correctAnswer.map((answer, index) => (
-                          <Badge key={index} variant="default" className="mr-2 bg-green-600">
-                            {answer}
-                          </Badge>
-                        ))}
+                    {!isCorrect && (
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-2">All Correct Answers:</h3>
+                        <div className="space-y-2">
+                          {correctAnswer.map((answer, index) => {
+                            const wasSelected = userAnswerArray.includes(answer)
+                            return (
+                              <Badge 
+                                key={index} 
+                                variant="default" 
+                                className={cn(
+                                  "mr-2 bg-green-600 flex items-center gap-1 w-fit",
+                                  !wasSelected && "opacity-70"
+                                )}
+                              >
+                                <CheckCircle2 className="w-3 h-3" />
+                                {answer}
+                                {!wasSelected && <span className="text-xs ml-1">(missed)</span>}
+                              </Badge>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Single choice feedback (existing logic)
+                  !isCorrect && (
+                    <div className="space-y-3">
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-2">Your Answer:</h3>
+                        <div className="space-y-2">
+                          {userAnswerArray.map((answer, index) => (
+                            <Badge key={index} variant="destructive" className="mr-2">
+                              {answer}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-2">Correct Answer:</h3>
+                        <div className="space-y-2">
+                          {correctAnswer.map((answer, index) => (
+                            <Badge key={index} variant="default" className="mr-2 bg-green-600">
+                              {answer}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )
                 )}
               </motion.div>
 

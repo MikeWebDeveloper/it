@@ -121,6 +121,8 @@ export function ExhibitDisplay({ exhibit, className }: ExhibitDisplayProps) {
                   size="sm"
                   onClick={toggleExpanded}
                   className="h-7 w-7 p-0"
+                  aria-label="Expand exhibit to full screen"
+                  title="Expand exhibit"
                 >
                   <Expand className="w-3 h-3" />
                 </Button>
@@ -129,6 +131,8 @@ export function ExhibitDisplay({ exhibit, className }: ExhibitDisplayProps) {
                   size="sm"
                   onClick={handleDownload}
                   className="h-7 w-7 p-0"
+                  aria-label="Download exhibit image"
+                  title="Download exhibit"
                 >
                   <Download className="w-3 h-3" />
                 </Button>

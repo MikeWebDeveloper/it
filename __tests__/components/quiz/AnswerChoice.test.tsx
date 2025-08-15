@@ -25,7 +25,7 @@ describe('AnswerChoice', () => {
   it('calls onClick when clicked', () => {
     render(<AnswerChoice {...mockProps} />)
     
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('radio')
     fireEvent.click(button)
     
     expect(mockProps.onClick).toHaveBeenCalled()
@@ -34,35 +34,36 @@ describe('AnswerChoice', () => {
   it('shows selected state when isSelected is true', () => {
     render(<AnswerChoice {...mockProps} isSelected={true} />)
     
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('radio')
     expect(button).toHaveClass('border-primary')
+    expect(button).toHaveAttribute('aria-checked', 'true')
   })
 
   it('shows correct state with green styling', () => {
     render(<AnswerChoice {...mockProps} isCorrect={true} disabled={true} />)
     
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('radio')
     expect(button).toHaveClass('bg-green-50')
   })
 
   it('shows incorrect state with red styling', () => {
     render(<AnswerChoice {...mockProps} isSelected={true} isCorrect={false} disabled={true} />)
     
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('radio')
     expect(button).toHaveClass('bg-red-50')
   })
 
   it('is disabled when disabled prop is true', () => {
     render(<AnswerChoice {...mockProps} disabled={true} />)
     
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('radio')
     expect(button).toBeDisabled()
   })
 
   it('does not call onClick when disabled', () => {
     render(<AnswerChoice {...mockProps} disabled={true} />)
     
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('radio')
     fireEvent.click(button)
     
     expect(mockProps.onClick).not.toHaveBeenCalled()
@@ -71,12 +72,20 @@ describe('AnswerChoice', () => {
   it('displays check icon when correct', () => {
     render(<AnswerChoice {...mockProps} isCorrect={true} disabled={true} />)
     
-    expect(screen.getByRole('button')).toContainHTML('svg')
+    expect(screen.getByRole('radio')).toContainHTML('svg')
   })
 
   it('displays X icon when incorrect', () => {
     render(<AnswerChoice {...mockProps} isSelected={true} isCorrect={false} disabled={true} />)
     
-    expect(screen.getByRole('button')).toContainHTML('svg')
+    expect(screen.getByRole('radio')).toContainHTML('svg')
+  })
+
+  it('has proper accessibility attributes', () => {
+    render(<AnswerChoice {...mockProps} />)
+    
+    const button = screen.getByRole('radio')
+    expect(button).toHaveAttribute('aria-label', 'Select answer: Test answer option')
+    expect(button).toHaveAttribute('aria-checked', 'false')
   })
 })

@@ -17,7 +17,8 @@ import {
   Target, 
   BookOpen,
   BarChart3,
-  RotateCcw
+  RotateCcw,
+  GraduationCap
 } from 'lucide-react'
 import questionData from '@/data/questions.json'
 import { shuffleArray } from '@/lib/utils'
@@ -143,9 +144,9 @@ export default function Home() {
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-between mb-4">
+        {/* Main navigation - accessible header */}
+        <header role="banner" className="mb-8">
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center justify-between mb-4">
             <div></div>
             <div className="flex gap-2">
               <Button
@@ -153,32 +154,39 @@ export default function Home() {
                 size="sm"
                 onClick={() => router.push('/stats')}
                 className="rounded-full"
+                aria-label="View statistics and progress"
               >
                 <BarChart3 className="w-4 h-4" />
               </Button>
               <AnimatedThemeToggle variant="compact" size="sm" />
             </div>
-          </div>
+          </nav>
+        </header>
+
+        {/* Main content area */}
+        <main id="main-content" role="main" tabIndex={-1}>
+        {/* App introduction section */}
+        <section aria-labelledby="app-title" className="text-center mb-8">
           
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+          <h1 id="app-title" className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
             IT Quiz App
           </h1>
           <p className="text-lg text-muted-foreground mb-4">
             Master IT Essentials with 350+ interactive questions
           </p>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap gap-2 justify-center" role="list" aria-label="Available topics">
             {questionData.exam_info.topics.slice(0, 5).map(topic => (
-              <Badge key={topic} variant="outline" className="text-xs">
+              <Badge key={topic} variant="outline" className="text-xs" role="listitem">
                 {topic}
               </Badge>
             ))}
             {questionData.exam_info.topics.length > 5 && (
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs" role="listitem">
                 +{questionData.exam_info.topics.length - 5} more
               </Badge>
             )}
           </div>
-        </div>
+        </section>
 
         {/* Progress Overview & Study Timer */}
         {userProgress.totalSessionsCompleted > 0 && (
@@ -187,7 +195,8 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+            <section aria-labelledby="progress-heading" className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+              <h2 id="progress-heading" className="sr-only">Your Learning Progress</h2>
               {/* Progress Overview */}
               <div className="xl:col-span-2">
                 <Card className="h-full bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/20 dark:to-orange-950/20 border-yellow-200 dark:border-yellow-800">
@@ -284,7 +293,7 @@ export default function Home() {
                   className="h-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20 border-indigo-200 dark:border-indigo-800"
                 />
               </motion.div>
-            </div>
+            </section>
           </motion.div>
         )}
 
@@ -296,10 +305,13 @@ export default function Home() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="mb-8"
           >
-            <StudySessionTimer 
-              showStats={true}
-              className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20 border-indigo-200 dark:border-indigo-800"
-            />
+            <section aria-labelledby="study-timer-heading">
+              <h2 id="study-timer-heading" className="sr-only">Study Session Timer</h2>
+              <StudySessionTimer 
+                showStats={true}
+                className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20 border-indigo-200 dark:border-indigo-800"
+              />
+            </section>
           </motion.div>
         )}
 
@@ -309,6 +321,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
+          <section aria-labelledby="learn-practice-heading">
           <Card className="mb-8 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/20 dark:via-indigo-950/20 dark:to-purple-950/20 border-blue-200 dark:border-blue-800">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
@@ -318,7 +331,7 @@ export default function Home() {
                 >
                   <BookOpen className="w-5 h-5" />
                 </motion.div>
-                Learn & Practice
+                <h2 id="learn-practice-heading">Learn & Practice</h2>
               </CardTitle>
               <p className="text-sm text-blue-600 dark:text-blue-300">
                 Study and learn with immediate feedback and no pressure
@@ -333,20 +346,40 @@ export default function Home() {
                   className="space-y-3"
                 >
                   <Button
-                    onClick={() => router.push('/practice-config')}
+                    onClick={() => router.push('/learn')}
                     className="h-auto p-4 flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
                     variant="outline"
+                    aria-label="Access learning hub - Browse questions with answers revealed"
                   >
                     <motion.div
                       whileHover={{ scale: 1.2, rotate: 10 }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
-                      <BookOpen className="w-8 h-8 text-blue-600" />
+                      <GraduationCap className="w-8 h-8 text-blue-600" />
                     </motion.div>
                     <div className="text-center">
-                      <div className="font-semibold text-blue-800 dark:text-blue-200">Practice Mode</div>
+                      <div className="font-semibold text-blue-800 dark:text-blue-200">Learning Hub</div>
                       <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                        Learn with instant feedback • Choose your topics
+                        Browse questions • Study at your pace
+                      </div>
+                    </div>
+                  </Button>
+                  
+                  <Button
+                    onClick={() => router.push('/practice-config')}
+                    className="h-auto p-3 flex items-center gap-3 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 border-emerald-200 dark:border-emerald-800 hover:from-emerald-100 hover:to-teal-100 dark:hover:from-emerald-950/40 dark:hover:to-teal-950/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg w-full"
+                    variant="outline"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <BookOpen className="w-6 h-6 text-emerald-600" />
+                    </motion.div>
+                    <div className="text-left">
+                      <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Practice Mode</div>
+                      <div className="text-xs text-emerald-600 dark:text-emerald-400">
+                        Instant feedback • Choose topics
                       </div>
                     </div>
                   </Button>
@@ -425,6 +458,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
+          </section>
         </motion.div>
 
         {/* Test Your Knowledge Section */}
@@ -433,6 +467,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
+          <section aria-labelledby="test-knowledge-heading">
           <Card className="mb-8 bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 dark:from-green-950/20 dark:via-emerald-950/20 dark:to-teal-950/20 border-green-200 dark:border-green-800">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200">
@@ -442,7 +477,7 @@ export default function Home() {
                 >
                   <Target className="w-5 h-5" />
                 </motion.div>
-                Test Your Knowledge
+                <h2 id="test-knowledge-heading">Test Your Knowledge</h2>
               </CardTitle>
               <p className="text-sm text-green-600 dark:text-green-300">
                 Challenge yourself with timed quizzes and exams
@@ -502,7 +537,9 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
+          </section>
         </motion.div>
+        </main>
         </div>
       </div>
     </PageTransition>

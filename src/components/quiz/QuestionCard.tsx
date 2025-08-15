@@ -7,8 +7,10 @@ import { Progress } from '@/components/ui/progress'
 import { AnswerChoice } from './AnswerChoice'
 import { ExhibitDisplay } from './ExhibitDisplay'
 import { DifficultyBadge } from '@/components/ui/DifficultyBadge'
+import { useAccessibility } from '@/hooks/useAccessibility'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
+import { useEffect } from 'react'
 import { 
   Monitor, 
   Shield, 
@@ -74,19 +76,33 @@ export function QuestionCard({
   hasAllRequiredAnswers = true,
   className
 }: QuestionCardProps) {
+  const { announce, announceQuizState } = useAccessibility()
   const progress = ((currentIndex + 1) / totalQuestions) * 100
   const isMultipleChoice = Array.isArray(question.correct_answer)
+  
+  // Announce question when it changes
+  useEffect(() => {
+    announceQuizState(
+      `Question ${currentIndex + 1} of ${totalQuestions}`,
+      `Topic: ${question.topic}. ${question.question}`
+    )
+  }, [currentIndex, question.id, announceQuizState, question.topic, question.question, totalQuestions])
   
   const handleAnswerToggle = (answer: string) => {
     if (isMultipleChoice) {
       const currentAnswers = Array.isArray(selectedAnswer) ? selectedAnswer : []
       if (currentAnswers.includes(answer)) {
-        onAnswerSelect(currentAnswers.filter(a => a !== answer))
+        const newAnswers = currentAnswers.filter(a => a !== answer)
+        onAnswerSelect(newAnswers)
+        announce(`Deselected answer: ${answer}`, 'polite')
       } else {
-        onAnswerSelect([...currentAnswers, answer])
+        const newAnswers = [...currentAnswers, answer]
+        onAnswerSelect(newAnswers)
+        announce(`Selected answer: ${answer}`, 'polite')
       }
     } else {
       onAnswerSelect(answer)
+      announce(`Selected answer: ${answer}`, 'polite')
     }
   }
 
@@ -160,7 +176,12 @@ export function QuestionCard({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.4 }}
         >
-          <CardTitle className="text-base md:text-lg leading-relaxed font-medium">
+          <CardTitle 
+            className="text-base md:text-lg leading-relaxed font-medium"
+            role="heading"
+            aria-level={2}
+            id={`question-${question.id}`}
+          >
             {question.question}
           </CardTitle>
         </motion.div>
@@ -215,16 +236,27 @@ export function QuestionCard({
       
       <CardContent className="space-y-2 md:space-y-3 pt-0 px-3 md:px-6 pb-3 md:pb-6">
         {/* Answer options */}
-        <div className="space-y-2 md:space-y-3">
-          {question.options.map((option, index) => (
-            <AnswerChoice
-              key={index}
-              option={option}
-              isSelected={
-                isMultipleChoice 
-                  ? Array.isArray(selectedAnswer) && selectedAnswer.includes(option)
-                  : selectedAnswer === option
-              }
+        <fieldset>
+          <legend className="sr-only">
+            {isMultipleChoice 
+              ? `Select ${Array.isArray(question.correct_answer) ? question.correct_answer.length : 'all'} correct answers for question ${currentIndex + 1}`
+              : `Select the correct answer for question ${currentIndex + 1}`
+            }
+          </legend>
+          <div 
+            className="space-y-2 md:space-y-3"
+            role={isMultipleChoice ? "group" : "radiogroup"}
+            aria-labelledby={`question-${question.id}`}
+          >
+            {question.options.map((option, index) => (
+              <AnswerChoice
+                key={index}
+                option={option}
+                isSelected={
+                  isMultipleChoice 
+                    ? Array.isArray(selectedAnswer) && selectedAnswer.includes(option)
+                    : selectedAnswer === option
+                }
               isCorrect={
                 showResult 
                   ? Array.isArray(question.correct_answer)
@@ -237,7 +269,8 @@ export function QuestionCard({
               disabled={showResult}
             />
           ))}
-        </div>
+          </div>
+        </fieldset>
         
         {/* Explanation (shown after answering) */}
         {showResult && question.explanation && (

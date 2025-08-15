@@ -39,10 +39,26 @@ export function AnswerChoice({
 
   const variant = getVariant()
 
+  const ariaLabel = isMultipleChoice 
+    ? `${isSelected ? 'Deselect' : 'Select'} answer: ${option}`
+    : `Select answer: ${option}`
+    
+  const ariaDescription = disabled && isCorrect !== undefined
+    ? isCorrect 
+      ? 'Correct answer'
+      : isSelected 
+        ? 'Incorrect answer'
+        : 'Not selected'
+    : undefined
+
   return (
     <button
       onClick={onClick}
       disabled={disabled}
+      role={isMultipleChoice ? "checkbox" : "radio"}
+      aria-checked={isSelected}
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescription ? `answer-description-${option.slice(0, 10)}` : undefined}
       className={cn(
         // Base styles
         "w-full p-3 md:p-4 text-left rounded-lg border-2 transition-all duration-200",
@@ -116,6 +132,16 @@ export function AnswerChoice({
           {option}
         </span>
       </div>
+      
+      {/* Screen reader description for result state */}
+      {ariaDescription && (
+        <span 
+          id={`answer-description-${option.slice(0, 10)}`}
+          className="sr-only"
+        >
+          {ariaDescription}
+        </span>
+      )}
     </button>
   )
 }

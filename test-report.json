@@ -1,0 +1,74 @@
+{
+  "timestamp": "2025-08-15T00:44:29.920Z",
+  "total_tests": 13,
+  "passed": 8,
+  "failed": 5,
+  "success_rate": 61.53846153846154,
+  "results": [
+    {
+      "test": "Multiple choice navigation failed",
+      "status": "FAIL",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'button:contains(\"Start Practice\")' is not a valid selector."
+    },
+    {
+      "test": "Learning Hub loads correctly",
+      "status": "PASS",
+      "message": ""
+    },
+    {
+      "test": "Learning navigation options available",
+      "status": "PASS",
+      "message": "11 options found"
+    },
+    {
+      "test": "Browse Questions page failed",
+      "status": "FAIL",
+      "message": "Waiting for selector `.question, .learn-card, [data-testid=\"question\"]` failed"
+    },
+    {
+      "test": "Topics page failed",
+      "status": "FAIL",
+      "message": "Waiting for selector `.topic, .card, [data-testid=\"topic\"]` failed"
+    },
+    {
+      "test": "Search page failed",
+      "status": "FAIL",
+      "message": "Waiting for selector `input[type=\"search\"], input[placeholder*=\"search\"], .search-input` failed"
+    },
+    {
+      "test": "Mobile responsive layout working",
+      "status": "PASS",
+      "message": ""
+    },
+    {
+      "test": "Tablet responsive layout working",
+      "status": "PASS",
+      "message": ""
+    },
+    {
+      "test": "Heading structure present",
+      "status": "PASS",
+      "message": "2 headings found"
+    },
+    {
+      "test": "Keyboard navigation working",
+      "status": "PASS",
+      "message": ""
+    },
+    {
+      "test": "Integration test failed",
+      "status": "FAIL",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'a[href*=\"/learn\"], button:contains(\"Learn\")' is not a valid selector."
+    },
+    {
+      "test": "Page load performance acceptable",
+      "status": "PASS",
+      "message": "152ms"
+    },
+    {
+      "test": "JavaScript resources loading",
+      "status": "PASS",
+      "message": "21 JS files"
+    }
+  ]
+}

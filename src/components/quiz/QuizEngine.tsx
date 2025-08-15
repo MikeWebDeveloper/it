@@ -173,16 +173,38 @@ export function QuizEngine({ mode }: QuizEngineProps) {
   const handleAnswerSelect = useCallback((answer: string | string[]) => {
     answerQuestion(currentQuestion?.id || 0, answer)
     
-    // For practice mode, show immediate feedback
+    // For practice mode, only show feedback when all required answers are selected
     if (mode === 'practice' && !hasAnsweredCurrentQuestion && currentQuestion) {
-      const correct = checkAnswer(answer, currentQuestion.correct_answer)
-      setCurrentAnswer(answer)
-      setIsAnswerCorrect(correct)
-      setShowFeedback(true)
-      setHasAnsweredCurrentQuestion(true)
-      
-      // Trigger audio/haptic feedback
-      feedback.onAnswerSelect(correct)
+      // For multiple choice questions, wait until all required answers are selected
+      if (Array.isArray(currentQuestion.correct_answer)) {
+        const answerArray = Array.isArray(answer) ? answer : []
+        const requiredCount = currentQuestion.correct_answer.length
+        
+        // Only evaluate when user has selected the required number of answers
+        if (answerArray.length === requiredCount) {
+          const correct = checkAnswer(answer, currentQuestion.correct_answer)
+          setCurrentAnswer(answer)
+          setIsAnswerCorrect(correct)
+          setShowFeedback(true)
+          setHasAnsweredCurrentQuestion(true)
+          
+          // Trigger audio/haptic feedback
+          feedback.onAnswerSelect(correct)
+        } else {
+          // Just selection feedback for partial selections
+          feedback.onButtonClick()
+        }
+      } else {
+        // For single choice questions, show immediate feedback as before
+        const correct = checkAnswer(answer, currentQuestion.correct_answer)
+        setCurrentAnswer(answer)
+        setIsAnswerCorrect(correct)
+        setShowFeedback(true)
+        setHasAnsweredCurrentQuestion(true)
+        
+        // Trigger audio/haptic feedback
+        feedback.onAnswerSelect(correct)
+      }
     } else {
       // General selection feedback for other modes
       feedback.onButtonClick()
@@ -208,14 +230,33 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     // Handle multiple choice questions
     if (Array.isArray(currentQuestion.correct_answer)) {
       const currentAnswers = Array.isArray(selectedAnswer) ? selectedAnswer : []
+      let newAnswers: string[]
       
       if (currentAnswers.includes(selectedOption)) {
         // Remove if already selected
-        const newAnswers = currentAnswers.filter(ans => ans !== selectedOption)
-        answerQuestion(currentQuestion.id, newAnswers)
+        newAnswers = currentAnswers.filter(ans => ans !== selectedOption)
       } else {
         // Add to selection
-        answerQuestion(currentQuestion.id, [...currentAnswers, selectedOption])
+        newAnswers = [...currentAnswers, selectedOption]
+      }
+      
+      answerQuestion(currentQuestion.id, newAnswers)
+      
+      // Check if we should show feedback in practice mode
+      if (mode === 'practice' && !hasAnsweredCurrentQuestion) {
+        const requiredCount = currentQuestion.correct_answer.length
+        
+        // Only evaluate when user has selected the required number of answers
+        if (newAnswers.length === requiredCount) {
+          const correct = checkAnswer(newAnswers, currentQuestion.correct_answer)
+          setCurrentAnswer(newAnswers)
+          setIsAnswerCorrect(correct)
+          setShowFeedback(true)
+          setHasAnsweredCurrentQuestion(true)
+          
+          // Trigger audio/haptic feedback
+          feedback.onAnswerSelect(correct)
+        }
       }
     } else {
       // Single answer selection
@@ -275,13 +316,29 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     if (showFeedback) {
       handleFeedbackContinue()
     } else if (hasAnswer) {
-      // For multiple choice, show feedback or advance
+      // For practice mode, show feedback when user has selected required answers
       if (mode === 'practice' && !hasAnsweredCurrentQuestion && selectedAnswer !== undefined) {
-        const correct = checkAnswer(selectedAnswer, currentQuestion.correct_answer)
-        setCurrentAnswer(selectedAnswer)
-        setIsAnswerCorrect(correct)
-        setShowFeedback(true)
-        setHasAnsweredCurrentQuestion(true)
+        // For multiple choice, only show feedback if all required answers are selected
+        if (Array.isArray(currentQuestion.correct_answer)) {
+          const answerArray = Array.isArray(selectedAnswer) ? selectedAnswer : []
+          const requiredCount = currentQuestion.correct_answer.length
+          
+          if (answerArray.length === requiredCount) {
+            const correct = checkAnswer(selectedAnswer, currentQuestion.correct_answer)
+            setCurrentAnswer(selectedAnswer)
+            setIsAnswerCorrect(correct)
+            setShowFeedback(true)
+            setHasAnsweredCurrentQuestion(true)
+          }
+          // If not all answers selected, do nothing (let user continue selecting)
+        } else {
+          // Single choice - show feedback immediately
+          const correct = checkAnswer(selectedAnswer, currentQuestion.correct_answer)
+          setCurrentAnswer(selectedAnswer)
+          setIsAnswerCorrect(correct)
+          setShowFeedback(true)
+          setHasAnsweredCurrentQuestion(true)
+        }
       } else {
         handleNext()
       }
