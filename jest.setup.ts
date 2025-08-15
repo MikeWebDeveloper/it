@@ -9,12 +9,17 @@ if (typeof global.document === 'undefined') {
 }
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
+global.IntersectionObserver = class MockIntersectionObserver {
+  root = null
+  rootMargin = ''
+  thresholds = []
+  
   constructor() {}
   disconnect() {}
   observe() {}
   unobserve() {}
-}
+  takeRecords() { return [] }
+} as any
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {

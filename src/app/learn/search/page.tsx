@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/useQuizStore'
 import { Question } from '@/types/quiz'
@@ -87,7 +87,7 @@ export default function QuestionSearch() {
   }, [searchHistory, mounted])
 
   // Search function
-  const performSearch = useMemo(() => {
+  const performSearch = useCallback(() => {
     if (!searchQuery.trim()) {
       setSearchResults([])
       return
@@ -149,7 +149,7 @@ export default function QuestionSearch() {
   }, [searchQuery, searchFilter, selectedTopics, searchHistory])
 
   useEffect(() => {
-    const timeoutId = setTimeout(performSearch, 300) // Debounce search
+    const timeoutId = setTimeout(() => performSearch(), 300) // Debounce search
     return () => clearTimeout(timeoutId)
   }, [performSearch])
 
