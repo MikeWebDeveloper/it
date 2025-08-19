@@ -133,24 +133,24 @@ export function StudySessionTimer({
 
   return (
     <Card className={className}>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center justify-between">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center justify-between text-base">
           <div className="flex items-center gap-2">
-            <Timer className="w-5 h-5" />
+            <Timer className="w-4 h-4" />
             <span>Study Timer</span>
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => {}}
-            className="h-8 w-8 p-0"
+            className="h-6 w-6 p-0"
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-3 h-3" />
           </Button>
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {/* Current Session Display */}
         <AnimatePresence mode="wait">
           {sessionState === 'idle' ? (
@@ -159,12 +159,12 @@ export function StudySessionTimer({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="text-center py-6"
+              className="text-center py-4"
             >
-              <div className="w-16 h-16 mx-auto mb-4 bg-muted/20 rounded-full flex items-center justify-center">
-                <BookOpen className="w-8 h-8 text-muted-foreground" />
+              <div className="w-12 h-12 mx-auto mb-3 bg-muted/20 rounded-full flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-muted-foreground" />
               </div>
-              <p className="text-muted-foreground mb-4">Ready to start studying?</p>
+              <p className="text-sm text-muted-foreground mb-3">Ready to start studying?</p>
               <div className="flex gap-2 justify-center">
                 <Button onClick={() => startStudySession()}>
                   <Play className="w-4 h-4 mr-2" />
@@ -205,7 +205,7 @@ export function StudySessionTimer({
 
               {/* Timer Display */}
               <motion.div 
-                className="text-4xl font-mono font-bold mb-2"
+                className="text-3xl font-mono font-bold mb-2"
                 animate={{ 
                   scale: timeRemaining <= 60 ? [1, 1.05, 1] : 1,
                   color: timeRemaining <= 60 ? '#ef4444' : undefined
@@ -219,10 +219,10 @@ export function StudySessionTimer({
               </motion.div>
 
               {/* Progress Bar */}
-              <div className="mb-4">
+              <div className="mb-3">
                 <Progress 
                   value={progress} 
-                  className="h-2"
+                  className="h-1.5"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
                   {Math.round(progress)}% complete
@@ -262,29 +262,29 @@ export function StudySessionTimer({
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="border-t pt-4 mt-4"
+            className="border-t pt-3 mt-3"
           >
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-3 gap-3 text-center">
               <div>
                 <div className="flex items-center justify-center mb-1">
-                  <Clock className="w-4 h-4 text-muted-foreground mr-1" />
-                  <span className="font-semibold">{todayStudyTime}</span>
+                  <Clock className="w-3 h-3 text-muted-foreground mr-1" />
+                  <span className="text-sm font-semibold">{todayStudyTime}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Today</p>
               </div>
               
               <div>
                 <div className="flex items-center justify-center mb-1">
-                  <TrendingUp className="w-4 h-4 text-muted-foreground mr-1" />
-                  <span className="font-semibold">{sessionsCompleted}</span>
+                  <TrendingUp className="w-3 h-3 text-muted-foreground mr-1" />
+                  <span className="text-sm font-semibold">{sessionsCompleted}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Sessions</p>
               </div>
               
               <div>
                 <div className="flex items-center justify-center mb-1">
-                  <Coffee className="w-4 h-4 text-muted-foreground mr-1" />
-                  <span className="font-semibold">{breaksTaken}</span>
+                  <Coffee className="w-3 h-3 text-muted-foreground mr-1" />
+                  <span className="text-sm font-semibold">{breaksTaken}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Breaks</p>
               </div>

@@ -109,11 +109,11 @@ export function useAutoSave<T = unknown>({
 
   // Cleanup on unmount
   useEffect(() => {
+    const currentTimeoutRef = saveTimeoutRef.current
     return () => {
       debouncedSave.cancel()
-      const currentTimeout = saveTimeoutRef.current
-      if (currentTimeout) {
-        clearTimeout(currentTimeout)
+      if (currentTimeoutRef) {
+        clearTimeout(currentTimeoutRef)
       }
     }
   }, [debouncedSave])
