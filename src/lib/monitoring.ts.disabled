@@ -1,0 +1,210 @@
+// Production Monitoring and Error Tracking
+interface ErrorContext {
+  userId?: string;
+  sessionId?: string;
+  route?: string;
+  userAgent?: string;
+  timestamp: string;
+  environment: string;
+}
+
+interface PerformanceMetric {
+  name: string;
+  value: number;
+  unit: string;
+  timestamp: string;
+  route?: string;
+}
+
+class MonitoringService {
+  private static instance: MonitoringService;
+  private errorQueue: Array<{ error: Error; context: ErrorContext }> = [];
+  private metricsQueue: PerformanceMetric[] = [];
+  private isProduction = process.env.NODE_ENV === 'production';
+
+  static getInstance(): MonitoringService {
+    if (!MonitoringService.instance) {
+      MonitoringService.instance = new MonitoringService();
+    }
+    return MonitoringService.instance;
+  }
+
+  // Error Tracking
+  captureError(error: Error, context: Partial<ErrorContext> = {}) {
+    const fullContext: ErrorContext = {
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'unknown',
+      route: window?.location?.pathname,
+      userAgent: navigator?.userAgent,
+      ...context
+    };
+
+    this.errorQueue.push({ error, context: fullContext });
+
+    // Log to console in development
+    if (!this.isProduction) {
+      console.error('Monitoring - Error captured:', error, fullContext);
+    }
+
+    // Send to external service (Sentry, LogRocket, etc.)
+    this.flushErrors();
+  }
+
+  // Performance Monitoring
+  capturePerformanceMetric(name: string, value: number, unit: string = 'ms', route?: string) {
+    const metric: PerformanceMetric = {
+      name,
+      value,
+      unit,
+      timestamp: new Date().toISOString(),
+      route: route || window?.location?.pathname
+    };
+
+    this.metricsQueue.push(metric);
+
+    // Log in development
+    if (!this.isProduction) {
+      console.log('Monitoring - Performance metric:', metric);
+    }
+
+    // Send to analytics service
+    this.flushMetrics();
+  }
+
+  // Web Vitals Monitoring
+  captureWebVitals() {
+    if (typeof window !== 'undefined') {
+      // Core Web Vitals
+      import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+        getCLS((metric) => this.capturePerformanceMetric('CLS', metric.value, 'score'));
+        getFID((metric) => this.capturePerformanceMetric('FID', metric.value, 'ms'));
+        getFCP((metric) => this.capturePerformanceMetric('FCP', metric.value, 'ms'));
+        getLCP((metric) => this.capturePerformanceMetric('LCP', metric.value, 'ms'));
+        getTTFB((metric) => this.capturePerformanceMetric('TTFB', metric.value, 'ms'));
+      });
+    }
+  }
+
+  // Quiz-specific metrics
+  captureQuizMetric(metricName: string, value: number, metadata?: Record<string, any>) {
+    this.capturePerformanceMetric(
+      `quiz_${metricName}`,
+      value,
+      'count',
+      window?.location?.pathname
+    );
+
+    // Additional metadata for quiz analytics
+    if (metadata && this.isProduction) {
+      this.sendQuizAnalytics(metricName, value, metadata);
+    }
+  }
+
+  // User interaction tracking
+  captureUserInteraction(action: string, element: string, metadata?: Record<string, any>) {
+    if (this.isProduction) {
+      const event = {
+        action,
+        element,
+        timestamp: new Date().toISOString(),
+        route: window?.location?.pathname,
+        ...metadata
+      };
+
+      // Send to analytics service
+      this.sendInteractionEvent(event);
+    }
+  }
+
+  private async flushErrors() {
+    if (this.errorQueue.length === 0) return;
+
+    const errors = [...this.errorQueue];
+    this.errorQueue = [];
+
+    if (this.isProduction) {
+      try {
+        // Send to error tracking service (e.g., Sentry)
+        await fetch('/api/monitoring/errors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ errors })
+        });
+      } catch (error) {
+        console.error('Failed to send errors to monitoring service:', error);
+        // Re-queue errors for retry
+        this.errorQueue.push(...errors);
+      }
+    }
+  }
+
+  private async flushMetrics() {
+    if (this.metricsQueue.length === 0) return;
+
+    const metrics = [...this.metricsQueue];
+    this.metricsQueue = [];
+
+    if (this.isProduction) {
+      try {
+        // Send to analytics service
+        await fetch('/api/monitoring/metrics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ metrics })
+        });
+      } catch (error) {
+        console.error('Failed to send metrics to monitoring service:', error);
+        // Re-queue metrics for retry
+        this.metricsQueue.push(...metrics);
+      }
+    }
+  }
+
+  private sendQuizAnalytics(metricName: string, value: number, metadata: Record<string, any>) {
+    // Send to analytics service (Google Analytics, Mixpanel, etc.)
+    if (typeof gtag !== 'undefined') {
+      gtag('event', metricName, {
+        event_category: 'Quiz',
+        value: value,
+        custom_parameters: metadata
+      });
+    }
+  }
+
+  private sendInteractionEvent(event: any) {
+    // Send to analytics service
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'user_interaction', {
+        event_category: 'UI',
+        event_label: event.action,
+        custom_parameters: event
+      });
+    }
+  }
+}
+
+// React hook for monitoring
+export function useMonitoring() {
+  const monitoring = MonitoringService.getInstance();
+
+  const captureError = (error: Error, context?: Partial<ErrorContext>) => {
+    monitoring.captureError(error, context);
+  };
+
+  const captureMetric = (name: string, value: number, unit?: string) => {
+    monitoring.capturePerformanceMetric(name, value, unit);
+  };
+
+  const captureInteraction = (action: string, element: string, metadata?: Record<string, any>) => {
+    monitoring.captureUserInteraction(action, element, metadata);
+  };
+
+  return {
+    captureError,
+    captureMetric,
+    captureInteraction,
+    monitoring
+  };
+}
+
+export default MonitoringService;

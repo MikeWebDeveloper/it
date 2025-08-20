@@ -19,7 +19,8 @@ import {
   AlertTriangle
 } from 'lucide-react'
 import { useQuizStore } from '@/store/useQuizStore'
-import questionData from '@/data/questions.json'
+import { QuestionData } from '@/types/quiz'
+// Questions data passed as props to avoid loading here
 
 const topicIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   'Hardware': Computer,
@@ -52,9 +53,10 @@ const topicColors: Record<string, string> = {
 interface CategorySelectorProps {
   onCategorySelect: (categories: string[]) => void
   selectedCategories: string[]
+  questionData: QuestionData
 }
 
-export function CategorySelector({ onCategorySelect, selectedCategories }: CategorySelectorProps) {
+export function CategorySelector({ onCategorySelect, selectedCategories, questionData }: CategorySelectorProps) {
   const { userProgress } = useQuizStore()
   
   // Get question counts by topic
@@ -100,7 +102,7 @@ export function CategorySelector({ onCategorySelect, selectedCategories }: Categ
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {questionData.exam_info.topics.map((topic) => {
+        {questionData.exam_info.topics.map((topic: string) => {
           const IconComponent = topicIcons[topic] || Settings
           const isSelected = selectedCategories.includes(topic)
           const topicProgress = userProgress.topicProgress[topic]

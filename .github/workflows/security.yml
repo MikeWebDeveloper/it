@@ -1,0 +1,272 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run security scans weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  dependency-check:
+    name: Dependency Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=high --json > npm-audit.json || true
+          cat npm-audit.json
+
+      - name: Run audit-ci
+        run: npx audit-ci --high --report-type=full --output-format=json
+
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-audit-results
+          path: npm-audit.json
+
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: typescript, javascript
+          config-file: ./.github/codeql/codeql-config.yml
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:typescript"
+
+  secrets-scan:
+    name: Secrets Detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  container-scan:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t it-quiz-app:latest .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'it-quiz-app:latest'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  license-check:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check licenses
+        run: |
+          npx license-checker --json --out licenses.json
+          npx license-checker --failOn 'GPL;AGPL;LGPL'
+
+      - name: Upload license report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: license-report
+          path: licenses.json
+
+  security-headers-check:
+    name: Security Headers Validation
+    runs-on: ubuntu-latest
+    needs: [dependency-check]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and start app
+        run: |
+          npm run build
+          npm start &
+          sleep 30
+
+      - name: Test security headers
+        run: |
+          curl -I http://localhost:3000 > headers.txt 2>&1 || true
+          cat headers.txt
+          
+          # Check for essential security headers
+          grep -i "x-content-type-options" headers.txt || echo "MISSING: X-Content-Type-Options"
+          grep -i "x-frame-options" headers.txt || echo "MISSING: X-Frame-Options"
+          grep -i "x-xss-protection" headers.txt || echo "MISSING: X-XSS-Protection"
+          grep -i "strict-transport-security" headers.txt || echo "MISSING: HSTS (expected in production)"
+
+      - name: Upload headers check
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-headers
+          path: headers.txt
+
+  owasp-zap-scan:
+    name: OWASP ZAP Security Scan
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Start application
+        run: |
+          npm start &
+          sleep 30
+
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.10.0
+        with:
+          target: 'http://localhost:3000'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a -m 5 -T 60'
+
+  security-report:
+    name: Generate Security Report
+    runs-on: ubuntu-latest
+    needs: [dependency-check, codeql-analysis, secrets-scan, license-check, security-headers-check]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Generate security summary
+        run: |
+          echo "# Security Scan Summary" > security-summary.md
+          echo "Generated: $(date)" >> security-summary.md
+          echo "" >> security-summary.md
+          
+          echo "## Dependency Audit" >> security-summary.md
+          if [ -f security-audit-results/npm-audit.json ]; then
+            echo "✅ Dependency audit completed" >> security-summary.md
+          else
+            echo "❌ Dependency audit failed" >> security-summary.md
+          fi
+          
+          echo "" >> security-summary.md
+          echo "## License Compliance" >> security-summary.md
+          if [ -f license-report/licenses.json ]; then
+            echo "✅ License check completed" >> security-summary.md
+          else
+            echo "❌ License check failed" >> security-summary.md
+          fi
+          
+          echo "" >> security-summary.md
+          echo "## Security Headers" >> security-summary.md
+          if [ -f security-headers/headers.txt ]; then
+            echo "✅ Headers validation completed" >> security-summary.md
+          else
+            echo "❌ Headers validation failed" >> security-summary.md
+          fi
+
+      - name: Upload security summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-summary
+          path: security-summary.md
+
+      - name: Comment PR with security status
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('security-summary.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });

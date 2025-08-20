@@ -19,6 +19,7 @@ import {
 import questionData from '@/data/questions.json'
 import { useTheme } from 'next-themes'
 import { shuffleArray } from '@/lib/utils'
+import { QuestionData } from '@/types/quiz'
 
 type ViewMode = 'home' | 'categories' | 'config'
 
@@ -113,6 +114,7 @@ export default function Home() {
           <CategorySelector
             onCategorySelect={handleCategorySelect}
             selectedCategories={selectedCategories}
+            questionData={questionData as QuestionData}
           />
 
           {selectedCategories.length > 0 && (

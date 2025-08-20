@@ -11,6 +11,7 @@ import { useTheme } from 'next-themes'
 import { Sun, Moon } from 'lucide-react'
 import questionData from '@/data/questions.json'
 import { shuffleArray } from '@/lib/utils'
+import { QuestionData } from '@/types/quiz'
 
 type ViewMode = 'categories' | 'config'
 
@@ -130,6 +131,7 @@ export default function PracticeConfigPage() {
           <CategorySelector
             onCategorySelect={handleCategorySelect}
             selectedCategories={selectedCategories}
+            questionData={questionData as QuestionData}
           />
 
           {selectedCategories.length > 0 && (

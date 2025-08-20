@@ -1,0 +1,44 @@
+name: "IT Quiz App CodeQL Config"
+
+disable-default-queries: false
+
+queries:
+  - name: security-queries
+    uses: security-and-quality
+
+  - name: javascript-security
+    uses: javascript/ql/src/Security
+
+  - name: typescript-security  
+    uses: javascript/ql/src/Security
+
+paths-ignore:
+  - node_modules
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
+  - '**/*.spec.ts'
+  - '**/*.spec.tsx'
+  - coverage
+  - .next
+  - out
+  - dist
+  - build
+  - public/sw.js
+  - public/sw-optimized.js
+
+paths:
+  - src
+
+packs:
+  - codeql/javascript-queries:AlertSuppression.ql
+  - codeql/javascript-queries:Security/CWE-079
+  - codeql/javascript-queries:Security/CWE-089
+  - codeql/javascript-queries:Security/CWE-094
+  - codeql/javascript-queries:Security/CWE-116
+  - codeql/javascript-queries:Security/CWE-200
+  - codeql/javascript-queries:Security/CWE-290
+  - codeql/javascript-queries:Security/CWE-312
+  - codeql/javascript-queries:Security/CWE-352
+  - codeql/javascript-queries:Security/CWE-377
+  - codeql/javascript-queries:Security/CWE-798
+  - codeql/javascript-queries:Security/CWE-943

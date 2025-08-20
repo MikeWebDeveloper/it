@@ -13,7 +13,7 @@ import { useTheme } from 'next-themes'
 import { Sun, Moon, BookOpen, Target } from 'lucide-react'
 import questionData from '@/data/questions.json'
 import { shuffleArray } from '@/lib/utils'
-import { Question } from '@/types/quiz'
+import { Question, QuestionData } from '@/types/quiz'
 
 type ViewMode = 'categories' | 'flashcards'
 
@@ -203,6 +203,7 @@ export default function FlashcardsPage() {
           <CategorySelector
             onCategorySelect={handleCategorySelect}
             selectedCategories={selectedCategories}
+            questionData={questionData as QuestionData}
           />
 
           {/* Selected Categories Summary & Start Button */}

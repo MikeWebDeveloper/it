@@ -1,0 +1,48 @@
+# Page snapshot
+
+```yaml
+- link "Skip to main content":
+  - /url: "#main-content"
+- button "← Back to Home"
+- button
+- heading "Flashcard Study" [level=1]
+- paragraph: Interactive study cards with question and answer reveals
+- text: How Flashcards Work
+- heading "Navigation" [level=4]
+- list:
+  - listitem: • Use arrow keys or swipe to navigate
+  - listitem: • Click card or press Space to flip
+  - listitem: • ESC key to exit anytime
+- heading "Study Tips" [level=4]
+- list:
+  - listitem: • Read the question carefully
+  - listitem: • Think before revealing the answer
+  - listitem: • Review explanations for deeper understanding
+- heading "Choose Your Study Topics" [level=2]
+- paragraph: Select the topics you want to study with flashcards. You can choose individual topics or multiple topics for mixed practice.
+- button "Select All Topics (358 questions)"
+- button "Clear Selection" [disabled]
+- text: Cloud Computing
+- paragraph: 2 questions
+- text: Command Line
+- paragraph: 26 questions
+- text: General IT
+- paragraph: 33 questions
+- text: Hardware
+- paragraph: 77 questions
+- text: Hardware Safety
+- paragraph: 19 questions
+- text: Mobile Devices
+- paragraph: 32 questions
+- text: Networking
+- paragraph: 46 questions
+- text: Operating Systems
+- paragraph: 72 questions
+- text: Printers
+- paragraph: 3 questions
+- text: Security
+- paragraph: 19 questions
+- text: Troubleshooting
+- paragraph: 29 questions
+- alert
+```

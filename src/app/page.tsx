@@ -20,14 +20,16 @@ import {
   RotateCcw,
   GraduationCap
 } from 'lucide-react'
-import questionData from '@/data/questions.json'
+import { loadQuestionsData } from '@/lib/loadQuestions'
 import { shuffleArray } from '@/lib/utils'
+import { QuestionData, Question } from '@/types/quiz'
 
 type ViewMode = 'home' | 'categories' | 'config'
 
 export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('home')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [questionData, setQuestionData] = useState<QuestionData | null>(null)
   
   const { 
     userProgress, 
@@ -39,20 +41,27 @@ export default function Home() {
 
   // Load questions on mount
   useEffect(() => {
-    setQuestions(questionData.questions)
+    loadQuestionsData().then((data) => {
+      setQuestionData(data)
+      setQuestions(data.questions)
+    })
   }, [setQuestions])
 
   const handleQuickStart = (mode: 'practice' | 'timed' | 'review') => {
     // Quick start with all topics and default settings
-    const allQuestions = shuffleArray(questionData.questions).slice(0, 10)
-    const timeLimit = mode === 'timed' ? 15 * 60 * 1000 : undefined
-    startQuiz(mode, allQuestions, timeLimit)
-    router.push(`/quiz/${mode}`)
+    if (questionData) {
+      const allQuestions = shuffleArray(questionData.questions).slice(0, 10)
+      const timeLimit = mode === 'timed' ? 15 * 60 * 1000 : undefined
+      startQuiz(mode, allQuestions, timeLimit)
+      router.push(`/quiz/${mode}`)
+    }
   }
 
   const handleCustomQuiz = () => {
-    setSelectedCategories(questionData.exam_info.topics) // Select all by default
-    setViewMode('categories')
+    if (questionData) {
+      setSelectedCategories(questionData.exam_info.topics) // Select all by default
+      setViewMode('categories')
+    }
   }
 
   const handleCategorySelect = (categories: string[]) => {
@@ -67,17 +76,19 @@ export default function Home() {
 
   const handleStartConfiguredQuiz = (config: QuizConfiguration) => {
     // Filter questions by selected categories
-    const categoryQuestions = questionData.questions.filter(q => 
-      config.categories.includes(q.topic)
-    )
-    
-    // Shuffle if needed and limit to configured count
-    const questions = config.randomOrder 
-      ? shuffleArray(categoryQuestions).slice(0, config.questionCount)
-      : categoryQuestions.slice(0, config.questionCount)
-    
-    startQuiz(config.mode, questions, config.timeLimit)
-    router.push(`/quiz/${config.mode}`)
+    if (questionData) {
+      const categoryQuestions = questionData.questions.filter((q: Question) => 
+        config.categories.includes(q.topic)
+      )
+      
+      // Shuffle if needed and limit to configured count
+      const questions = config.randomOrder 
+        ? shuffleArray(categoryQuestions).slice(0, config.questionCount)
+        : categoryQuestions.slice(0, config.questionCount)
+      
+      startQuiz(config.mode, questions, config.timeLimit)
+      router.push(`/quiz/${config.mode}`)
+    }
   }
 
   const totalTopics = Object.keys(userProgress.topicProgress).length
@@ -106,10 +117,13 @@ export default function Home() {
             </p>
           </div>
 
-          <CategorySelector
-            onCategorySelect={handleCategorySelect}
-            selectedCategories={selectedCategories}
-          />
+          {questionData && (
+            <CategorySelector
+              onCategorySelect={handleCategorySelect}
+              selectedCategories={selectedCategories}
+              questionData={questionData}
+            />
+          )}
 
           {selectedCategories.length > 0 && (
             <div className="mt-8 flex justify-center">
@@ -174,14 +188,16 @@ export default function Home() {
           <p className="text-base md:text-lg text-muted-foreground mb-2 md:mb-4">
             Master IT Essentials with 350+ interactive questions
           </p>
-          <CategoryCarousel 
-            categories={questionData.exam_info.topics}
-            maxVisible={4}
-            className="max-w-md mx-auto"
-            onCategoryClick={(category) => {
-              console.log('Selected category:', category)
-            }}
-          />
+          {questionData && (
+            <CategoryCarousel 
+              categories={questionData.exam_info.topics}
+              maxVisible={4}
+              className="max-w-md mx-auto"
+              onCategoryClick={(category) => {
+                console.log('Selected category:', category)
+              }}
+            />
+          )}
         </section>
 
         {/* Progress Overview & Study Timer */}

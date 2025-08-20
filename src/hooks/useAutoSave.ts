@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { debounce } from 'lodash'
+import debounce from 'lodash.debounce'
 
 export type SaveStatus = 'idle' | 'saving' | 'saved' | 'error'
 
