@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+import { ExhibitDisplay } from '@/components/quiz/ExhibitDisplay'
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -187,16 +188,7 @@ export function LearnCard({
 
             {/* Exhibit Display if present */}
             {question.exhibit && (
-              <div className="bg-muted/30 rounded-lg p-4 border">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="outline" className="text-xs">
-                    Exhibit
-                  </Badge>
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {question.exhibit.caption || question.exhibit.alt}
-                </div>
-              </div>
+              <ExhibitDisplay exhibit={question.exhibit} />
             )}
 
             {/* Answer Options */}
