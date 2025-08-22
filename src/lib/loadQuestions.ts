@@ -27,7 +27,11 @@ let cacheTimestamp: number = 0
  * Transforms raw question data to standardized format
  */
 function normalizeQuestion(rawQuestion: RawQuestion): Question {
-  console.log('DEBUG - Normalizing question:', rawQuestion.id, 'correctAnswer:', rawQuestion.correctAnswer)
+  console.log('DEBUG - Normalizing question:', rawQuestion.id)
+  console.log('DEBUG - Raw question object:', rawQuestion)
+  console.log('DEBUG - Raw correctAnswer:', rawQuestion.correctAnswer)
+  console.log('DEBUG - Raw correct_answer:', rawQuestion.correct_answer)
+  console.log('DEBUG - Raw question keys:', Object.keys(rawQuestion))
   
   const normalized: Question = {
     id: rawQuestion.id,
@@ -83,6 +87,12 @@ export async function loadQuestionsData(): Promise<QuestionData> {
 
   // Dynamic import to load questions only when needed
   const { default: rawData } = await import('@/data/questions.json')
+  
+  console.log('DEBUG - Raw JSON data loaded')
+  console.log('DEBUG - Raw data structure:', Object.keys(rawData))
+  console.log('DEBUG - Raw questions count:', rawData.questions.length)
+  console.log('DEBUG - First raw question:', rawData.questions[0])
+  console.log('DEBUG - First raw question keys:', Object.keys(rawData.questions[0]))
   
   // Transform the questions to standardized format
   const normalizedData: QuestionData = {
