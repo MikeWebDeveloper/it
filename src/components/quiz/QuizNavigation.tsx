@@ -3,7 +3,8 @@
 import { ChevronLeft, ChevronRight, Check, SkipForward, ArrowLeft, ArrowRight, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, PanInfo } from 'framer-motion'
+import { useRef, useEffect } from 'react'
 
 interface QuizNavigationProps {
   currentIndex: number
@@ -83,6 +84,13 @@ const dotVariants = {
   }
 }
 
+// Swipe gesture variants
+const swipeVariants = {
+  idle: { x: 0, opacity: 1 },
+  swipeLeft: { x: -50, opacity: 0.5 },
+  swipeRight: { x: 50, opacity: 0.5 }
+}
+
 export function QuizNavigation({
   currentIndex,
   totalQuestions,
@@ -93,6 +101,7 @@ export function QuizNavigation({
   className
 }: QuizNavigationProps) {
   const isFirstQuestion = currentIndex === 0
+  const swipeRef = useRef<HTMLDivElement>(null)
 
   const handlePrevious = () => {
     if (!isFirstQuestion) {
@@ -109,6 +118,22 @@ export function QuizNavigation({
   const handleComplete = () => {
     if (hasAnswered) {
       onComplete()
+    }
+  }
+
+  // Handle swipe gestures
+  const handleDragEnd = (event: any, info: PanInfo) => {
+    const swipeThreshold = 100
+    const velocityThreshold = 0.5
+
+    if (Math.abs(info.offset.x) > swipeThreshold || Math.abs(info.velocity.x) > velocityThreshold) {
+      if (info.offset.x > 0 && !isFirstQuestion) {
+        // Swipe right - go to previous
+        handlePrevious()
+      } else if (info.offset.x < 0 && !isLastQuestion) {
+        // Swipe left - go to next
+        handleNext()
+      }
     }
   }
 
@@ -198,7 +223,7 @@ export function QuizNavigation({
         </Button>
       </motion.div>
 
-      {/* Question indicator dots */}
+      {/* Question indicator dots with swipe hint */}
       <motion.div 
         className="flex items-center gap-0.5 md:gap-1 flex-1 justify-center max-w-xs overflow-x-auto px-1"
         variants={itemVariants}
@@ -323,6 +348,38 @@ export function QuizNavigation({
             )}
           </Button>
         )}
+      </motion.div>
+
+      {/* Swipe hint for mobile users */}
+      <motion.div
+        ref={swipeRef}
+        className="absolute inset-0 pointer-events-none"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.1}
+        onDragEnd={handleDragEnd}
+        variants={swipeVariants}
+        initial="idle"
+        whileDrag="swipeLeft"
+        dragMomentum={false}
+      >
+        {/* Swipe hint overlay - only visible on mobile */}
+        <div className="hidden sm:hidden absolute inset-0 flex items-center justify-center pointer-events-none">
+          <motion.div
+            className="bg-primary/10 rounded-full p-2"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 2, duration: 0.5 }}
+          >
+            <motion.div
+              className="text-primary text-xs font-medium"
+              animate={{ x: [-10, 10, -10] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              ← Swipe to navigate →
+            </motion.div>
+          </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   )
