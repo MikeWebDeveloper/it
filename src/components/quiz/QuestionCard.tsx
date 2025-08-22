@@ -9,8 +9,8 @@ import { ExhibitDisplay } from './ExhibitDisplay'
 import { DifficultyBadge } from '@/components/ui/DifficultyBadge'
 import { useAccessibility } from '@/hooks/useAccessibility'
 import { cn } from '@/lib/utils'
-import { motion } from 'framer-motion'
-import { useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useMemo } from 'react'
 import { 
   Monitor, 
   Shield, 
@@ -22,7 +22,11 @@ import {
   Terminal,
   Wrench,
   Computer,
-  AlertTriangle
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Target,
+  XCircle
 } from 'lucide-react'
 
 const topicIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -53,237 +57,370 @@ const topicColors: Record<string, string> = {
   'General IT': 'bg-teal-500 border-teal-200 text-teal-50'
 }
 
-const MotionCard = motion.create(Card)
+// Animation variants for consistent animations
+const containerVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.25, 0.46, 0.45, 0.94],
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  },
+  exit: { opacity: 0, y: -20, scale: 0.95 }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15
+    }
+  }
+}
+
+const progressVariants = {
+  hidden: { scaleX: 0 },
+  visible: {
+    scaleX: 1,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+}
+
+const answerVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (index: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: index * 0.1,
+      duration: 0.3,
+      type: "spring",
+      stiffness: 100,
+      damping: 15
+    }
+  })
+}
 
 interface QuestionCardProps {
   question: Question
-  currentIndex: number
-  totalQuestions: number
-  selectedAnswer?: string | string[]
-  onAnswerSelect: (answer: string | string[]) => void
-  showResult?: boolean
-  hasAllRequiredAnswers?: boolean
+  onAnswerSubmit: (answer: string | string[]) => void
+  hasAnswered: boolean
+  isCorrect: boolean
+  currentAnswer: string | string[] | null
+  mode: 'practice' | 'timed' | 'review'
   className?: string
 }
 
 export function QuestionCard({
   question,
-  currentIndex,
-  totalQuestions,
-  selectedAnswer,
-  onAnswerSelect,
-  showResult = false,
-  hasAllRequiredAnswers = true,
+  onAnswerSubmit,
+  hasAnswered,
+  isCorrect,
+  currentAnswer,
+  mode,
   className
 }: QuestionCardProps) {
   const { announce, announceQuizState } = useAccessibility()
-  const progress = ((currentIndex + 1) / totalQuestions) * 100
   const isMultipleChoice = Array.isArray(question.correctAnswer)
+  
+  // Memoized values for performance
+  const IconComponent = useMemo(() => topicIcons[question.topic] || Settings, [question.topic])
+  const topicColorClass = useMemo(() => topicColors[question.topic] || topicColors['General IT'], [question.topic])
+  const requiredAnswersCount = useMemo(() => 
+    Array.isArray(question.correctAnswer) ? question.correctAnswer.length : 1, 
+    [question.correctAnswer]
+  )
   
   // Announce question when it changes
   useEffect(() => {
     announceQuizState(
-      `Question ${currentIndex + 1} of ${totalQuestions}`,
+      `Question ${question.id}`,
       `Topic: ${question.topic}. ${question.question}`
     )
-  }, [currentIndex, question.id, announceQuizState, question.topic, question.question, totalQuestions])
+  }, [question.id, question.topic, question.question, announceQuizState])
   
   const handleAnswerToggle = (answer: string) => {
     if (isMultipleChoice) {
-      const currentAnswers = Array.isArray(selectedAnswer) ? selectedAnswer : []
+      const currentAnswers = Array.isArray(currentAnswer) ? currentAnswer : []
+      let newAnswers: string[]
+      
       if (currentAnswers.includes(answer)) {
-        const newAnswers = currentAnswers.filter(a => a !== answer)
-        onAnswerSelect(newAnswers)
+        newAnswers = currentAnswers.filter(a => a !== answer)
         announce(`Deselected answer: ${answer}`, 'polite')
       } else {
-        const newAnswers = [...currentAnswers, answer]
-        onAnswerSelect(newAnswers)
+        newAnswers = [...currentAnswers, answer]
         announce(`Selected answer: ${answer}`, 'polite')
       }
+      
+      onAnswerSubmit(newAnswers)
     } else {
-      onAnswerSelect(answer)
+      onAnswerSubmit(answer)
       announce(`Selected answer: ${answer}`, 'polite')
     }
   }
 
-  const IconComponent = topicIcons[question.topic] || Settings
-  const topicColorClass = topicColors[question.topic] || topicColors['General IT']
+  const getAnswerStatus = () => {
+    if (!hasAnswered) return null
+    
+    if (isCorrect) {
+      return {
+        icon: CheckCircle,
+        color: 'text-green-600',
+        bgColor: 'bg-green-50 dark:bg-green-950/20',
+        borderColor: 'border-green-200 dark:border-green-800',
+        message: 'Correct! Well done!'
+      }
+    } else {
+      return {
+        icon: XCircle,
+        color: 'text-red-600',
+        bgColor: 'bg-red-50 dark:bg-red-950/20',
+        borderColor: 'border-red-200 dark:border-red-800',
+        message: 'Incorrect. Keep learning!'
+      }
+    }
+  }
+
+  const answerStatus = getAnswerStatus()
 
   return (
-    <MotionCard 
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -20, scale: 0.95 }}
-      transition={{ 
-        duration: 0.4, 
-        ease: [0.25, 0.46, 0.45, 0.94] 
-      }}
-      className={cn(
-        "w-full max-w-2xl mx-auto",
-        "border-0 shadow-lg bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-background/95",
-        "hover:shadow-xl transition-shadow duration-300",
-        "h-full flex flex-col", // Make card flexible for mobile
-        className
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className={cn("w-full max-w-2xl mx-auto", className)}
+    >
+      <Card className={cn(
+        "w-full border-0 shadow-lg bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-background/95",
+        "hover:shadow-xl transition-all duration-300 hover:-translate-y-1",
+        "h-full flex flex-col"
       )}>
-      <CardHeader className="space-y-3 md:space-y-4 pb-3 md:pb-4 px-3 md:px-6 pt-3 md:pt-6">
-        {/* Progress and question number */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs md:text-sm text-muted-foreground">
-            <span>Question {currentIndex + 1} of {totalQuestions}</span>
-            <div className="flex items-center gap-2">
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.3, ease: "backOut" }}
-              >
-                <DifficultyBadge 
-                  question={question}
-                  variant="default"
-                  animated={true}
-                />
-              </motion.div>
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.3, ease: "backOut" }}
-              >
-                <Badge 
-                  variant="outline" 
-                  className={cn(
-                    "text-xs font-medium border-2 flex items-center gap-1.5 px-2 py-1",
-                    topicColorClass
-                  )}
+        <CardHeader className="space-y-3 md:space-y-4 pb-3 md:pb-4 px-3 md:px-6 pt-3 md:pt-6">
+          {/* Progress and question number */}
+          <motion.div 
+            className="space-y-2"
+            variants={itemVariants}
+          >
+            <div className="flex items-center justify-between text-xs md:text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Target className="w-4 h-4" />
+                <span>Question {question.id}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.3, ease: "backOut" }}
                 >
-                  <IconComponent className="w-3 h-3" />
-                  {question.topic}
-                </Badge>
-              </motion.div>
+                  <DifficultyBadge 
+                    question={question}
+                    variant="default"
+                    animated={true}
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.3, ease: "backOut" }}
+                >
+                  <Badge 
+                    variant="outline" 
+                    className={cn(
+                      "text-xs font-medium border-2 flex items-center gap-1.5 px-2 py-1",
+                      topicColorClass
+                    )}
+                  >
+                    <IconComponent className="w-3 h-3" />
+                    {question.topic}
+                  </Badge>
+                </motion.div>
+              </div>
             </div>
-          </div>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
-            style={{ originX: 0 }}
-          >
-            <Progress value={progress} className="h-2" />
+            <motion.div
+              variants={progressVariants}
+              initial="hidden"
+              animate="visible"
+              style={{ originX: 0 }}
+            >
+              <Progress value={100} className="h-2" />
+            </motion.div>
           </motion.div>
-        </div>
-        
-        {/* Question text */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
-        >
-          <CardTitle 
-            className="text-base md:text-lg leading-relaxed font-medium"
-            role="heading"
-            aria-level={2}
-            id={`question-${question.id}`}
-          >
-            {question.question}
-          </CardTitle>
-        </motion.div>
-        
-        {/* Exhibit display */}
-        {question.exhibit && (
+          
+          {/* Question text */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.4 }}
-            className="mt-4"
+            variants={itemVariants}
+            className="space-y-3"
           >
-            <ExhibitDisplay 
-              exhibit={question.exhibit} 
-              className="max-w-full"
-            />
+            <CardTitle 
+              className="text-base md:text-lg leading-relaxed font-medium"
+              role="heading"
+              aria-level={2}
+              id={`question-${question.id}`}
+            >
+              {question.question}
+            </CardTitle>
+            
+            {/* Mode indicator */}
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="text-xs">
+                {mode === 'practice' && <Clock className="w-3 h-3 mr-1" />}
+                {mode === 'timed' && <Target className="w-3 h-3 mr-1" />}
+                {mode === 'review' && <CheckCircle className="w-3 h-3 mr-1" />}
+                {mode.charAt(0).toUpperCase() + mode.slice(1)} Mode
+              </Badge>
+            </div>
           </motion.div>
-        )}
-        
-        {isMultipleChoice && (
-          <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">
-              Select all that apply ({Array.isArray(question.correctAnswer) ? question.correctAnswer.length : '?'} correct answers)
-            </p>
-            <div className="flex items-center justify-between">
-              {Array.isArray(selectedAnswer) && selectedAnswer.length > 0 ? (
-                <div className="flex items-center gap-2">
-                  <p className="text-xs font-medium text-primary">
-                    Selected: {selectedAnswer.length} of {Array.isArray(question.correctAnswer) ? question.correctAnswer.length : '?'}
+          
+          {/* Exhibit display */}
+          {question.exhibit && (
+            <motion.div
+              variants={itemVariants}
+              className="mt-4"
+            >
+              <ExhibitDisplay 
+                exhibit={question.exhibit} 
+                className="max-w-full"
+              />
+            </motion.div>
+          )}
+          
+          {/* Multiple choice instructions */}
+          {isMultipleChoice && (
+            <motion.div
+              variants={itemVariants}
+              className="space-y-2 p-3 bg-muted/30 rounded-lg border border-border/50"
+            >
+              <p className="text-sm text-muted-foreground font-medium">
+                Select all that apply ({requiredAnswersCount} correct answers)
+              </p>
+              <div className="flex items-center justify-between">
+                {currentAnswer && Array.isArray(currentAnswer) && currentAnswer.length > 0 ? (
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-medium text-primary">
+                      Selected: {currentAnswer.length} of {requiredAnswersCount}
+                    </p>
+                    {currentAnswer.length === requiredAnswersCount ? (
+                      <div className="flex items-center gap-1 text-green-600">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                          className="w-2 h-2 bg-green-500 rounded-full"
+                        />
+                        <span className="text-xs font-medium">Ready to continue</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-amber-600">
+                        <motion.div
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                          className="w-2 h-2 bg-amber-500 rounded-full"
+                        />
+                        <span className="text-xs">
+                          Select {requiredAnswersCount - currentAnswer.length} more
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    Select all {requiredAnswersCount} options to continue
                   </p>
-                  {hasAllRequiredAnswers ? (
-                    <div className="flex items-center gap-1 text-green-600">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-xs font-medium">Ready to continue</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-1 text-amber-600">
-                      <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                      <span className="text-xs">Select {(Array.isArray(question.correctAnswer) ? question.correctAnswer.length : 0) - selectedAnswer.length} more</span>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <p className="text-xs text-muted-foreground">
-                  Select all {Array.isArray(question.correctAnswer) ? question.correctAnswer.length : '?'} options to continue
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-      </CardHeader>
-      
-      <CardContent className="space-y-2 md:space-y-3 pt-0 px-3 md:px-6 pb-3 md:pb-6">
-        {/* Answer options */}
-        <fieldset>
-          <legend className="sr-only">
-            {isMultipleChoice 
-              ? `Select ${Array.isArray(question.correctAnswer) ? question.correctAnswer.length : 'all'} correct answers for question ${currentIndex + 1}`
-              : `Select the correct answer for question ${currentIndex + 1}`
-            }
-          </legend>
-          <div 
-            className="space-y-2 md:space-y-3"
-            role={isMultipleChoice ? "group" : "radiogroup"}
-            aria-labelledby={`question-${question.id}`}
-          >
-            {question.options.map((option, index) => (
-              <AnswerChoice
-                key={index}
-                option={option}
-                isSelected={
-                  isMultipleChoice 
-                    ? Array.isArray(selectedAnswer) && selectedAnswer.includes(option)
-                    : selectedAnswer === option
-                }
-              isCorrect={
-                showResult 
-                  ? Array.isArray(question.correctAnswer)
-                    ? question.correctAnswer.includes(index)
-                    : question.correctAnswer === index
-                  : undefined
-              }
-              isMultipleChoice={isMultipleChoice}
-              onClick={() => handleAnswerToggle(option)}
-              disabled={showResult}
-            />
-          ))}
-          </div>
-        </fieldset>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </CardHeader>
         
-        {/* Explanation (shown after answering) */}
-        {showResult && question.explanation && (
-          <div className="mt-6 p-4 bg-muted/50 rounded-lg border">
-            <h4 className="font-medium text-sm mb-2 text-muted-foreground">
-              Explanation:
-            </h4>
-            <p className="text-sm leading-relaxed">
-              {question.explanation}
-            </p>
-          </div>
-        )}
-      </CardContent>
-    </MotionCard>
+        <CardContent className="space-y-2 md:space-y-3 pt-0 px-3 md:px-6 pb-3 md:pb-6">
+          {/* Answer options */}
+          <fieldset>
+            <legend className="sr-only">
+              {isMultipleChoice 
+                ? `Select ${requiredAnswersCount} correct answers for question ${question.id}`
+                : `Select the correct answer for question ${question.id}`
+              }
+            </legend>
+            <div 
+              className="space-y-2 md:space-y-3"
+              role={isMultipleChoice ? "group" : "radiogroup"}
+              aria-labelledby={`question-${question.id}`}
+            >
+              {question.options.map((option, index) => (
+                <motion.div
+                  key={index}
+                  custom={index}
+                  variants={answerVariants}
+                >
+                  <AnswerChoice
+                    option={option}
+                    isSelected={
+                      isMultipleChoice 
+                        ? Array.isArray(currentAnswer) && currentAnswer.includes(option)
+                        : currentAnswer === option
+                    }
+                    isCorrect={
+                      hasAnswered
+                        ? Array.isArray(question.correctAnswer)
+                          ? question.correctAnswer.includes(index)
+                          : question.correctAnswer === index
+                        : undefined
+                    }
+                    isMultipleChoice={isMultipleChoice}
+                    onClick={() => handleAnswerToggle(option)}
+                    disabled={hasAnswered}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </fieldset>
+          
+          {/* Answer feedback */}
+          <AnimatePresence>
+            {answerStatus && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className={cn(
+                  "mt-6 p-4 rounded-lg border",
+                  answerStatus.bgColor,
+                  answerStatus.borderColor
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <answerStatus.icon className={cn("w-5 h-5", answerStatus.color)} />
+                  <div>
+                    <h4 className="font-medium text-sm mb-1 text-foreground">
+                      {answerStatus.message}
+                    </h4>
+                    {question.explanation && (
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        {question.explanation}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+    </motion.div>
   )
 }

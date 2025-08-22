@@ -8,7 +8,7 @@ import { FeedbackOverlay } from './FeedbackOverlay'
 import { QuestionNavigationMap } from './QuestionNavigationMap'
 import { QuizMode } from '@/types/quiz'
 import { formatTime } from '@/lib/utils'
-import { Clock, Pause, Play } from 'lucide-react'
+import { Clock, Pause, Play, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useAutoSave } from '@/hooks/useAutoSave'
@@ -17,9 +17,82 @@ import { QuizSkeleton } from '@/components/skeletons'
 import { useKeyboardShortcuts, createQuizShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { KeyboardShortcutsHelp } from '@/components/ui/KeyboardShortcutsHelp'
 import { useAudioHapticFeedback } from '@/hooks/useAudioHapticFeedback'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface QuizEngineProps {
   mode: QuizMode
+}
+
+// Animation variants for consistent animations
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15
+    }
+  }
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 80,
+      damping: 20
+    }
+  },
+  hover: {
+    y: -4,
+    scale: 1.01,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20
+    }
+  }
+}
+
+const feedbackVariants = {
+  hidden: { opacity: 0, scale: 0.8, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 20
+    }
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.8,
+    y: -20,
+    transition: {
+      duration: 0.2
+    }
+  }
 }
 
 export function QuizEngine({ mode }: QuizEngineProps) {
@@ -43,12 +116,13 @@ export function QuizEngine({ mode }: QuizEngineProps) {
   const [hasAnsweredCurrentQuestion, setHasAnsweredCurrentQuestion] = useState(false)
   const [isInitializing, setIsInitializing] = useState(true)
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
+  const [showTimeWarning, setShowTimeWarning] = useState(false)
 
   // Auto-save functionality
   const { saveStatus, lastSaved, saveNow } = useAutoSave({
     data: currentSession,
     saveFunction: saveProgress,
-    delay: 1500, // Save 1.5 seconds after changes
+    delay: 1500,
     enabled: !!currentSession && !currentSession.completed,
   })
 
@@ -70,16 +144,43 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     }
   }, [currentSession, mode])
 
+  // Timer countdown effect
+  useEffect(() => {
+    if (!timeRemaining || isPaused || mode !== 'timed') return
+
+    const timer = setInterval(() => {
+      setTimeRemaining(prev => {
+        if (prev === null) return null
+        
+        const newTime = prev - 1000
+        
+        // Show warning when 5 minutes remaining
+        if (newTime <= 5 * 60 * 1000 && !showTimeWarning) {
+          setShowTimeWarning(true)
+          feedback.onTimeWarning()
+        }
+        
+        // Auto-complete when time runs out
+        if (newTime <= 0) {
+          handleComplete()
+          return 0
+        }
+        
+        return newTime
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [timeRemaining, isPaused, mode, showTimeWarning, feedback, handleComplete])
+
   // Check answer correctness
   const checkAnswer = useCallback((answer: string | string[], correctAnswer: number | number[], options: string[]) => {
     if (Array.isArray(correctAnswer)) {
       if (!Array.isArray(answer)) return false
-      // Convert answer strings to indices
       const answerIndices = answer.map(a => options.indexOf(a))
       return answerIndices.length === correctAnswer.length && 
              answerIndices.every(idx => correctAnswer.includes(idx))
     } else {
-      // Convert single answer string to index
       const answerIndex = options.indexOf(String(answer))
       return answerIndex === correctAnswer
     }
@@ -87,7 +188,8 @@ export function QuizEngine({ mode }: QuizEngineProps) {
 
   // Calculate topic progress for current question
   const getTopicProgress = useCallback(() => {
-    if (!currentSession || !currentSession.questions[currentSession.currentQuestionIndex] || !userProgress.topicProgress[currentSession.questions[currentSession.currentQuestionIndex].topic]) {
+    if (!currentSession?.questions[currentSession.currentQuestionIndex] || 
+        !userProgress.topicProgress[currentSession.questions[currentSession.currentQuestionIndex].topic]) {
       return undefined
     }
     
@@ -102,463 +204,336 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     }
   }, [currentSession, userProgress.topicProgress])
 
-  // Timer countdown
-  useEffect(() => {
-    if (!timeRemaining || isPaused || timeRemaining <= 0) return
+  // Handle answer submission
+  const handleAnswerSubmit = useCallback((answer: string | string[]) => {
+    if (!currentSession) return
 
-    const interval = setInterval(() => {
-      setTimeRemaining(prev => {
-        if (!prev || prev <= 1000) {
-          // Time's up!
-          handleComplete()
-          return 0
-        }
-        
-        // Warning at 2 minutes (120 seconds) remaining
-        if (prev <= 120000 && prev > 119000) {
-          feedback.onTimerWarning()
-        }
-        
-        // Final warning at 30 seconds
-        if (prev <= 30000 && prev > 29000) {
-          feedback.onTimerWarning()
-        }
-        
-        return prev - 1000
-      })
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [timeRemaining, isPaused, handleComplete, feedback])
-
-  // Reset feedback state when question changes
-  useEffect(() => {
-    setShowFeedback(false)
-    setCurrentAnswer(null)
-    setHasAnsweredCurrentQuestion(false)
-  }, [currentSession?.currentQuestionIndex])
-
-  // Simulate initial loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsInitializing(false)
-    }, 1000) // Show loading skeleton for 1 second
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  // Define derived values with useMemo (must be before early return)
-  const currentQuestion = currentSession?.questions[currentSession?.currentQuestionIndex]
-  const selectedAnswer = currentQuestion ? currentSession?.answers[currentQuestion.id] : undefined
-  
-  // Check if question has a valid answer (for UI - can user proceed?)
-  const hasAnswer = useMemo(() => {
-    if (!currentSession || !currentQuestion || selectedAnswer === undefined || selectedAnswer === null) return false
+    const currentQuestion = currentSession.questions[currentSession.currentQuestionIndex]
+    const isCorrect = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
     
-    // For multiple choice questions, check if user selected required NUMBER of answers
-    if (Array.isArray(currentQuestion.correctAnswer)) {
-      if (!Array.isArray(selectedAnswer)) return false
-      // Allow proceeding when correct number of answers selected (not necessarily correct ones)
-      return selectedAnswer.length === currentQuestion.correctAnswer.length
-    }
+    setIsAnswerCorrect(isCorrect)
+    setCurrentAnswer(answer)
+    setHasAnsweredCurrentQuestion(true)
     
-    // For single answer questions, just check if we have an answer
-    return selectedAnswer !== '' && selectedAnswer !== null
-  }, [currentSession, currentQuestion, selectedAnswer])
-  
-  // Check if all required answers are selected (for UI feedback)
-  const hasAllRequiredAnswers = useMemo(() => {
-    if (!currentQuestion || !Array.isArray(currentQuestion.correctAnswer)) return hasAnswer
-    if (!Array.isArray(selectedAnswer)) return false
-    return selectedAnswer.length === currentQuestion.correctAnswer.length
-  }, [currentQuestion, selectedAnswer, hasAnswer])
-
-  // All callbacks and handlers - MUST be defined before any early returns
-  const handleAnswerSelect = useCallback((answer: string | string[]) => {
-    answerQuestion(currentQuestion?.id || 0, answer)
-    
-    // For practice mode, only show feedback when all required answers are selected
-    if (mode === 'practice' && !hasAnsweredCurrentQuestion && currentQuestion) {
-      // For multiple choice questions, wait until all required answers are selected
-      if (Array.isArray(currentQuestion.correctAnswer)) {
-        const answerArray = Array.isArray(answer) ? answer : []
-        const requiredCount = currentQuestion.correctAnswer.length
-        
-        // Only evaluate when user has selected the required number of answers
-        if (answerArray.length === requiredCount) {
-          const correct = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
-          setCurrentAnswer(answer)
-          setIsAnswerCorrect(correct)
-          setShowFeedback(true)
-          setHasAnsweredCurrentQuestion(true)
-          
-          // Trigger audio/haptic feedback
-          feedback.onAnswerSelect(correct)
-        } else {
-          // Just selection feedback for partial selections
-          feedback.onButtonClick()
-        }
-      } else {
-        // For single choice questions, show immediate feedback as before
-        const correct = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
-        setCurrentAnswer(answer)
-        setIsAnswerCorrect(correct)
-        setShowFeedback(true)
-        setHasAnsweredCurrentQuestion(true)
-        
-        // Trigger audio/haptic feedback
-        feedback.onAnswerSelect(correct)
-      }
+    // Provide feedback
+    if (isCorrect) {
+      feedback.onCorrectAnswer()
     } else {
-      // General selection feedback for other modes
-      feedback.onButtonClick()
+      feedback.onIncorrectAnswer()
     }
-  }, [currentQuestion, answerQuestion, mode, hasAnsweredCurrentQuestion, checkAnswer, feedback])
-
-  const handleFeedbackClose = useCallback(() => {
-    setShowFeedback(false)
-  }, [])
-
-  // Keyboard shortcuts - moved before conditional returns
-  const handleKeyboardAnswerSelect = useCallback((answerIndex: number) => {
-    if (!currentQuestion || showFeedback || isPaused) return
-
-    const options = currentQuestion.options || []
-    if (answerIndex >= options.length) return
-
-    const selectedOption = options[answerIndex]
     
-    // Keyboard shortcut feedback
-    feedback.onKeyboardShortcut()
-    
-    // Handle multiple choice questions
-    if (Array.isArray(currentQuestion.correctAnswer)) {
-      const currentAnswers = Array.isArray(selectedAnswer) ? selectedAnswer : []
-      let newAnswers: string[]
-      
-      if (currentAnswers.includes(selectedOption)) {
-        // Remove if already selected
-        newAnswers = currentAnswers.filter(ans => ans !== selectedOption)
-      } else {
-        // Add to selection
-        newAnswers = [...currentAnswers, selectedOption]
-      }
-      
-      answerQuestion(currentQuestion.id, newAnswers)
-      
-      // Check if we should show feedback in practice mode
-      if (mode === 'practice' && !hasAnsweredCurrentQuestion) {
-        const requiredCount = currentQuestion.correctAnswer.length
-        
-        // Only evaluate when user has selected the required number of answers
-        if (newAnswers.length === requiredCount) {
-          const correct = checkAnswer(newAnswers, currentQuestion.correctAnswer, currentQuestion.options)
-          setCurrentAnswer(newAnswers)
-          setIsAnswerCorrect(correct)
-          setShowFeedback(true)
-          setHasAnsweredCurrentQuestion(true)
-          
-          // Trigger audio/haptic feedback
-          feedback.onAnswerSelect(correct)
-        }
-      }
-    } else {
-      // Single answer selection
-      answerQuestion(currentQuestion.id, selectedOption)
-      
-      // Auto-advance in practice mode for single answers
-      if (mode === 'practice' && !hasAnsweredCurrentQuestion) {
-        const correct = checkAnswer(selectedOption, currentQuestion.correctAnswer, currentQuestion.options)
-        setCurrentAnswer(selectedOption)
-        setIsAnswerCorrect(correct)
-        setShowFeedback(true)
-        setHasAnsweredCurrentQuestion(true)
-        
-        // Trigger immediate feedback for correct/incorrect
-        feedback.onAnswerSelect(correct)
-      }
-    }
-  }, [currentQuestion, selectedAnswer, answerQuestion, checkAnswer, mode, hasAnsweredCurrentQuestion, showFeedback, isPaused, feedback])
-
-  const handleNext = useCallback(() => {
-    if (currentSession && currentSession.currentQuestionIndex < currentSession.questions.length - 1) {
-      nextQuestion()
-      feedback.onQuestionNavigation()
-    }
-  }, [currentSession, nextQuestion, feedback])
-
-  const handlePrevious = useCallback(() => {
-    if (currentSession && currentSession.currentQuestionIndex > 0) {
-      previousQuestion()
-      feedback.onQuestionNavigation()
-    }
-  }, [currentSession, previousQuestion, feedback])
-
-  const togglePause = useCallback(() => {
-    setIsPaused(!isPaused)
-    feedback.onButtonClick()
-  }, [isPaused, feedback])
-
-  const handleFeedbackContinue = useCallback(() => {
-    setShowFeedback(false)
-    // Auto advance to next question in practice mode
-    if (currentSession && currentSession.currentQuestionIndex < currentSession.questions.length - 1) {
-      setTimeout(() => {
+    // Auto-advance after delay
+    setTimeout(() => {
+      if (currentSession.currentQuestionIndex < currentSession.questions.length - 1) {
         nextQuestion()
-      }, 300) // Small delay for smooth transition
-    } else {
-      // Last question, complete quiz
-      setTimeout(() => {
-        handleComplete()
-      }, 300)
-    }
-  }, [currentSession, nextQuestion, handleComplete])
-
-  const handleSubmit = useCallback(() => {
-    if (!currentQuestion || isPaused) return
-
-    if (showFeedback) {
-      handleFeedbackContinue()
-    } else if (hasAnswer) {
-      // For practice mode, show feedback when user has selected required answers
-      if (mode === 'practice' && !hasAnsweredCurrentQuestion && selectedAnswer !== undefined) {
-        // For multiple choice, only show feedback if all required answers are selected
-        if (Array.isArray(currentQuestion.correctAnswer)) {
-          const answerArray = Array.isArray(selectedAnswer) ? selectedAnswer : []
-          const requiredCount = currentQuestion.correctAnswer.length
-          
-          if (answerArray.length === requiredCount) {
-            const correct = checkAnswer(selectedAnswer, currentQuestion.correctAnswer, currentQuestion.options)
-            setCurrentAnswer(selectedAnswer)
-            setIsAnswerCorrect(correct)
-            setShowFeedback(true)
-            setHasAnsweredCurrentQuestion(true)
-          }
-          // If not all answers selected, do nothing (let user continue selecting)
-        } else {
-          // Single choice - show feedback immediately
-          const correct = checkAnswer(selectedAnswer, currentQuestion.correctAnswer, currentQuestion.options)
-          setCurrentAnswer(selectedAnswer)
-          setIsAnswerCorrect(correct)
-          setShowFeedback(true)
-          setHasAnsweredCurrentQuestion(true)
-        }
-      } else {
-        handleNext()
+        setHasAnsweredCurrentQuestion(false)
+        setCurrentAnswer(null)
+        setIsAnswerCorrect(false)
       }
-    }
-  }, [currentQuestion, showFeedback, hasAnswer, mode, hasAnsweredCurrentQuestion, selectedAnswer, checkAnswer, handleFeedbackContinue, handleNext, isPaused])
+    }, 2000)
+  }, [currentSession, checkAnswer, feedback, nextQuestion])
 
-  const handleExit = useCallback(() => {
-    if (showFeedback) {
-      handleFeedbackClose()
+  // Handle question navigation
+  const handleQuestionChange = useCallback((direction: 'next' | 'previous' | number) => {
+    if (typeof direction === 'number') {
+      goToQuestion(direction)
+    } else if (direction === 'next') {
+      nextQuestion()
     } else {
-      // Show confirmation or go back
-      if (window.confirm('Are you sure you want to exit the quiz? Your progress will be saved.')) {
-        window.history.back()
-      }
+      previousQuestion()
     }
-  }, [showFeedback, handleFeedbackClose])
+    
+    setHasAnsweredCurrentQuestion(false)
+    setCurrentAnswer(null)
+    setIsAnswerCorrect(false)
+  }, [goToQuestion, nextQuestion, previousQuestion])
 
-  const handleGoToFirst = useCallback(() => {
-    if (!currentSession || isPaused) return
-    goToQuestion(0)
-    feedback.onQuestionNavigation()
-  }, [currentSession, goToQuestion, isPaused, feedback])
+  // Toggle pause state
+  const togglePause = useCallback(() => {
+    setIsPaused(prev => !prev)
+    feedback.onTogglePause()
+  }, [feedback])
 
-  const handleGoToLast = useCallback(() => {
-    if (!currentSession || isPaused) return
-    goToQuestion(currentSession.questions.length - 1)
-    feedback.onQuestionNavigation()
-  }, [currentSession, goToQuestion, isPaused, feedback])
+  // Keyboard shortcuts
+  const shortcuts = useMemo(() => createQuizShortcuts({
+    onNext: () => handleQuestionChange('next'),
+    onPrevious: () => handleQuestionChange('previous'),
+    onTogglePause: togglePause,
+    onShowHelp: () => setShowKeyboardHelp(true)
+  }), [handleQuestionChange, togglePause])
 
-  const keyboardShortcuts = useMemo(() => createQuizShortcuts({
-    onPrevious: handlePrevious,
-    onNext: handleNext,
-    onAnswer: handleKeyboardAnswerSelect,
-    onSubmit: handleSubmit,
-    onExit: handleExit,
-    onPause: mode === 'timed' ? togglePause : undefined,
-    onFirst: handleGoToFirst,
-    onLast: handleGoToLast,
-    onHelp: () => setShowKeyboardHelp(true)
-  }), [
-    handlePrevious, 
-    handleNext, 
-    handleKeyboardAnswerSelect, 
-    handleSubmit, 
-    handleExit, 
-    mode, 
-    togglePause, 
-    handleGoToFirst, 
-    handleGoToLast
-  ])
+  useKeyboardShortcuts(shortcuts)
 
-  useKeyboardShortcuts({
-    shortcuts: keyboardShortcuts,
-    enabled: !showKeyboardHelp && !isInitializing,
-    showToasts: false,
-    scope: 'global'
-  })
+  // Initialize component
+  useEffect(() => {
+    if (currentSession) {
+      setIsInitializing(false)
+    }
+  }, [currentSession])
 
-  // Show loading skeleton during initialization or when session is loading
-  if (isInitializing || (!currentSession && !showResults)) {
-    return <QuizSkeleton variant="preparing" />
+  // Show loading state
+  if (isInitializing || !currentSession) {
+    return <QuizSkeleton />
   }
 
-  // Show "no session" state only after loading is complete
-  if (!currentSession || !currentQuestion) {
-    return (
-      <div className="h-screen overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="w-24 h-24 mx-auto mb-6 bg-muted/20 rounded-full flex items-center justify-center">
-            <div className="text-4xl">🎯</div>
-          </div>
-          <h2 className="text-2xl font-semibold">No Active Quiz</h2>
-          <p className="text-muted-foreground max-w-md">
-            Your quiz session has ended or wasn&apos;t properly initialized. 
-            Please return to the home page to start a new quiz.
-          </p>
-          <button 
-            onClick={() => window.history.back()}
-            className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-          >
-            Go Back
-          </button>
-        </div>
-      </div>
-    )
-  }
+  const currentQuestion = currentSession.questions[currentSession.currentQuestionIndex]
+  const topicProgress = getTopicProgress()
+  const isLastQuestion = currentSession.currentQuestionIndex === currentSession.questions.length - 1
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 flex flex-col">
-      <div className="container mx-auto px-4 flex flex-col h-full max-w-4xl">
-        {/* Header - Compact for mobile */}
-        <div className="flex items-center justify-between py-3 px-1 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <h1 className="text-lg md:text-xl font-semibold">
-              {mode === 'practice' && 'Practice Mode'}
-              {mode === 'timed' && 'Timed Quiz'}
-              {mode === 'review' && 'Review Mode'}
-            </h1>
-            
-            {/* Auto-save status indicator */}
-            <SaveStatusIndicator
-              status={saveStatus}
-              lastSaved={lastSaved}
-              onManualSave={saveNow}
-              compact={true}
-              className="hidden sm:flex"
-            />
-          </div>
+    <motion.div
+      className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <div className="container mx-auto px-4 py-4 max-w-6xl">
+        {/* Header with progress and timer */}
+        <motion.header 
+          className="mb-6"
+          variants={itemVariants}
+        >
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            {/* Progress indicator */}
+            <div className="flex items-center gap-4">
+              <motion.div
+                variants={cardVariants}
+                whileHover="hover"
+              >
+                <Card className="bg-card/80 backdrop-blur-sm border-border/50">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-primary">
+                          {currentSession.currentQuestionIndex + 1}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          of {currentSession.questions.length}
+                        </div>
+                      </div>
+                      <div className="w-24 h-2 bg-secondary/20 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full bg-primary rounded-full"
+                          initial={{ width: 0 }}
+                          animate={{ 
+                            width: `${((currentSession.currentQuestionIndex + 1) / currentSession.questions.length) * 100}%` 
+                          }}
+                          transition={{ duration: 0.5, ease: "easeOut" }}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-          <div className="flex items-center gap-2">
-            {/* Auto-save status indicator (mobile) */}
-            <SaveStatusIndicator
-              status={saveStatus}
-              lastSaved={lastSaved}
-              onManualSave={saveNow}
-              compact={true}
-              className="sm:hidden"
-            />
-            
-            {/* Timer (for timed mode) */}
-            {mode === 'timed' && timeRemaining !== null && (
-              <>
-                <Badge variant={timeRemaining < 300000 ? "destructive" : "secondary"} className="text-xs md:text-sm">
-                  <Clock className="w-3 h-3 mr-1" />
-                  {formatTime(timeRemaining)}
-                </Badge>
+              {/* Topic progress */}
+              {topicProgress && (
+                <motion.div
+                  variants={cardVariants}
+                  whileHover="hover"
+                >
+                  <Card className="bg-card/80 backdrop-blur-sm border-border/50">
+                    <CardContent className="p-4">
+                      <div className="text-center">
+                        <div className="text-lg font-semibold text-foreground">
+                          {topicProgress.accuracy.toFixed(0)}%
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Topic Accuracy
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Timer and controls */}
+            <div className="flex items-center gap-3">
+              {mode === 'timed' && timeRemaining !== null && (
+                <motion.div
+                  variants={cardVariants}
+                  whileHover="hover"
+                  className={showTimeWarning ? "animate-pulse" : ""}
+                >
+                  <Card className={`bg-card/80 backdrop-blur-sm border-border/50 ${showTimeWarning ? 'border-orange-500/50' : ''}`}>
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2">
+                        <Clock className={`w-5 h-5 ${showTimeWarning ? 'text-orange-500' : 'text-muted-foreground'}`} />
+                        <div className="text-center">
+                          <div className={`text-lg font-mono font-bold ${showTimeWarning ? 'text-orange-500' : 'text-foreground'}`}>
+                            {formatTime(timeRemaining)}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            Remaining
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+
+              {/* Pause/Resume button */}
+              <motion.div
+                variants={cardVariants}
+                whileHover="hover"
+              >
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={togglePause}
-                  className="h-8 w-8 p-0 md:h-9 md:w-auto md:px-3"
+                  className="h-12 w-12 p-0 rounded-full"
+                  aria-label={isPaused ? "Resume quiz" : "Pause quiz"}
                 >
-                  {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-                  <span className="hidden md:inline ml-2">
-                    {isPaused ? 'Resume' : 'Pause'}
-                  </span>
+                  <AnimatePresence mode="wait">
+                    {isPaused ? (
+                      <motion.div
+                        key="play"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Play className="w-5 h-5" />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="pause"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Pause className="w-5 h-5" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </Button>
-              </>
-            )}
-          </div>
-        </div>
+              </motion.div>
 
-        {/* Question Navigation Map */}
-        <div className="flex-shrink-0 px-1 pb-3">
-          <QuestionNavigationMap
-            questions={currentSession.questions}
-            currentIndex={currentSession.currentQuestionIndex}
-            answers={currentSession.answers}
-            onNavigate={goToQuestion}
-            showResults={showResults}
-            compact={true}
-          />
-        </div>
-
-        {/* Pause overlay */}
-        {isPaused && mode === 'timed' && (
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="bg-card p-6 rounded-lg border shadow-lg text-center">
-              <h2 className="text-lg font-semibold mb-2">Quiz Paused</h2>
-              <p className="text-muted-foreground mb-4">
-                Time remaining: {formatTime(timeRemaining || 0)}
-              </p>
-              <Button onClick={togglePause}>
-                <Play className="w-4 h-4 mr-2" />
-                Resume
-              </Button>
+              {/* Save status */}
+              <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved} />
             </div>
           </div>
-        )}
+        </motion.header>
 
-        {/* Question - Flexible content area */}
-        <div className="flex-1 overflow-y-auto pb-4 min-h-0">
-          <QuestionCard
-            question={currentQuestion}
-            currentIndex={currentSession.currentQuestionIndex}
-            totalQuestions={currentSession.questions.length}
-            selectedAnswer={selectedAnswer}
-            onAnswerSelect={handleAnswerSelect}
-            showResult={showResults && mode === 'review'}
-            hasAllRequiredAnswers={hasAllRequiredAnswers}
-          />
-        </div>
+        {/* Main quiz content */}
+        <motion.main 
+          className="space-y-6"
+          variants={itemVariants}
+        >
+          {/* Question card */}
+          <motion.div
+            variants={cardVariants}
+            whileHover="hover"
+          >
+            <QuestionCard
+              question={currentQuestion}
+              onAnswerSubmit={handleAnswerSubmit}
+              hasAnswered={hasAnsweredCurrentQuestion}
+              isCorrect={isAnswerCorrect}
+              currentAnswer={currentAnswer}
+              mode={mode}
+            />
+          </motion.div>
 
-        {/* Navigation - Always visible at bottom */}
-        <div className="flex-shrink-0 border-t border-border/50 pt-2">
-          <QuizNavigation
-            currentIndex={currentSession.currentQuestionIndex}
-            totalQuestions={currentSession.questions.length}
-            hasAnswer={hasAnswer}
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            onComplete={handleComplete}
-          />
-        </div>
+          {/* Navigation */}
+          <motion.div
+            variants={cardVariants}
+            whileHover="hover"
+          >
+            <QuizNavigation
+              currentIndex={currentSession.currentQuestionIndex}
+              totalQuestions={currentSession.questions.length}
+              onNavigate={handleQuestionChange}
+              onComplete={handleComplete}
+              isLastQuestion={isLastQuestion}
+              hasAnswered={hasAnsweredCurrentQuestion}
+            />
+          </motion.div>
+
+          {/* Question navigation map */}
+          <motion.div
+            variants={cardVariants}
+            whileHover="hover"
+          >
+            <QuestionNavigationMap
+              questions={currentSession.questions}
+              currentIndex={currentSession.currentQuestionIndex}
+              onNavigate={handleQuestionChange}
+              userAnswers={currentSession.userAnswers}
+            />
+          </motion.div>
+        </motion.main>
+
+        {/* Feedback overlay */}
+        <AnimatePresence>
+          {showFeedback && (
+            <motion.div
+              variants={feedbackVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+            >
+              <FeedbackOverlay
+                isCorrect={isAnswerCorrect}
+                correctAnswer={currentQuestion.correctAnswer}
+                explanation={currentQuestion.explanation}
+                onClose={() => setShowFeedback(false)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Keyboard shortcuts help */}
+        <AnimatePresence>
+          {showKeyboardHelp && (
+            <motion.div
+              variants={feedbackVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+            >
+              <KeyboardShortcutsHelp
+                shortcuts={shortcuts}
+                onClose={() => setShowKeyboardHelp(false)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Time warning */}
+        <AnimatePresence>
+          {showTimeWarning && (
+            <motion.div
+              variants={feedbackVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed top-4 right-4 z-50"
+            >
+              <Card className="bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-orange-500" />
+                    <div>
+                      <div className="font-semibold text-orange-800 dark:text-orange-200">
+                        Time Warning
+                      </div>
+                      <div className="text-sm text-orange-600 dark:text-orange-400">
+                        Less than 5 minutes remaining!
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      {/* Feedback Overlay for Practice Mode */}
-      {mode === 'practice' && currentAnswer && currentQuestion && (
-        <FeedbackOverlay
-          question={currentQuestion}
-          userAnswer={currentAnswer}
-          isCorrect={isAnswerCorrect}
-          isVisible={showFeedback}
-          onContinue={handleFeedbackContinue}
-          onClose={handleFeedbackClose}
-          topicProgress={getTopicProgress()}
-        />
-      )}
-
-      {/* Keyboard Shortcuts Help */}
-      <KeyboardShortcutsHelp
-        shortcuts={keyboardShortcuts}
-        isOpen={showKeyboardHelp}
-        onClose={() => setShowKeyboardHelp(false)}
-        title="Quiz Keyboard Shortcuts"
-      />
-    </div>
+    </motion.div>
   )
 }
