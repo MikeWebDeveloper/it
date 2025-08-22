@@ -55,8 +55,13 @@ export function AdaptivePractice({ className, onBack }: AdaptivePracticeProps) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const questionList = adaptiveQuestions.map(({ priorityScore, weaknessScore, recencyScore, difficultyScore, ...question }) => question)
     
+    // Create the session first
     startQuiz(options.mode, questionList)
-    router.push(`/quiz/${options.mode}`)
+    
+    // Give the store a moment to update, then navigate
+    setTimeout(() => {
+      router.push(`/quiz/${options.mode}`)
+    }, 100)
   }
 
   const updateOption = <K extends keyof AdaptiveOrderingOptions>(

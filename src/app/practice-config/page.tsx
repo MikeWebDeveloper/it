@@ -49,8 +49,13 @@ export default function PracticeConfigPage() {
       ? shuffleArray(categoryQuestions).slice(0, config.questionCount)
       : categoryQuestions.slice(0, config.questionCount)
     
+    // Create the session first
     startQuiz(config.mode, questions, config.timeLimit)
-    router.push(`/quiz/${config.mode}`)
+    
+    // Give the store a moment to update, then navigate
+    setTimeout(() => {
+      router.push(`/quiz/${config.mode}`)
+    }, 100)
   }
 
   const handleBackToCategories = () => {

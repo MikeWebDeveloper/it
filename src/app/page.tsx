@@ -126,8 +126,14 @@ export default function Home() {
     
     const allQuestions = shuffleArray(questionData.questions).slice(0, 10)
     const timeLimit = mode === 'timed' ? 15 * 60 * 1000 : undefined
+    
+    // Create the session first
     startQuiz(mode, allQuestions, timeLimit)
-    router.push(`/quiz/${mode}`)
+    
+    // Give the store a moment to update, then navigate
+    setTimeout(() => {
+      router.push(`/quiz/${mode}`)
+    }, 100)
   }
 
   const handleCustomQuiz = () => {
@@ -158,8 +164,13 @@ export default function Home() {
       ? shuffleArray(categoryQuestions).slice(0, config.questionCount)
       : categoryQuestions.slice(0, config.questionCount)
     
+    // Create the session first
     startQuiz(config.mode, questions, config.timeLimit)
-    router.push(`/quiz/${config.mode}`)
+    
+    // Give the store a moment to update, then navigate
+    setTimeout(() => {
+      router.push(`/quiz/${config.mode}`)
+    }, 100)
   }
 
   const totalTopics = Object.keys(userProgress.topicProgress).length
