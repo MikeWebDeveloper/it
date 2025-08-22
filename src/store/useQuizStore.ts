@@ -257,15 +257,18 @@ export const useQuizStore = create<QuizState>()(
                 // Multiple choice - compare arrays of indices
                 if (Array.isArray(userAnswer)) {
                   const correctIndices = question.correctAnswer as number[]
-                  const userIndices = userAnswer.map(ans => parseInt(String(ans)))
+                  // Convert user answers to indices for comparison
+                  const userIndices = userAnswer.map(ans => question.options.indexOf(ans))
                   if (userIndices.length === correctIndices.length &&
-                      userIndices.every(idx => correctIndices.includes(idx))) {
+                      userIndices.every(idx => idx !== -1 && correctIndices.includes(idx))) {
                     correctAnswers++
                   }
                 }
               } else {
                 // Single choice - compare indices
-                if (parseInt(String(userAnswer)) === (question.correctAnswer as number)) {
+                // Convert user answer to index for comparison
+                const userIndex = question.options.indexOf(String(userAnswer))
+                if (userIndex !== -1 && userIndex === question.correctAnswer) {
                   correctAnswers++
                 }
               }

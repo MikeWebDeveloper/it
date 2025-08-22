@@ -179,10 +179,10 @@ export function QuizEngine({ mode }: QuizEngineProps) {
       if (!Array.isArray(answer)) return false
       const answerIndices = answer.map(a => options.indexOf(a))
       return answerIndices.length === correctAnswer.length && 
-             answerIndices.every(idx => correctAnswer.includes(idx))
+             answerIndices.every(idx => idx !== -1 && correctAnswer.includes(idx))
     } else {
       const answerIndex = options.indexOf(String(answer))
-      return answerIndex === correctAnswer
+      return answerIndex !== -1 && answerIndex === correctAnswer
     }
   }, [])
 

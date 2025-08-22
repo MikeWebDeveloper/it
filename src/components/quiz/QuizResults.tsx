@@ -233,20 +233,38 @@ export function QuizResults() {
           <CardContent className="space-y-4">
             {questions.map((question, index) => {
               const userAnswer = answers[question.id]
+              
+              // Calculate if the answer is correct
               const isCorrect = (() => {
                 if (!userAnswer) return false
+                
                 if (Array.isArray(question.correctAnswer)) {
+                  // Multiple choice question
                   if (!Array.isArray(userAnswer)) return false
+                  
                   // Convert user answers to indices for comparison
                   const userIndices = userAnswer.map(ans => question.options.indexOf(ans))
                   const correctIndices = question.correctAnswer as number[]
+                  
+                  // Check if all user indices are in correct indices and lengths match
                   return userIndices.length === correctIndices.length &&
-                         userIndices.every(idx => correctIndices.includes(idx))
+                         userIndices.every(idx => idx !== -1 && correctIndices.includes(idx))
+                } else {
+                  // Single choice question
+                  // Convert user answer to index for comparison
+                  const userIndex = question.options.indexOf(String(userAnswer))
+                  return userIndex !== -1 && userIndex === question.correctAnswer
                 }
-                // Convert user answer to index for comparison
-                const userIndex = question.options.indexOf(String(userAnswer))
-                return userIndex === question.correctAnswer
               })()
+
+              // Get the correct answer text(s) for display
+              const getCorrectAnswerText = () => {
+                if (Array.isArray(question.correctAnswer)) {
+                  return question.correctAnswer.map(idx => question.options[idx]).join(', ')
+                } else {
+                  return question.options[question.correctAnswer]
+                }
+              }
 
               return (
                 <div key={question.id} className="flex items-start gap-3 p-4 rounded-lg border">
@@ -283,16 +301,12 @@ export function QuizResults() {
                         </span>
                       </div>
                       
-                      {!isCorrect && (
-                        <div>
-                          <span className="font-medium">Correct answer: </span>
-                          <span className="text-green-600">
-                            {Array.isArray(question.correctAnswer) 
-                              ? question.correctAnswer.map(idx => question.options[idx]).join(', ')
-                              : question.options[question.correctAnswer]}
-                          </span>
-                        </div>
-                      )}
+                      <div>
+                        <span className="font-medium">Correct answer: </span>
+                        <span className="text-green-600">
+                          {getCorrectAnswerText()}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
