@@ -63,7 +63,7 @@ export function PullToRefresh({
     }
   }
 
-  const handleDragEnd = (event: React.DragEvent, info: PanInfo) => {
+  const handleDragEnd = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     if (info.offset.y > threshold && !isRefreshing && !disabled) {
       handleRefresh()
     }
@@ -260,7 +260,7 @@ export function MobilePullToRefresh({
     }
   }
 
-  const handleDragEnd = (event: React.DragEvent, info: PanInfo) => {
+  const handleDragEnd = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     if (info.offset.y > threshold && !isRefreshing && !disabled) {
       handleRefresh()
     }

@@ -84,8 +84,8 @@ export function useTouchOptimization(options: TouchOptimizationOptions = {}) {
 
   // Refs for cleanup and management
   const touchTargetsRef = useRef<Map<HTMLElement, TouchTarget>>(new Map())
-  const touchFeedbackTimeoutRef = useRef<NodeJS.Timeout>()
-  const longPressTimeoutRef = useRef<NodeJS.Timeout>()
+  const touchFeedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const longPressTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const touchEventThrottleRef = useRef<number>(0)
   const lastTouchTimeRef = useRef<number>(0)
 

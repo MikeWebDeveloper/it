@@ -80,7 +80,7 @@ export function useKeyboardManager(options: KeyboardManagerOptions = {}) {
 
   // Refs for cleanup and management
   const shortcutsRef = useRef<Map<string, KeyboardShortcut>>(new Map())
-  const viewportAdjustmentTimeoutRef = useRef<NodeJS.Timeout>()
+  const viewportAdjustmentTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const focusTrapRef = useRef<HTMLElement | null>(null)
   const initialViewportHeightRef = useRef<number>(0)
 
@@ -102,26 +102,31 @@ export function useKeyboardManager(options: KeyboardManagerOptions = {}) {
     const handleViewportChange = () => {
       if ('visualViewport' in window) {
         const visualViewport = (window as { visualViewport?: { height: number; addEventListener: (event: string, handler: () => void) => void; removeEventListener: (event: string, handler: () => void) => void } }).visualViewport
-        const newHeight = visualViewport.height
-        const heightDifference = initialViewportHeightRef.current - newHeight
+        if (visualViewport) {
+          const newHeight = visualViewport.height
+          const heightDifference = initialViewportHeightRef.current - newHeight
 
         // Consider keyboard visible if height difference is significant (>150px)
         const isKeyboardVisible = heightDifference > 150
 
-        setKeyboardState(prev => ({
-          ...prev,
-          isKeyboardVisible,
-          viewportHeight: newHeight
-        }))
-
-        // Trigger callbacks
-        if (isKeyboardVisible !== prev.isKeyboardVisible) {
-          if (isKeyboardVisible) {
-            onKeyboardShow?.()
-          } else {
-            onKeyboardHide?.()
+        setKeyboardState(prev => {
+          const newState = {
+            ...prev,
+            isKeyboardVisible,
+            viewportHeight: newHeight
           }
-        }
+          
+          // Trigger callbacks
+          if (isKeyboardVisible !== prev.isKeyboardVisible) {
+            if (isKeyboardVisible) {
+              onKeyboardShow?.()
+            } else {
+              onKeyboardHide?.()
+            }
+          }
+          
+          return newState
+        })
 
         onViewportChange?.(newHeight)
 
@@ -143,17 +148,20 @@ export function useKeyboardManager(options: KeyboardManagerOptions = {}) {
             }
           }
         }, viewportAdjustmentDelay)
+        }
       }
     }
 
     if ('visualViewport' in window) {
-      const visualViewport = (window as { visualViewport?: { height: number; addEventListener: (event: string, handler: () => string, handler: () => void) => void; removeEventListener: (event: string, handler: () => void) => void } }).visualViewport
-      visualViewport.addEventListener('resize', handleViewportChange)
-      visualViewport.addEventListener('scroll', handleViewportChange)
+      const visualViewport = (window as { visualViewport?: { height: number; addEventListener: (event: string, handler: () => void) => void; removeEventListener: (event: string, handler: () => void) => void } }).visualViewport
+      if (visualViewport) {
+        visualViewport.addEventListener('resize', handleViewportChange)
+        visualViewport.addEventListener('scroll', handleViewportChange)
 
-      return () => {
-        visualViewport.removeEventListener('resize', handleViewportChange)
-        visualViewport.removeEventListener('scroll', handleViewportChange)
+        return () => {
+          visualViewport.removeEventListener('resize', handleViewportChange)
+          visualViewport.removeEventListener('scroll', handleViewportChange)
+        }
       }
     }
   }, [enableViewportAdjustment, viewportAdjustmentDelay, onKeyboardShow, onKeyboardHide, onViewportChange])

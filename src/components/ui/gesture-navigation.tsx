@@ -269,9 +269,9 @@ export function MobileGestureNavigation({
   
   // Background color change based on gesture
   const backgroundColor = useTransform(
-    [x, y],
-    ([latestX, latestY]) => {
-      const distance = Math.sqrt(latestX ** 2 + latestY ** 2)
+    x,
+    (latestX) => {
+      const distance = Math.abs(latestX)
       const intensity = Math.min(distance / threshold, 1)
       return `rgba(0, 0, 0, ${intensity * 0.1})`
     }
