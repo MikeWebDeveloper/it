@@ -105,12 +105,20 @@ export default function Home() {
 
   // Load questions on mount with loading state
   useEffect(() => {
+    console.log('DEBUG - Main page useEffect triggered')
+    
     const loadData = async () => {
       try {
+        console.log('DEBUG - Starting to load questions data')
         setIsLoading(true)
         // Clear cache to force fresh data load
+        console.log('DEBUG - Clearing questions cache')
         clearQuestionsCache()
+        console.log('DEBUG - Calling loadQuestionsData()')
         const data = await loadQuestionsData()
+        console.log('DEBUG - Questions data loaded:', data)
+        console.log('DEBUG - First question:', data.questions[0])
+        console.log('DEBUG - First question correctAnswer:', data.questions[0]?.correctAnswer)
         setQuestionData(data)
         setQuestions(data.questions)
       } catch (error) {
