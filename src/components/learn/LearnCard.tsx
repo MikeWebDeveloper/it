@@ -88,9 +88,11 @@ export function LearnCard({
   const TopicIcon = topicIcons[question.topic] || Settings
   const topicColorClass = topicColors[question.topic] || 'bg-gray-500 border-gray-200 text-gray-50'
   
-  const correctAnswers = Array.isArray(question.correct_answer) 
-    ? question.correct_answer 
-    : [question.correct_answer]
+  // Convert correctAnswer indices to actual answer strings
+  const correctAnswerIndices = Array.isArray(question.correctAnswer) 
+    ? question.correctAnswer 
+    : [question.correctAnswer]
+  const correctAnswers = correctAnswerIndices.map(index => question.options[index])
 
   const handleBookmark = () => {
     onBookmarkToggle?.(question.id)

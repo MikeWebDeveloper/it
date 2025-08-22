@@ -39,8 +39,8 @@ function calculateDifficultyScore(question: Question): number {
   else if (optionCount >= 4) score += 0.5
 
   // 4. Multiple correct answers (0-2 points)
-  if (Array.isArray(question.correct_answer)) {
-    score += 1.5 + (question.correct_answer.length * 0.25)
+  if (Array.isArray(question.correctAnswer)) {
+    score += 1.5 + (question.correctAnswer.length * 0.25)
   }
 
   // 5. Explanation complexity (0-1 point)

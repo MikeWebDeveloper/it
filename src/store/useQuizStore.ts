@@ -251,16 +251,21 @@ export const useQuizStore = create<QuizState>()(
           let correctAnswers = 0
           session.questions.forEach((question) => {
             const userAnswer = session.answers[question.id]
-            if (userAnswer) {
+            if (userAnswer !== undefined && userAnswer !== null) {
               // Handle both single and multiple correct answers
-              if (Array.isArray(question.correct_answer)) {
-                if (Array.isArray(userAnswer) && 
-                    userAnswer.length === question.correct_answer.length &&
-                    userAnswer.every(ans => question.correct_answer.includes(ans))) {
-                  correctAnswers++
+              if (Array.isArray(question.correctAnswer)) {
+                // Multiple choice - compare arrays of indices
+                if (Array.isArray(userAnswer)) {
+                  const correctIndices = question.correctAnswer as number[]
+                  const userIndices = userAnswer.map(ans => parseInt(String(ans)))
+                  if (userIndices.length === correctIndices.length &&
+                      userIndices.every(idx => correctIndices.includes(idx))) {
+                    correctAnswers++
+                  }
                 }
               } else {
-                if (userAnswer === question.correct_answer) {
+                // Single choice - compare indices
+                if (parseInt(String(userAnswer)) === (question.correctAnswer as number)) {
                   correctAnswers++
                 }
               }
@@ -420,14 +425,19 @@ function calculateTopicBreakdown(questions: Question[], answers: Record<number, 
     if (userAnswer) {
       // Check if answer is correct
       let isCorrect = false
-      if (Array.isArray(question.correct_answer)) {
-        if (Array.isArray(userAnswer) && 
-            userAnswer.length === question.correct_answer.length &&
-            userAnswer.every(ans => question.correct_answer.includes(ans))) {
-          isCorrect = true
+      if (Array.isArray(question.correctAnswer)) {
+        // Multiple choice - compare arrays of indices
+        if (Array.isArray(userAnswer)) {
+          const correctIndices = question.correctAnswer as number[]
+          const userIndices = userAnswer.map(ans => parseInt(String(ans)))
+          if (userIndices.length === correctIndices.length &&
+              userIndices.every(idx => correctIndices.includes(idx))) {
+            isCorrect = true
+          }
         }
       } else {
-        if (userAnswer === question.correct_answer) {
+        // Single choice - compare indices
+        if (parseInt(String(userAnswer)) === (question.correctAnswer as number)) {
           isCorrect = true
         }
       }

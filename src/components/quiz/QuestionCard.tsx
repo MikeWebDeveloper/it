@@ -78,7 +78,7 @@ export function QuestionCard({
 }: QuestionCardProps) {
   const { announce, announceQuizState } = useAccessibility()
   const progress = ((currentIndex + 1) / totalQuestions) * 100
-  const isMultipleChoice = Array.isArray(question.correct_answer)
+  const isMultipleChoice = Array.isArray(question.correctAnswer)
   
   // Announce question when it changes
   useEffect(() => {
@@ -204,13 +204,13 @@ export function QuestionCard({
         {isMultipleChoice && (
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">
-              Select all that apply ({Array.isArray(question.correct_answer) ? question.correct_answer.length : '?'} correct answers)
+              Select all that apply ({Array.isArray(question.correctAnswer) ? question.correctAnswer.length : '?'} correct answers)
             </p>
             <div className="flex items-center justify-between">
               {Array.isArray(selectedAnswer) && selectedAnswer.length > 0 ? (
                 <div className="flex items-center gap-2">
                   <p className="text-xs font-medium text-primary">
-                    Selected: {selectedAnswer.length} of {Array.isArray(question.correct_answer) ? question.correct_answer.length : '?'}
+                    Selected: {selectedAnswer.length} of {Array.isArray(question.correctAnswer) ? question.correctAnswer.length : '?'}
                   </p>
                   {hasAllRequiredAnswers ? (
                     <div className="flex items-center gap-1 text-green-600">
@@ -220,13 +220,13 @@ export function QuestionCard({
                   ) : (
                     <div className="flex items-center gap-1 text-amber-600">
                       <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                      <span className="text-xs">Select {(Array.isArray(question.correct_answer) ? question.correct_answer.length : 0) - selectedAnswer.length} more</span>
+                      <span className="text-xs">Select {(Array.isArray(question.correctAnswer) ? question.correctAnswer.length : 0) - selectedAnswer.length} more</span>
                     </div>
                   )}
                 </div>
               ) : (
                 <p className="text-xs text-muted-foreground">
-                  Select all {Array.isArray(question.correct_answer) ? question.correct_answer.length : '?'} options to continue
+                  Select all {Array.isArray(question.correctAnswer) ? question.correctAnswer.length : '?'} options to continue
                 </p>
               )}
             </div>
@@ -239,7 +239,7 @@ export function QuestionCard({
         <fieldset>
           <legend className="sr-only">
             {isMultipleChoice 
-              ? `Select ${Array.isArray(question.correct_answer) ? question.correct_answer.length : 'all'} correct answers for question ${currentIndex + 1}`
+              ? `Select ${Array.isArray(question.correctAnswer) ? question.correctAnswer.length : 'all'} correct answers for question ${currentIndex + 1}`
               : `Select the correct answer for question ${currentIndex + 1}`
             }
           </legend>
@@ -259,9 +259,9 @@ export function QuestionCard({
                 }
               isCorrect={
                 showResult 
-                  ? Array.isArray(question.correct_answer)
-                    ? question.correct_answer.includes(option)
-                    : question.correct_answer === option
+                  ? Array.isArray(question.correctAnswer)
+                    ? question.correctAnswer.includes(index)
+                    : question.correctAnswer === index
                   : undefined
               }
               isMultipleChoice={isMultipleChoice}

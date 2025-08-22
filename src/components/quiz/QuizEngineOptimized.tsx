@@ -164,18 +164,18 @@ export function QuizEngineOptimized({ mode }: QuizEngineProps) {
   const hasAnswer = useMemo(() => {
     if (!currentSession || !currentQuestion || selectedAnswer === undefined || selectedAnswer === null) return false
     
-    if (Array.isArray(currentQuestion.correct_answer)) {
+    if (Array.isArray(currentQuestion.correctAnswer)) {
       if (!Array.isArray(selectedAnswer)) return false
-      return selectedAnswer.length === currentQuestion.correct_answer.length
+      return selectedAnswer.length === currentQuestion.correctAnswer.length
     }
     
     return selectedAnswer !== '' && selectedAnswer !== null
   }, [currentSession, currentQuestion, selectedAnswer])
 
   const hasAllRequiredAnswers = useMemo(() => {
-    if (!currentQuestion || !Array.isArray(currentQuestion.correct_answer)) return hasAnswer
+    if (!currentQuestion || !Array.isArray(currentQuestion.correctAnswer)) return hasAnswer
     if (!Array.isArray(selectedAnswer)) return false
-    return selectedAnswer.length === currentQuestion.correct_answer.length
+    return selectedAnswer.length === currentQuestion.correctAnswer.length
   }, [currentQuestion, selectedAnswer, hasAnswer])
 
   // Auto-save with optimized configuration
@@ -189,13 +189,17 @@ export function QuizEngineOptimized({ mode }: QuizEngineProps) {
   const feedback = useAudioHapticFeedback()
 
   // Optimized answer checking with memoization
-  const checkAnswer = useCallback((answer: string | string[], correctAnswer: string | string[]) => {
+  const checkAnswer = useCallback((answer: string | string[], correctAnswer: number | number[], options: string[]) => {
     if (Array.isArray(correctAnswer)) {
       if (!Array.isArray(answer)) return false
-      return answer.length === correctAnswer.length && 
-             answer.every(ans => correctAnswer.includes(ans))
+      // Convert answer strings to indices
+      const answerIndices = answer.map(a => options.indexOf(a))
+      return answerIndices.length === correctAnswer.length && 
+             answerIndices.every(idx => correctAnswer.includes(idx))
     } else {
-      return answer === correctAnswer
+      // Convert single answer string to index
+      const answerIndex = options.indexOf(String(answer))
+      return answerIndex === correctAnswer
     }
   }, [])
 
@@ -274,12 +278,12 @@ export function QuizEngineOptimized({ mode }: QuizEngineProps) {
     answerQuestion(currentQuestion?.id || 0, answer)
     
     if (mode === 'practice' && !hasAnsweredCurrentQuestion && currentQuestion) {
-      if (Array.isArray(currentQuestion.correct_answer)) {
+      if (Array.isArray(currentQuestion.correctAnswer)) {
         const answerArray = Array.isArray(answer) ? answer : []
-        const requiredCount = currentQuestion.correct_answer.length
+        const requiredCount = currentQuestion.correctAnswer.length
         
         if (answerArray.length === requiredCount) {
-          const correct = checkAnswer(answer, currentQuestion.correct_answer)
+          const correct = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
           setCurrentAnswer(answer)
           setIsAnswerCorrect(correct)
           setShowFeedback(true)
@@ -289,7 +293,7 @@ export function QuizEngineOptimized({ mode }: QuizEngineProps) {
           feedback.onButtonClick()
         }
       } else {
-        const correct = checkAnswer(answer, currentQuestion.correct_answer)
+        const correct = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
         setCurrentAnswer(answer)
         setIsAnswerCorrect(correct)
         setShowFeedback(true)

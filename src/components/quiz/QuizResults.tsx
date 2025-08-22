@@ -46,12 +46,17 @@ export function QuizResults() {
     const userAnswer = answers[q.id]
     if (!userAnswer) return false
     
-    if (Array.isArray(q.correct_answer)) {
-      return Array.isArray(userAnswer) && 
-             userAnswer.length === q.correct_answer.length &&
-             userAnswer.every(ans => q.correct_answer.includes(ans))
+    if (Array.isArray(q.correctAnswer)) {
+      if (!Array.isArray(userAnswer)) return false
+      // Convert user answers to indices for comparison
+      const userIndices = userAnswer.map(ans => q.options.indexOf(ans))
+      const correctIndices = q.correctAnswer as number[]
+      return userIndices.length === correctIndices.length &&
+             userIndices.every(idx => correctIndices.includes(idx))
     }
-    return userAnswer === q.correct_answer
+    // Convert user answer to index for comparison
+    const userIndex = q.options.indexOf(String(userAnswer))
+    return userIndex === q.correctAnswer
   }).length
 
   const getScoreColor = (score: number) => {
@@ -230,12 +235,17 @@ export function QuizResults() {
               const userAnswer = answers[question.id]
               const isCorrect = (() => {
                 if (!userAnswer) return false
-                if (Array.isArray(question.correct_answer)) {
-                  return Array.isArray(userAnswer) && 
-                         userAnswer.length === question.correct_answer.length &&
-                         userAnswer.every(ans => question.correct_answer.includes(ans))
+                if (Array.isArray(question.correctAnswer)) {
+                  if (!Array.isArray(userAnswer)) return false
+                  // Convert user answers to indices for comparison
+                  const userIndices = userAnswer.map(ans => question.options.indexOf(ans))
+                  const correctIndices = question.correctAnswer as number[]
+                  return userIndices.length === correctIndices.length &&
+                         userIndices.every(idx => correctIndices.includes(idx))
                 }
-                return userAnswer === question.correct_answer
+                // Convert user answer to index for comparison
+                const userIndex = question.options.indexOf(String(userAnswer))
+                return userIndex === question.correctAnswer
               })()
 
               return (
@@ -277,9 +287,9 @@ export function QuizResults() {
                         <div>
                           <span className="font-medium">Correct answer: </span>
                           <span className="text-green-600">
-                            {Array.isArray(question.correct_answer) 
-                              ? question.correct_answer.join(', ') 
-                              : question.correct_answer}
+                            {Array.isArray(question.correctAnswer) 
+                              ? question.correctAnswer.map(idx => question.options[idx]).join(', ')
+                              : question.options[question.correctAnswer]}
                           </span>
                         </div>
                       )}

@@ -7,14 +7,14 @@ const mockQuestions: Question[] = [
     id: 1,
     question: "Test question 1",
     options: ["A", "B", "C", "D"],
-    correct_answer: "A",
+    correctAnswer: 0,
     topic: "Hardware"
   },
   {
     id: 2,
     question: "Test question 2", 
     options: ["A", "B", "C", "D"],
-    correct_answer: "B",
+    correctAnswer: 1,
     topic: "Networking"
   }
 ]
@@ -83,11 +83,11 @@ describe('useQuizStore', () => {
     })
 
     act(() => {
-      result.current.answerQuestion(1, 'A')
+      result.current.answerQuestion(1, '0')
     })
 
     const session = result.current.currentSession
-    expect(session?.answers[1]).toBe('A')
+    expect(session?.answers[1]).toBe('0')
   })
 
   it('completes quiz when all questions answered', () => {
@@ -99,12 +99,13 @@ describe('useQuizStore', () => {
 
     // Answer all questions
     act(() => {
-      result.current.answerQuestion(1, 'A') // Correct
+      result.current.answerQuestion(1, '0') // Correct (index 0 = 'A')
     })
     
     act(() => {
-      result.current.answerQuestion(2, 'B') // Correct
+      result.current.answerQuestion(2, '1') // Correct (index 1 = 'B')
     })
+
 
     act(() => {
       result.current.completeQuiz()
@@ -124,11 +125,11 @@ describe('useQuizStore', () => {
 
     // Answer all questions
     act(() => {
-      result.current.answerQuestion(1, 'A')
+      result.current.answerQuestion(1, '0')
     })
     
     act(() => {
-      result.current.answerQuestion(2, 'B')
+      result.current.answerQuestion(2, '1')
     })
 
     act(() => {

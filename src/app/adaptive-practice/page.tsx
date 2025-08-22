@@ -6,7 +6,7 @@ import { useQuizStore } from '@/store/useQuizStore'
 import { AdaptivePractice } from '@/components/practice/AdaptivePractice'
 import { PageTransition } from '@/components/animations/PageTransition'
 import { AnimatedThemeToggle } from '@/components/ui/AnimatedThemeToggle'
-import questionData from '@/data/questions.json'
+import { loadQuestionsData } from '@/lib/loadQuestions'
 
 export default function AdaptivePracticePage() {
   const [mounted, setMounted] = useState(false)
@@ -15,7 +15,18 @@ export default function AdaptivePracticePage() {
 
   useEffect(() => {
     setMounted(true)
-    setQuestions(questionData.questions)
+    
+    // Load and normalize questions data
+    const loadQuestions = async () => {
+      try {
+        const questionsData = await loadQuestionsData()
+        setQuestions(questionsData.questions)
+      } catch (error) {
+        console.error('Failed to load questions:', error)
+      }
+    }
+    
+    loadQuestions()
   }, [setQuestions])
 
   const handleBack = () => {

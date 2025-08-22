@@ -2,9 +2,10 @@ export interface Question {
   id: number
   question: string
   options: string[]
-  correct_answer: string | string[]
+  correctAnswer: number | number[]
   explanation?: string
   topic: string
+  difficulty?: string
   exhibit?: {
     src: string
     alt: string

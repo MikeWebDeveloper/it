@@ -44,14 +44,18 @@ export function QuestionNavigationMap({
       const userAnswer = answers[question.id]
       let isCorrect = false
       
-      if (Array.isArray(question.correct_answer)) {
-        if (Array.isArray(userAnswer) && 
-            userAnswer.length === question.correct_answer.length &&
-            userAnswer.every(ans => question.correct_answer.includes(ans))) {
-          isCorrect = true
+      if (Array.isArray(question.correctAnswer)) {
+        if (Array.isArray(userAnswer)) {
+          // Convert user answers to indices for comparison
+          const userIndices = userAnswer.map(ans => question.options.indexOf(ans))
+          const correctIndices = question.correctAnswer as number[]
+          isCorrect = userIndices.length === correctIndices.length &&
+                      userIndices.every(idx => correctIndices.includes(idx))
         }
       } else {
-        isCorrect = userAnswer === question.correct_answer
+        // Convert user answer to index for comparison
+        const userIndex = question.options.indexOf(String(userAnswer))
+        isCorrect = userIndex === (question.correctAnswer as number)
       }
       
       return isCurrent 

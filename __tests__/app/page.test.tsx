@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import Home from '@/app/page'
 
 // Mock Next.js router
@@ -42,27 +42,42 @@ jest.mock('next-themes', () => ({
   })
 }))
 
-// Mock the quiz data
-jest.mock('@/data/questions.json', () => ({
-  exam_info: {
-    title: "IT Essentials 7.0 8.0 Course Final Exam",
-    total_questions: 50,
-    topics: ["Hardware", "Networking", "Security"]
-  },
-  questions: [
-    {
-      id: 1,
-      question: "Test question",
-      options: ["A", "B", "C", "D"],
-      correct_answer: "A",
-      topic: "Hardware"
-    }
-  ]
+// Mock the loadQuestionsData function
+jest.mock('@/lib/loadQuestions', () => ({
+  loadQuestionsData: jest.fn().mockResolvedValue({
+    exam_info: {
+      title: "IT Essentials 7.0 8.0 Course Final Exam",
+      total_questions: 50,
+      topics: ["Hardware", "Networking", "Security"]
+    },
+    questions: [
+      {
+        id: 1,
+        question: "Test question",
+        options: ["A", "B", "C", "D"],
+        correct_answer: "A",
+        topic: "Hardware"
+      }
+    ]
+  })
 }))
 
 // Mock PWA Installer
 jest.mock('@/components/PWAInstaller', () => ({
   PWAInstaller: () => null
+}))
+
+// Mock PageTransition
+jest.mock('@/components/animations/PageTransition', () => ({
+  PageTransition: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+}))
+
+// Mock framer-motion
+jest.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <div {...props}>{children}</div>,
+    button: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <button {...props}>{children}</button>
+  }
 }))
 
 // Mock audio/haptic hooks
@@ -90,6 +105,52 @@ jest.mock('@/hooks/useStudySessionTimer', () => ({
     isSessionActive: false,
     formatTime: (time: number) => '00:00'
   })
+}))
+
+// Mock AnimatedThemeToggle
+jest.mock('@/components/ui/AnimatedThemeToggle', () => ({
+  AnimatedThemeToggle: () => 
+    <button data-testid="theme-toggle">Toggle Theme</button>
+}))
+
+// Mock StudySessionTimer
+jest.mock('@/components/ui/StudySessionTimer', () => ({
+  StudySessionTimer: ({ className }: { className?: string }) => 
+    <div data-testid="study-timer" className={className}>Study Timer</div>
+}))
+
+// Mock CategoryCarousel
+jest.mock('@/components/ui/CategoryCarousel', () => ({
+  CategoryCarousel: ({ categories, className }: {
+    categories: string[];
+    className?: string;
+  }) => (
+    <div data-testid="category-carousel" className={className}>
+      {categories?.map((category) => (
+        <button key={category}>
+          {category}
+        </button>
+      ))}
+    </div>
+  )
+}))
+
+// Mock CategorySelector
+jest.mock('@/components/quiz/CategorySelector', () => ({
+  CategorySelector: () => (
+    <div data-testid="category-selector">
+      Category Selector
+    </div>
+  )
+}))
+
+// Mock QuizConfig
+jest.mock('@/components/quiz/QuizConfig', () => ({
+  QuizConfig: () => (
+    <div data-testid="quiz-config">
+      Quiz Config
+    </div>
+  )
 }))
 
 describe('Home Page', () => {
@@ -140,10 +201,18 @@ describe('Home Page', () => {
     expect(screen.getByText('Custom Exam')).toBeInTheDocument()
   })
 
-  it('shows topic badges', () => {
+  it('shows topic badges', async () => {
     render(<Home />)
     
-    // Check for the first topic badge
-    expect(screen.getByText('Hardware')).toBeInTheDocument()
+    // Wait for the lazy loaded data to be available
+    await waitFor(() => {
+      // Check if category carousel is rendered (which means data is loaded)
+      expect(screen.getByTestId('category-carousel')).toBeInTheDocument()
+    })
+    
+    // Check for all topic badges - use getAllByText since there are multiple
+    const topicElements = screen.getAllByText(/Hardware|Networking|Security/)
+    expect(topicElements.length).toBeGreaterThan(0)
+    expect(topicElements[0]).toBeInTheDocument()
   })
 })

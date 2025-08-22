@@ -2708,7 +2708,7 @@
         "The computer can read data directly from the unbuffered memory banks, making unbuffered memory faster than buffered memory.",
         "The control chip built into the unbuffered RAM module assists the memory controller to manage large amounts of RAM."
       ],
-      "correct_answer": "The additional control circuitry on the unbuffered RAM module speeds up memory reads.",
+      "correct_answer": "The computer can read data directly from the unbuffered memory banks, making unbuffered memory faster than buffered memory.",
       "topic": "Hardware",
       "difficulty": "medium"
     },
@@ -2720,7 +2720,8 @@
         "DSL modem",
         "external Storage drive",
         "stateful firewall",
-        "IPS/IDS"
+        "IPS/IDS",
+        "VPN concentrator"
       ],
       "correct_answer": "DSL modem",
       "topic": "Mobile Devices",
@@ -2729,15 +2730,16 @@
     {
       "id": 202,
       "number": 202,
-      "question": "An on-site IT technician is attempting to resolve an issue with application performance on a customer laptop. The technician backs up the customer data and then replaces the memory in the laptop with known good memory. It does not resolve the performance issue. What are the next two actions the technician should take? (Choose two.)",
+      "question": "A customer reports that their laptop screen is very dim and difficult to see. The technician suspects an LCD display issue. What are the two most likely causes? (Choose two.)",
       "options": [
-        "Call the laptop manufacturer technical support line.",
-        "Continue to test the next likely probable cause.",
-        "Document that the possible solution did not work.",
-        "Reinstall the original memory sticks."
+        "The display driver needs to be updated",
+        "The inverter may be failing",
+        "The backlight needs adjustment or is failing",
+        "The video card is overheating",
+        "The screen resolution is set incorrectly"
       ],
-      "correct_answer": "Continue to test the next likely probable cause.",
-      "explanation": "Knowing what to do when a possible solution does not resolve the problem is part of a good troubleshooting strategy. If you implement a possible solution and it does not correct the problem, you should reverse the action that you just took and document that the possible solution did not solve the issue. Once that is complete, move on to test another potential solution or escalate the issue to the next level.",
+      "correct_answer": "The inverter may be failing",
+      "explanation": "When a laptop screen is very dim, it is typically related to the backlight system. The inverter controls power to the backlight, and if it fails, the screen becomes very dim. Additionally, the backlight itself may need adjustment or could be failing.",
       "topic": "Hardware",
       "difficulty": "medium"
     },
@@ -2748,7 +2750,9 @@
       "options": [
         "Copy the shortcut for VirtualBox from its location to the startup folder.",
         "Use msconfig to change the startup option from manual to automatic.",
-        "Use the Startup tab in Task Manager to add VirtualBox to the list of programs."
+        "Use the Startup tab in Task Manager to add VirtualBox to the list of programs.",
+        "Add VirtualBox to the Windows Registry startup keys.",
+        "Create a scheduled task to run VirtualBox at startup."
       ],
       "correct_answer": "Copy the shortcut for VirtualBox from its location to the startup folder.",
       "topic": "Operating Systems",
@@ -2762,9 +2766,9 @@
         "Document findings and actions.",
         "Identify the problem.",
         "Establish a plan of action.",
-        "Test the theory of probable cause."
+        "Verify full system functionality."
       ],
-      "correct_answer": "Document findings and actions.",
+      "correct_answer": "Verify full system functionality.",
       "topic": "Security",
       "difficulty": "medium"
     },
@@ -2776,7 +2780,8 @@
         "The hotend nozzle heats to different temperatures depending on the type of filament used.",
         "Hotend nozzles are designed to last the life of the printer and do not need to be replaced.",
         "The heating temperature of the hotend nozzle is the same (190 degrees Celsius) for all materials.",
-        "Hotend nozzles are considered consumables and should be replaced during normal maintenance."
+        "Hotend nozzles are considered consumables and should be replaced during normal maintenance.",
+        "The hotend nozzle automatically adjusts temperature based on environmental conditions."
       ],
       "correct_answer": "The hotend nozzle heats to different temperatures depending on the type of filament used.",
       "topic": "Printers",
@@ -2797,6 +2802,21 @@
       "difficulty": "medium"
     },
     {
+      "id": 207,
+      "number": 207,
+      "question": "Which type of disk drive can provide a very fast boot experience and also provide high capacity storage?",
+      "options": [
+        "SSD",
+        "HDD", 
+        "SSHD",
+        "DVD"
+      ],
+      "correct_answer": "SSHD",
+      "explanation": "Solid state hybrid drives are a compromise between a magnetic HDD and an SSD. The SSHD drives are faster than an HDD, but can provide more storage space than an SSD.",
+      "topic": "Hardware",
+      "difficulty": "medium"
+    },
+    {
       "id": 208,
       "number": 208,
       "question": "Refer to the exhibit. Which type of adapter card may require the width of two slots in order to accommodate additional cooling, even though it only has one PCIe x16 connector?",
@@ -2804,22 +2824,11 @@
         "USB-C controller",
         "video capture card",
         "graphics card",
-        "wireless network adapter"
+        "wireless network adapter",
+        "sound card"
       ],
-      "correct_answer": "video capture card",
+      "correct_answer": "graphics card",
       "explanation": "PCIe x16 slots are generally intended for use with Graphics Cards. Capture devices usually use PCIe 1x slots",
-      "topic": "Hardware",
-      "difficulty": "medium"
-    },
-    {
-      "id": 208,
-      "number": 208,
-      "question": "Refer to the exhibit. (where is the exhibit?) Which type of adapter card may require the width of two slots in order to accommodate additional cooling, even though it only has one PCIe x16 connector? (PCIe x16 slots are generally intended for use with Graphics Cards. Capture devices usually use PCIe 1x slots)",
-      "options": [
-        "video capture card (false, also because no cooling is needed)",
-        "graphics card (correct, also because of cooling fans and/or heat sink attached)"
-      ],
-      "correct_answer": "video capture card (false, also because no cooling is needed)",
       "topic": "Hardware",
       "difficulty": "medium"
     },
@@ -2831,7 +2840,8 @@
         "device name and Bluetooth capabilities",
         "Bluetooth PIN and device ID",
         "protocol and radio frequency settings",
-        "username and telephone number"
+        "username and telephone number",
+        "MAC address and encryption keys"
       ],
       "correct_answer": "device name and Bluetooth capabilities",
       "explanation": "When a Bluetooth device is in discoverable mode, it transmits Bluetooth and device information such as device name, services that the device can use, and Bluetooth class. To prevent a Bluetooth device from being discovered unintentionally, only turn on Bluetooth capabilities when they are needed.",
@@ -2915,10 +2925,10 @@
       "question": "An accountant is booting a desktop that has Windows 8 installed. The boot process is currently working on the following step: WinLoad loads two files that make up the core of Windows: NTOSKRNL.EXE and HAL.DLL. What is the next step that will happen in the boot process?",
       "options": [
         "Winload uses the path specified in BOOTMGR to find the boot partition.",
-        "The code in the boot sector is executed and the control of the boot process is given to Windows Boot Manager.",
+        "The BIOS boots the computer using the first drive that contains a valid boot sector.",
         "WinLoad loads two files that make up the core of Windows: NTOSKRNL.EXE and HAL.DLL."
       ],
-      "correct_answer": "Winload uses the path specified in BOOTMGR to find the boot partition.",
+      "correct_answer": "The BIOS boots the computer using the first drive that contains a valid boot sector.",
       "topic": "Operating Systems",
       "difficulty": "medium"
     },
@@ -2930,9 +2940,9 @@
         "WinLoad loads two files that make up the core of Windows: NTOSKRNL.EXE and HAL.DLL.",
         "The BIOS boots the computer using the first drive that contains a valid boot sector.",
         "The code in the boot sector is executed and the control of the boot process is given to Windows Boot Manager.",
-        "Winload uses the path specified in BOOTMGR to find the boot partition."
+        "NTOSKRNL.EXE starts the login file called WINLOGON.EXE."
       ],
-      "correct_answer": "WinLoad loads two files that make up the core of Windows: NTOSKRNL.EXE and HAL.DLL.",
+      "correct_answer": "NTOSKRNL.EXE starts the login file called WINLOGON.EXE.",
       "topic": "Operating Systems",
       "difficulty": "medium"
     },
@@ -2975,8 +2985,38 @@
         "to copy a group of files from one Windows directory to another",
         "to relocate a file from one Windows directory to another one"
       ],
-      "correct_answer": "to copy files, directories, and subdirectories from one location to another",
+      "correct_answer": "to copy a group of files from one Windows directory to another",
       "topic": "Command Line",
+      "difficulty": "medium"
+    },
+    {
+      "id": 220,
+      "number": 220,
+      "question": "A technician is booting a PC that has Windows 10 installed. The boot process is currently working on the following step: BOOTMGR reads the Boot Configuration Data file. What is the next step that will happen in the boot process?",
+      "options": [
+        "POST for each adapter card that has a BIOS",
+        "BIOS reads the MBR",
+        "WinLoad reads the registry files, chooses a hardware profile, and loads the device drivers",
+        "BOOTMGR invokes WINLOAD.EXE"
+      ],
+      "correct_answer": "WinLoad reads the registry files, chooses a hardware profile, and loads the device drivers",
+      "explanation": "After BOOTMGR reads the Boot Configuration Data file to know which OS to load and where to find the OS on the boot partition, BOOTMGR invokes WINLOAD.EXE in order to load the NTOSKRNL.EXE file and HAL.DLL, then BOOTMGR reads the registry files and loads device drivers.",
+      "topic": "Operating Systems",
+      "difficulty": "medium"
+    },
+    {
+      "id": 221,
+      "number": 221,
+      "question": "A user is booting a laptop that has Windows 10 installed. The boot process is currently working on the following step: BOOTMGR reads the Boot Configuration Data file to know which OS to load. What is the next step that will happen in the boot process?",
+      "options": [
+        "POST for each adapter card that has a BIOS",
+        "BIOS reads the MBR", 
+        "BOOTMGR invokes WINLOAD.EXE to load the NTOSKRNL.EXE file and HAL.DLL",
+        "Winload uses the path specified in BOOTMGR to find the boot partition"
+      ],
+      "correct_answer": "Winload uses the path specified in BOOTMGR to find the boot partition",
+      "explanation": "The Windows boot sequence continues with Winload using the path specified in BOOTMGR to find the boot partition before proceeding to load the Windows kernel files.",
+      "topic": "Operating Systems", 
       "difficulty": "medium"
     },
     {
@@ -2987,7 +3027,8 @@
         "Windows Easy Transfer",
         "Windows User Manager",
         "Windows Upgrade Assistant",
-        "Windows Upgrade Advisor"
+        "Windows Upgrade Advisor",
+        "User State Migration Tool"
       ],
       "correct_answer": "Windows Easy Transfer",
       "explanation": "When a new operating system is being installed, existing user data and settings need to be migrated from the old to the new operating system. The User State Migration Tool and the Windows Easy Transfer Tool are available to perform this task on the Windows Vista, 7, and 8 operating systems.",
@@ -3019,7 +3060,7 @@
         "A full format will delete every partition on the hard drive.",
         "A full format uses the faster FAT32 file system, whereas a quick format uses the slower NTFS file system."
       ],
-      "correct_answer": "A full format is the only method of installing Windows 8.1 on a PC that has an operating system currently installed.",
+      "correct_answer": "A full format will delete files from the disk while analyzing the disk drive for errors.",
       "explanation": "A full format removes files from a partition while scanning the disk for bad sectors. A quick format will remove files from a partition but does not scan a disk for bad sectors.",
       "topic": "Operating Systems",
       "difficulty": "medium"
@@ -3094,8 +3135,23 @@
         "Perform a clean installation of 64-bit Windows 10.",
         "Download and install 64-bit hardware drivers in the current OS."
       ],
-      "correct_answer": "Downgrade the 32-bit Windows 8.1 to 64-bit Windows 7.",
+      "correct_answer": "Perform a clean installation of 64-bit Windows 10.",
       "explanation": "A 32-bit OS cannot be upgraded to a 64-bit OS. In this case a clean install of Windows 64-bit would be the only option because the application requires a 64-bit Windows environment to work.",
+      "topic": "Operating Systems",
+      "difficulty": "medium"
+    },
+    {
+      "id": 230,
+      "number": 230,
+      "question": "A technician wishes to prepare the computers in the network for disaster recovery. The network consists of a variety of desktops and laptops from different vendors running different versions of Windows. How would the technician prepare the recovery media?",
+      "options": [
+        "Prepare one 64-bit recovery disc for all the computers.",
+        "Prepare one 32-bit recovery disc for all the computers.",
+        "Prepare individual recovery discs for all the computers.",
+        "Prepare one image restore for all the computers."
+      ],
+      "correct_answer": "Prepare individual recovery discs for all the computers.",
+      "explanation": "Because the computers are from different vendors with different hardware configurations and different versions of Windows, individual recovery discs must be prepared for each computer to ensure compatibility.",
       "topic": "Operating Systems",
       "difficulty": "medium"
     },
@@ -3124,7 +3180,7 @@
         "The network drivers were not added to the image file.",
         "The Sysprep utility should have been turned off prior to the creation of the image file."
       ],
-      "correct_answer": "The technician used the wrong tool to create the image file.",
+      "correct_answer": "The network drivers were not added to the image file.",
       "explanation": "The technician must use Sysprep to clean up the local specific configuration, such as the SID, otherwise the cloned systems will not work properly.",
       "topic": "Networking",
       "difficulty": "medium"
@@ -3182,7 +3238,9 @@
         "bootrec /fixmbr",
         "chkdsk",
         "msconfig",
-        "sfc /scannow"
+        "sfc /scannow",
+        "bootrec /rebuildbcd",
+        "diskpart"
       ],
       "correct_answer": "bootrec /fixmbr",
       "explanation": "The sfc /scannow command is used to check the integristy of the system files. The msconfig command allows for viewing the startup configuration mode, while the chkdsk command is used to repair the Windows file system. The bootrec /fixmbr command is used to repair a corrupt master boot record in a Windows 10 environment.",
@@ -3240,9 +3298,10 @@
         "inventory management",
         "disaster recovery policies and procedures",
         "logical and physical network topology diagrams",
-        "end-user manual for hardware and software"
+        "end-user manual for hardware and software",
+        "It provides printer drivers for printer administrators"
       ],
-      "correct_answer": "inventory management",
+      "correct_answer": "It provides printer drivers for printer administrators",
       "explanation": "There are four broad categories of IT documentation: Policies, Operations, Projects, and User documentation. Operations is concerned with inventory management.",
       "topic": "General IT",
       "difficulty": "medium"
@@ -3257,7 +3316,7 @@
         "Contact a first responder.",
         "Shut down the computer until authorities arrive."
       ],
-      "correct_answer": "Confront the customer immediately.",
+      "correct_answer": "Contact a first responder",
       "explanation": "If illegal content is found, begin documentation to build a chain of custody and contact a first responder immediately.",
       "topic": "General IT",
       "difficulty": "medium"
@@ -3270,7 +3329,8 @@
         "contact information",
         "description of the problem",
         "details of any recent changes to the computer",
-        "output from diagnostic software"
+        "output from diagnostic software",
+        "customer's availability for follow-up"
       ],
       "correct_answer": "contact information",
       "explanation": "A level one technician should gather information from the customer and solve simple problems. For more advanced diagnostics, opening the computer case, running diagnostics software, and performing remote connections, the problem should be escalated to a level two technician.",
@@ -3300,9 +3360,10 @@
         "Ask socially related questions to direct the customer away from the problem.",
         "Work to redirect the conversation to solving the problem.",
         "Immediately transfer the customer to a higher level technician.",
-        "Reply to the customer with the same level of anger."
+        "Reply to the customer with the same level of anger.",
+        "Let the customer explain the problem without interrupting"
       ],
-      "correct_answer": "Ask socially related questions to direct the customer away from the problem.",
+      "correct_answer": "Work to redirect the conversation to solving the problem",
       "explanation": "Angry customers should be allowed to explain the problem, then be redirected to discussing how the problem can be solved. Transferring the customer, replying in a rude tone, and asking unrelated questions will usually increase, not ease, the anger being expressed by the customer.",
       "topic": "Troubleshooting",
       "difficulty": "medium"
@@ -3315,9 +3376,10 @@
         "problems that require rebooting the equipment",
         "problems that can be solved in a short time",
         "problems that are complicated and will take a long time to resolve",
-        "problems that do not fit into the “down call” category"
+        "problems that do not fit into the "down call" category",
+        "problems that are beyond the scope of the knowledge of the level one technician"
       ],
-      "correct_answer": "problems that require rebooting the equipment",
+      "correct_answer": "problems that are complicated and will take a long time to resolve",
       "explanation": "A problem should be escalated to a level two technician when the problem is going to take a long time to fix, is affecting a large number of users, or requires knowledge or expertise that the level one technician does not possess.",
       "topic": "Troubleshooting",
       "difficulty": "medium"
@@ -3330,7 +3392,8 @@
         "The IT technician should have researched the company policy about personal communication with customers on company time.",
         "The IT technician should have used encryption to hide the purpose of the emails.",
         "The IT technician should have added the customer to a chain letter with many recipients instead.",
-        "The IT technician should have asked the customer if the customer was interested in receiving information regarding other new services and products."
+        "The IT technician should have asked the customer if the customer was interested in receiving information regarding other new services and products.",
+        "Document as much information as possible"
       ],
       "correct_answer": "The IT technician should have researched the company policy about personal communication with customers on company time.",
       "explanation": "While working with customers both briefly and over an extended period of time, it is possible to form friendly relationships. It is important to always follow company policy and never send unsolicited messages to a customer. Also do not send unsolicited mass mailings or chain letters to customers from a company email address. Any personal relationships should be kept via personal email accounts and should not reflect the IT organization of the employer.",
@@ -3345,9 +3408,11 @@
         "RDP connects on TCP port 22.",
         "RDP requires a Windows client.",
         "RDP uses an encrypted session.",
-        "RDP is a command-line network virtual terminal protocol."
+        "RDP is a command-line network virtual terminal protocol.",
+        "RDP connects on TCP port 3389.",
+        "RDP provides cross-platform compatibility"
       ],
-      "correct_answer": "RDP connects on TCP port 22.",
+      "correct_answer": "RDP uses an encrypted session.",
       "explanation": "The Remote Desktop protocol (RDP) is used to remotely access a Windows OS. It is a client/server protocol.The port number for RDP is TCP port 3389 and it uses encryption.",
       "topic": "Networking",
       "difficulty": "medium"
@@ -3360,7 +3425,8 @@
         "cyber law",
         "computer forensics",
         "cryptography",
-        "disaster recovery"
+        "disaster recovery",
+        "incident response"
       ],
       "correct_answer": "computer forensics",
       "explanation": "The field of computer forensics involves collecting and analyzing data from computer systems, networks, wireless communications, and storage devices.",
@@ -3377,7 +3443,7 @@
         "data in transit between RAM and the CPU",
         "data stored on an external drive"
       ],
-      "correct_answer": "data stored on magnetic disks",
+      "correct_answer": "data in transit between RAM and the CPU",
       "explanation": "Volatile data is a data that is lost when power is turned off, and is located in temporary storage such as RAM, cache, CPU or in transit between them.",
       "topic": "Hardware",
       "difficulty": "medium"
@@ -3405,9 +3471,10 @@
         "the ability to gather relevant information from the customer and pass it to the level two technician so it can be entered into the work order",
         "the ability to ask the customer relevant questions, and as soon as this information is included in the work order, escalate it to the level two technician",
         "the ability to translate a description of a customer problem into a few succinct sentences and enter it into the work order",
-        "ability to take the work order prepared by the level two technician and try to resolve the problem"
+        "ability to take the work order prepared by the level two technician and try to resolve the problem",
+        "the ability to perform advanced diagnostics and hardware repairs"
       ],
-      "correct_answer": "the ability to gather relevant information from the customer and pass it to the level two technician so it can be entered into the work order",
+      "correct_answer": "the ability to translate a description of a customer problem into a few succinct sentences and enter it into the work order",
       "explanation": "The level one technician must be able to translate the description of a customer problem into a succinct sentence or two that is entered into the work order.",
       "topic": "Troubleshooting",
       "difficulty": "medium"
@@ -3451,7 +3518,7 @@
         "Place the hard drives in an external enclosure and begin backing up the data before releasing the drives to first responders.",
         "Locate an employee qualified to collect evidence."
       ],
-      "correct_answer": "Reconnect the SATA data cables to ensure continued data backup.",
+      "correct_answer": "Locate an employee qualified to collect evidence.",
       "explanation": "When a potential crime scene is found, a chain of custody must be observed and followed. The technician should immediately locate another employee who is qualified to collect evidence. Disconnecting or reconnecting the drives or attempting to move data may adversely affect the chain of custody.",
       "topic": "Hardware",
       "difficulty": "medium"
@@ -3466,7 +3533,7 @@
         "Scripting languages are interpreted and executed line by line when a script is run, while compiled languages need to be converted into executable code.",
         "Compiled languages are executed by a command interpreter, while scripting languages are executed by the CPU."
       ],
-      "correct_answer": "Scripting languages need to be converted into executable code using a compiler, while compiled languages are interpreted as they are executed.",
+      "correct_answer": "Scripting languages are interpreted and executed line by line when a script is run, while compiled languages need to be converted into executable code.",
       "explanation": "A scripting language is different than a compiled language because each line is interpreted and then executed when the script is run. Compiled languages need to be converted into executable code using a compiler. Another difference between the two types of languages is that compiled languages are executed by the CPU while scripting languages are executed by a command interpreter or by the operating system.",
       "topic": "Hardware",
       "difficulty": "medium"
@@ -3481,7 +3548,7 @@
         "passwords and fingerprints",
         "tokens and hashes"
       ],
-      "correct_answer": "VPNs and VLANs",
+      "correct_answer": "passwords and fingerprints",
       "explanation": "A cybersecurity specialist must be aware of the technologies available that support the CIA triad.",
       "topic": "Security",
       "difficulty": "medium"
@@ -3509,7 +3576,8 @@
         "Log in as a different user.",
         "Disconnect the computer from the network.",
         "Search helpdesk repair logs for more information.",
-        "Discuss solutions with the customer."
+        "Discuss solutions with the customer.",
+        "Run antivirus software in safe mode."
       ],
       "correct_answer": "Log in as a different user.",
       "explanation": "Several actions can be taken by a technician when security issues are suspected as the possible cause of a problem with a computer. Logging in as a different user or disconnecting the PC from the network to isolate the cause of the problem are two possible actions.",
@@ -3524,7 +3592,8 @@
         "at least two volumes",
         "USB stick",
         "password management",
-        "backup"
+        "backup",
+        "TPM"
       ],
       "correct_answer": "at least two volumes",
       "explanation": "Windows provides a method to encrypt files, folders, or entire hard drives depending on need. However, certain BIOS settings and configurations are necessary to implement encryption on an entire hard disk.",
@@ -3541,7 +3610,7 @@
         "It is an encryption protocol that is used to encrypt data as the data is sent over the VPN.",
         "It is an encryption process that uses a public and private key pair to encrypt/decrypt data."
       ],
-      "correct_answer": "Asymmetric encryption is an encryption process that compares traffic on both ends to make sure the traffic has not been altered.",
+      "correct_answer": "It is an encryption process that uses a public and private key pair to encrypt/decrypt data.",
       "topic": "Security",
       "difficulty": "medium"
     },
@@ -3568,9 +3637,10 @@
         "Ensure that the computer is connected to the wired network so that antimalware updates can be installed.",
         "Enter Safe Mode and do a system restore.",
         "Install adware protection.",
-        "Train the user on identifying trusted and untrusted sources."
+        "Train the user on identifying trusted and untrusted sources.",
+        "Boot from external antivirus rescue disk"
       ],
-      "correct_answer": "Ensure that the computer is connected to the wired network so that antimalware updates can be installed.",
+      "correct_answer": "Enter Safe Mode and do a system restore.",
       "explanation": "Booting the computer in Safe Mode prevents most drivers from loading. Additional antimalware software can then be installed to remove or quarantine malware. Sometimes the storage drive must be wiped, the operating system reinstalled, and data restored from a backup.",
       "topic": "Operating Systems",
       "difficulty": "medium"
@@ -3583,7 +3653,8 @@
         "acceptable use policies",
         "identification and authentication policies",
         "incident handling policies",
-        "remote access policies"
+        "remote access policies",
+        "data classification policies"
       ],
       "correct_answer": "acceptable use policies",
       "explanation": "The acceptable use policies section of a security policy commonly identifies network resources and usages that are acceptable to the organization. They might also state the ramifications that can occur if this security policy is violated.",
@@ -3598,9 +3669,11 @@
         "Event Viewer security log",
         "Local Security Policy tool",
         "Active Directory Security tool",
-        "Computer Management"
+        "Computer Management",
+        "Group Policy Editor",
+        "User Account Control settings"
       ],
-      "correct_answer": "Event Viewer security log",
+      "correct_answer": "Local Security Policy tool",
       "explanation": "A technician must be aware of the technologies and measures that are used as countermeasures to protect the organization from threats and vulnerabilities. A Windows Domain Security Policy is used and applied when a user logs in to a computer that is on a corporate network. A Windows Local Security Policy is used for stand-alone computers to enforce security settings.",
       "topic": "Networking",
       "difficulty": "medium"
@@ -3628,9 +3701,10 @@
         "A swap file system only supports the ex2 file system.",
         "A swap file system does not have a specific file system.",
         "A swap file system cannot be mounted on an MBR partition.",
-        "A swap file system uses hard disk space to store inactive RAM content."
+        "A swap file system uses hard disk space to store inactive RAM content.",
+        "A swap file system requires special drivers to function properly."
       ],
-      "correct_answer": "A swap file system only supports the ex2 file system.",
+      "correct_answer": "A swap file system uses hard disk space to store inactive RAM content.",
       "explanation": "The swap file system is used by Linux when it runs out of physical memory. When needed, the kernel moves inactive RAM content to the swap partition on the hard disk. Storing and retrieving content in the swap partition is much slower than RAM is, and therefore using the swap partition should not be considered the best solution to improving system performance.",
       "topic": "Hardware",
       "difficulty": "medium"
@@ -3675,7 +3749,7 @@
         "The security settings of the Android OS have been compromised.",
         "The widget is associated with the app and this is the normal behavior."
       ],
-      "correct_answer": "The widget is corrupt.",
+      "correct_answer": "The widget is associated with the app and this is the normal behavior.",
       "explanation": "Widgets are programs that when installed associate with the application they were built for. This will cause the application to launch when the widget icon is touched on the touchscreen of the Android device.",
       "topic": "Hardware",
       "difficulty": "medium"
@@ -3688,9 +3762,10 @@
         "to enable the phone to run multiple operating systems",
         "to prevent malicious programs from infecting the device",
         "to enable separate app icons to be displayed on the home screen",
-        "to bypass phone carrier restrictions that prevent access to unauthorized apps"
+        "to bypass phone carrier restrictions that prevent access to unauthorized apps",
+        "to isolate apps from system resources and other applications"
       ],
-      "correct_answer": "to enable the phone to run multiple operating systems",
+      "correct_answer": "to prevent malicious programs from infecting the device",
       "explanation": "Mobile device apps are run in a sandbox that isolates them from other resources. Bypassing the phone carrier from preventing access to unauthorized apps is jailbreaking or rooting the device.",
       "topic": "Mobile Devices",
       "difficulty": "medium"
@@ -3705,7 +3780,7 @@
         "Finder",
         "Time Machine"
       ],
-      "correct_answer": "Disk Utility",
+      "correct_answer": "Time Machine",
       "explanation": "Time Machine is an automatic backup utility in the Mac OS. The Mac Disk Utility allows an administrator to configure disk backups. The Deja Dup tool is a tool built into the Linux OS for backing up data. Finder is similar to the Windows File Explorer tool and is used to navigate the Mac OS file system.",
       "topic": "Operating Systems",
       "difficulty": "medium"
@@ -3718,7 +3793,9 @@
         "A driver has become corrupted.",
         "GRUB or LILO has been deleted.",
         "GRUB or LILO has been corrupted.",
-        "An application is using a resource that has become unavailable."
+        "An application is using a resource that has become unavailable.",
+        "Hardware failure in RAM or CPU.",
+        "File system corruption on the root partition."
       ],
       "correct_answer": "A driver has become corrupted.",
       "explanation": "A corrupted driver or failing hardware could cause kernel panic for Linux or Mac OS. The laptop will not be able to boot successfully. Either GRUB or LILO corruption or GRUB or LILO deletion would cause the stop screen to display a “Missing GRUB” or “Missing LILO” message. A resource unavailable to an application will cause the application to stop responding, but not prevent a laptop from starting up.",
@@ -3733,9 +3810,11 @@
         "The touchscreen is not calibrated.",
         "An app is not compatible with the device.",
         "The operating system is corrupt.",
-        "A power-intensive app is running in the background."
+        "A power-intensive app is running in the background.",
+        "Insufficient available storage space.",
+        "Too many apps running simultaneously."
       ],
-      "correct_answer": "An app is not compatible with the device.",
+      "correct_answer": "A power-intensive app is running in the background.",
       "explanation": "A power-intensive app that is running in the background could consume most of the CPU cycles and thus the device would exhibit very slow performance for other apps. If an app is not compatible with the device, the device operating system would freeze. If the operating system has encountered an error, the device will fail to respond.",
       "topic": "Hardware",
       "difficulty": "medium"
@@ -3750,7 +3829,7 @@
         "basic disk",
         "extended partition"
       ],
-      "correct_answer": "logical drive",
+      "correct_answer": "active partition",
       "topic": "Operating Systems",
       "difficulty": "medium"
     },
@@ -3764,7 +3843,7 @@
         "logical drive",
         "active partition"
       ],
-      "correct_answer": "extended partition",
+      "correct_answer": "NTFS",
       "topic": "Operating Systems",
       "difficulty": "medium"
     },
@@ -3778,7 +3857,7 @@
         "logical drive",
         "active partition"
       ],
-      "correct_answer": "extended partition",
+      "correct_answer": "exFAT",
       "topic": "Operating Systems",
       "difficulty": "medium"
     },
@@ -3792,7 +3871,7 @@
         "basic disk",
         "active partition"
       ],
-      "correct_answer": "logical drive",
+      "correct_answer": "extended partition",
       "topic": "Operating Systems",
       "difficulty": "medium"
     },

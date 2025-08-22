@@ -44,9 +44,11 @@ export function FeedbackOverlay({
 
   if (!isVisible) return null
 
-  const correctAnswer = Array.isArray(question.correct_answer) 
-    ? question.correct_answer 
-    : [question.correct_answer]
+  // Convert correctAnswer indices to actual answer strings for display
+  const correctAnswerIndices = Array.isArray(question.correctAnswer) 
+    ? question.correctAnswer 
+    : [question.correctAnswer]
+  const correctAnswer = correctAnswerIndices.map(index => question.options[index])
 
   const userAnswerArray = Array.isArray(userAnswer) 
     ? userAnswer 
@@ -208,7 +210,7 @@ export function FeedbackOverlay({
                 transition={{ delay: 0.4 }}
                 className="space-y-4"
               >
-                {Array.isArray(question.correct_answer) ? (
+                {Array.isArray(question.correctAnswer) ? (
                   // Multiple choice detailed feedback
                   <div className="space-y-4">
                     <div>

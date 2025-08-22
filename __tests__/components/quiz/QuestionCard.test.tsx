@@ -12,7 +12,7 @@ const mockQuestion: Question = {
     "Connect to the internet",
     "Display graphics"
   ],
-  correct_answer: "Provide temporary storage for active programs",
+  correctAnswer: 1,
   explanation: "RAM (Random Access Memory) provides temporary storage for programs and data currently in use.",
   topic: "Hardware"
 }

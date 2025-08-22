@@ -71,13 +71,17 @@ export function QuizEngine({ mode }: QuizEngineProps) {
   }, [currentSession, mode])
 
   // Check answer correctness
-  const checkAnswer = useCallback((answer: string | string[], correctAnswer: string | string[]) => {
+  const checkAnswer = useCallback((answer: string | string[], correctAnswer: number | number[], options: string[]) => {
     if (Array.isArray(correctAnswer)) {
       if (!Array.isArray(answer)) return false
-      return answer.length === correctAnswer.length && 
-             answer.every(ans => correctAnswer.includes(ans))
+      // Convert answer strings to indices
+      const answerIndices = answer.map(a => options.indexOf(a))
+      return answerIndices.length === correctAnswer.length && 
+             answerIndices.every(idx => correctAnswer.includes(idx))
     } else {
-      return answer === correctAnswer
+      // Convert single answer string to index
+      const answerIndex = options.indexOf(String(answer))
+      return answerIndex === correctAnswer
     }
   }, [])
 
@@ -152,10 +156,10 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     if (!currentSession || !currentQuestion || selectedAnswer === undefined || selectedAnswer === null) return false
     
     // For multiple choice questions, check if user selected required NUMBER of answers
-    if (Array.isArray(currentQuestion.correct_answer)) {
+    if (Array.isArray(currentQuestion.correctAnswer)) {
       if (!Array.isArray(selectedAnswer)) return false
       // Allow proceeding when correct number of answers selected (not necessarily correct ones)
-      return selectedAnswer.length === currentQuestion.correct_answer.length
+      return selectedAnswer.length === currentQuestion.correctAnswer.length
     }
     
     // For single answer questions, just check if we have an answer
@@ -164,9 +168,9 @@ export function QuizEngine({ mode }: QuizEngineProps) {
   
   // Check if all required answers are selected (for UI feedback)
   const hasAllRequiredAnswers = useMemo(() => {
-    if (!currentQuestion || !Array.isArray(currentQuestion.correct_answer)) return hasAnswer
+    if (!currentQuestion || !Array.isArray(currentQuestion.correctAnswer)) return hasAnswer
     if (!Array.isArray(selectedAnswer)) return false
-    return selectedAnswer.length === currentQuestion.correct_answer.length
+    return selectedAnswer.length === currentQuestion.correctAnswer.length
   }, [currentQuestion, selectedAnswer, hasAnswer])
 
   // All callbacks and handlers - MUST be defined before any early returns
@@ -176,13 +180,13 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     // For practice mode, only show feedback when all required answers are selected
     if (mode === 'practice' && !hasAnsweredCurrentQuestion && currentQuestion) {
       // For multiple choice questions, wait until all required answers are selected
-      if (Array.isArray(currentQuestion.correct_answer)) {
+      if (Array.isArray(currentQuestion.correctAnswer)) {
         const answerArray = Array.isArray(answer) ? answer : []
-        const requiredCount = currentQuestion.correct_answer.length
+        const requiredCount = currentQuestion.correctAnswer.length
         
         // Only evaluate when user has selected the required number of answers
         if (answerArray.length === requiredCount) {
-          const correct = checkAnswer(answer, currentQuestion.correct_answer)
+          const correct = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
           setCurrentAnswer(answer)
           setIsAnswerCorrect(correct)
           setShowFeedback(true)
@@ -196,7 +200,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
         }
       } else {
         // For single choice questions, show immediate feedback as before
-        const correct = checkAnswer(answer, currentQuestion.correct_answer)
+        const correct = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
         setCurrentAnswer(answer)
         setIsAnswerCorrect(correct)
         setShowFeedback(true)
@@ -228,7 +232,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     feedback.onKeyboardShortcut()
     
     // Handle multiple choice questions
-    if (Array.isArray(currentQuestion.correct_answer)) {
+    if (Array.isArray(currentQuestion.correctAnswer)) {
       const currentAnswers = Array.isArray(selectedAnswer) ? selectedAnswer : []
       let newAnswers: string[]
       
@@ -244,11 +248,11 @@ export function QuizEngine({ mode }: QuizEngineProps) {
       
       // Check if we should show feedback in practice mode
       if (mode === 'practice' && !hasAnsweredCurrentQuestion) {
-        const requiredCount = currentQuestion.correct_answer.length
+        const requiredCount = currentQuestion.correctAnswer.length
         
         // Only evaluate when user has selected the required number of answers
         if (newAnswers.length === requiredCount) {
-          const correct = checkAnswer(newAnswers, currentQuestion.correct_answer)
+          const correct = checkAnswer(newAnswers, currentQuestion.correctAnswer, currentQuestion.options)
           setCurrentAnswer(newAnswers)
           setIsAnswerCorrect(correct)
           setShowFeedback(true)
@@ -264,7 +268,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
       
       // Auto-advance in practice mode for single answers
       if (mode === 'practice' && !hasAnsweredCurrentQuestion) {
-        const correct = checkAnswer(selectedOption, currentQuestion.correct_answer)
+        const correct = checkAnswer(selectedOption, currentQuestion.correctAnswer, currentQuestion.options)
         setCurrentAnswer(selectedOption)
         setIsAnswerCorrect(correct)
         setShowFeedback(true)
@@ -319,12 +323,12 @@ export function QuizEngine({ mode }: QuizEngineProps) {
       // For practice mode, show feedback when user has selected required answers
       if (mode === 'practice' && !hasAnsweredCurrentQuestion && selectedAnswer !== undefined) {
         // For multiple choice, only show feedback if all required answers are selected
-        if (Array.isArray(currentQuestion.correct_answer)) {
+        if (Array.isArray(currentQuestion.correctAnswer)) {
           const answerArray = Array.isArray(selectedAnswer) ? selectedAnswer : []
-          const requiredCount = currentQuestion.correct_answer.length
+          const requiredCount = currentQuestion.correctAnswer.length
           
           if (answerArray.length === requiredCount) {
-            const correct = checkAnswer(selectedAnswer, currentQuestion.correct_answer)
+            const correct = checkAnswer(selectedAnswer, currentQuestion.correctAnswer, currentQuestion.options)
             setCurrentAnswer(selectedAnswer)
             setIsAnswerCorrect(correct)
             setShowFeedback(true)
@@ -333,7 +337,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
           // If not all answers selected, do nothing (let user continue selecting)
         } else {
           // Single choice - show feedback immediately
-          const correct = checkAnswer(selectedAnswer, currentQuestion.correct_answer)
+          const correct = checkAnswer(selectedAnswer, currentQuestion.correctAnswer, currentQuestion.options)
           setCurrentAnswer(selectedAnswer)
           setIsAnswerCorrect(correct)
           setShowFeedback(true)

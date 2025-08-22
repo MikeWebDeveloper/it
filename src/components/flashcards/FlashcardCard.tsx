@@ -100,9 +100,10 @@ export const FlashcardCard = forwardRef<{ flip: () => void }, FlashcardCardProps
     onPrevious()
   }
 
-  const correctAnswer = Array.isArray(question.correct_answer) 
-    ? question.correct_answer.join(', ') 
-    : question.correct_answer
+  // Convert correctAnswer indices to actual answer strings for display
+  const correctAnswer = Array.isArray(question.correctAnswer) 
+    ? question.correctAnswer.map(index => question.options[index]).join(', ')
+    : question.options[question.correctAnswer]
 
   return (
     <div className={cn("w-full max-w-2xl mx-auto", className)}>
