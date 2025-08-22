@@ -22,7 +22,7 @@ import {
   Brain,
   Award
 } from 'lucide-react'
-import { loadQuestionsData } from '@/lib/loadQuestions'
+import { loadQuestionsData, clearQuestionsCache } from '@/lib/loadQuestions'
 import { shuffleArray } from '@/lib/utils'
 import { QuestionData, Question } from '@/types/quiz'
 
@@ -108,6 +108,8 @@ export default function Home() {
     const loadData = async () => {
       try {
         setIsLoading(true)
+        // Clear cache to force fresh data load
+        clearQuestionsCache()
         const data = await loadQuestionsData()
         setQuestionData(data)
         setQuestions(data.questions)

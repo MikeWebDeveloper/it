@@ -19,13 +19,16 @@ interface RawQuestion {
   }
 }
 
-// Cache for loaded questions
+// Cache for loaded questions with timestamp for invalidation
 let questionsCache: QuestionData | null = null
+let cacheTimestamp: number = 0
 
 /**
  * Transforms raw question data to standardized format
  */
 function normalizeQuestion(rawQuestion: RawQuestion): Question {
+  console.log('DEBUG - Normalizing question:', rawQuestion.id, 'correctAnswer:', rawQuestion.correctAnswer)
+  
   const normalized: Question = {
     id: rawQuestion.id,
     question: rawQuestion.question,
@@ -65,6 +68,7 @@ function normalizeQuestion(rawQuestion: RawQuestion): Question {
     throw new Error(`Question ${rawQuestion.id} has invalid correctAnswer`)
   }
 
+  console.log('DEBUG - Final normalized question:', rawQuestion.id, 'correctAnswer:', normalized.correctAnswer)
   return normalized
 }
 
@@ -96,4 +100,13 @@ export async function loadQuestionsData(): Promise<QuestionData> {
  */
 export function getQuestionsFromCache(): QuestionData | null {
   return questionsCache
+}
+
+/**
+ * Clear the questions cache to force reload
+ */
+export function clearQuestionsCache(): void {
+  questionsCache = null
+  cacheTimestamp = 0
+  console.log('DEBUG - Questions cache cleared')
 }

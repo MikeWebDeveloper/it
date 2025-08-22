@@ -155,6 +155,10 @@ export const useQuizStore = create<QuizState>()(
       
       // Start a new quiz session
       startQuiz: (mode: QuizMode, questions: Question[], timeLimit?: number) => {
+        console.log('DEBUG - startQuiz called with:', mode, 'questions count:', questions.length)
+        console.log('DEBUG - First question:', questions[0])
+        console.log('DEBUG - First question correctAnswer:', questions[0]?.correctAnswer)
+        
         const sessionId = generateId()
         const newSession: QuizSession = {
           id: sessionId,
@@ -167,6 +171,7 @@ export const useQuizStore = create<QuizState>()(
           completed: false
         }
         
+        console.log('DEBUG - New session created:', newSession)
         set({ currentSession: newSession })
       },
       

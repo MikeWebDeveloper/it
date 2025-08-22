@@ -259,10 +259,20 @@ export function QuizResults() {
 
               // Get the correct answer text(s) for display
               const getCorrectAnswerText = () => {
+                console.log('DEBUG - Question ID:', question.id)
+                console.log('DEBUG - correctAnswer:', question.correctAnswer)
+                console.log('DEBUG - options:', question.options)
+                console.log('DEBUG - correctAnswer type:', typeof question.correctAnswer)
+                console.log('DEBUG - isArray:', Array.isArray(question.correctAnswer))
+                
                 if (Array.isArray(question.correctAnswer)) {
-                  return question.correctAnswer.map(idx => question.options[idx]).join(', ')
+                  const result = question.correctAnswer.map(idx => question.options[idx]).join(', ')
+                  console.log('DEBUG - Multiple choice result:', result)
+                  return result
                 } else {
-                  return question.options[question.correctAnswer]
+                  const result = question.options[question.correctAnswer]
+                  console.log('DEBUG - Single choice result:', result)
+                  return result
                 }
               }
 
