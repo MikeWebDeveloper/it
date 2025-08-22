@@ -211,6 +211,9 @@ export function QuizEngine({ mode }: QuizEngineProps) {
     const currentQuestion = currentSession.questions[currentSession.currentQuestionIndex]
     const isCorrect = checkAnswer(answer, currentQuestion.correctAnswer, currentQuestion.options)
     
+    // Save answer to the session store
+    answerQuestion(currentQuestion.id, answer)
+    
     setIsAnswerCorrect(isCorrect)
     setCurrentAnswer(answer)
     setHasAnsweredCurrentQuestion(true)
@@ -231,7 +234,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
         setIsAnswerCorrect(false)
       }
     }, 2000)
-  }, [currentSession, checkAnswer, feedback, nextQuestion])
+  }, [currentSession, checkAnswer, feedback, nextQuestion, answerQuestion])
 
   // Handle question navigation
   const handleQuestionChange = useCallback((direction: 'next' | 'previous' | number) => {
