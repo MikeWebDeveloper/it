@@ -101,7 +101,7 @@ export function useKeyboardManager(options: KeyboardManagerOptions = {}) {
 
     const handleViewportChange = () => {
       if ('visualViewport' in window) {
-        const visualViewport = (window as any).visualViewport
+        const visualViewport = (window as { visualViewport?: { height: number; addEventListener: (event: string, handler: () => void) => void; removeEventListener: (event: string, handler: () => void) => void } }).visualViewport
         const newHeight = visualViewport.height
         const heightDifference = initialViewportHeightRef.current - newHeight
 
@@ -147,7 +147,7 @@ export function useKeyboardManager(options: KeyboardManagerOptions = {}) {
     }
 
     if ('visualViewport' in window) {
-      const visualViewport = (window as any).visualViewport
+      const visualViewport = (window as { visualViewport?: { height: number; addEventListener: (event: string, handler: () => string, handler: () => void) => void; removeEventListener: (event: string, handler: () => void) => void } }).visualViewport
       visualViewport.addEventListener('resize', handleViewportChange)
       visualViewport.addEventListener('scroll', handleViewportChange)
 

@@ -1,10 +1,10 @@
 'use client'
 
-import { ChevronLeft, ChevronRight, Check, SkipForward, ArrowLeft, ArrowRight, Target } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Check, SkipForward, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence, PanInfo } from 'framer-motion'
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 
 interface QuizNavigationProps {
   currentIndex: number
@@ -23,7 +23,7 @@ const containerVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
       damping: 15,
       staggerChildren: 0.1
@@ -37,7 +37,7 @@ const itemVariants = {
     opacity: 1,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 200,
       damping: 20
     }
@@ -46,7 +46,7 @@ const itemVariants = {
     scale: 1.05,
     y: -2,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 20
     }
@@ -54,7 +54,7 @@ const itemVariants = {
   tap: {
     scale: 0.95,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 400,
       damping: 20
     }
@@ -69,7 +69,7 @@ const dotVariants = {
     transition: {
       delay: index * 0.05,
       duration: 0.3,
-      type: "spring",
+      type: "spring" as const,
       stiffness: 200,
       damping: 20
     }
@@ -77,7 +77,7 @@ const dotVariants = {
   active: {
     scale: [1, 1.3, 1],
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 15
     }
@@ -122,7 +122,7 @@ export function QuizNavigation({
   }
 
   // Handle swipe gestures
-  const handleDragEnd = (event: any, info: PanInfo) => {
+  const handleDragEnd = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     const swipeThreshold = 100
     const velocityThreshold = 0.5
 

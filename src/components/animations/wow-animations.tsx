@@ -401,10 +401,8 @@ export function HoverLift({
       className={cn("transition-all duration-300", className)}
       whileHover={{
         y: -liftDistance,
+        boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
         transition: { type: "spring", stiffness: 300, damping: 20 }
-      }}
-      whileHover={{
-        boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
       }}
     >
       {children}

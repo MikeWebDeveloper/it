@@ -40,9 +40,9 @@ export function GestureNavigation({
   const rotateX = useTransform(y, [-threshold, 0, threshold], [-15, 0, 15])
   const rotateY = useTransform(x, [-threshold, 0, threshold], [15, 0, -15])
   const scale = useTransform(
-    [x, y],
-    ([latestX, latestY]) => {
-      const distance = Math.sqrt(latestX ** 2 + latestY ** 2)
+    x,
+    (latestX) => {
+      const distance = Math.abs(latestX)
       return Math.max(0.95, 1 - distance / (threshold * 2))
     }
   )
@@ -59,7 +59,7 @@ export function GestureNavigation({
   }, [showHints, enabled])
 
   // Handle gesture end
-  const handleDragEnd = (event: any, info: PanInfo) => {
+  const handleDragEnd = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     const { offset, velocity } = info
     const absX = Math.abs(offset.x)
     const absY = Math.abs(offset.y)
@@ -99,7 +99,7 @@ export function GestureNavigation({
   }
 
   // Handle haptic feedback during drag
-  const handleDrag = (event: any, info: PanInfo) => {
+  const handleDrag = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     const { offset } = info
     const absX = Math.abs(offset.x)
     const absY = Math.abs(offset.y)
@@ -260,9 +260,9 @@ export function MobileGestureNavigation({
   const rotateX = useTransform(y, [-threshold, 0, threshold], [-20, 0, 20])
   const rotateY = useTransform(x, [-threshold, 0, threshold], [20, 0, -20])
   const scale = useTransform(
-    [x, y],
-    ([latestX, latestY]) => {
-      const distance = Math.sqrt(latestX ** 2 + latestY ** 2)
+    x,
+    (latestX) => {
+      const distance = Math.abs(latestX)
       return Math.max(0.9, 1 - distance / (threshold * 1.5))
     }
   )
@@ -289,7 +289,7 @@ export function MobileGestureNavigation({
   }, [showHints, enabled])
 
   // Handle gesture end with enhanced mobile feedback
-  const handleDragEnd = (event: any, info: PanInfo) => {
+  const handleDragEnd = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     setIsDragging(false)
     const { offset, velocity } = info
     const absX = Math.abs(offset.x)
@@ -330,7 +330,7 @@ export function MobileGestureNavigation({
   }
 
   // Enhanced haptic feedback during drag
-  const handleDrag = (event: any, info: PanInfo) => {
+  const handleDrag = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     const { offset } = info
     const absX = Math.abs(offset.x)
     const absY = Math.abs(offset.y)

@@ -66,7 +66,7 @@ const containerVariants = {
     scale: 1,
     transition: {
       duration: 0.4,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
       staggerChildren: 0.1,
       delayChildren: 0.2
     }
@@ -81,7 +81,7 @@ const itemVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
       damping: 15
     }
@@ -94,7 +94,7 @@ const progressVariants = {
     scaleX: 1,
     transition: {
       duration: 0.6,
-      ease: "easeOut"
+      ease: "easeOut" as const
     }
   }
 }
@@ -107,7 +107,7 @@ const answerVariants = {
     transition: {
       delay: index * 0.1,
       duration: 0.3,
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
       damping: 15
     }

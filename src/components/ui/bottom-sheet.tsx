@@ -63,7 +63,7 @@ export function BottomSheet({
   }
 
   // Handle drag end
-  const handleDragEnd = (event: any, info: PanInfo) => {
+  const handleDragEnd = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     setIsDragging(false)
     
     const currentHeight = info.point.y
@@ -305,7 +305,7 @@ export function MobileBottomSheet({
   }
 
   // Handle drag end with enhanced mobile feedback
-  const handleDragEnd = (event: any, info: PanInfo) => {
+  const handleDragEnd = (event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
     setIsDragging(false)
     
     const currentHeight = info.point.y

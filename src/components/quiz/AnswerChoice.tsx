@@ -21,7 +21,7 @@ const containerVariants = {
     x: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
       damping: 15
     }
@@ -30,7 +30,7 @@ const containerVariants = {
     scale: 1.02,
     y: -2,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 20
     }
@@ -38,7 +38,7 @@ const containerVariants = {
   tap: {
     scale: 0.98,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 400,
       damping: 20
     }
@@ -51,7 +51,7 @@ const indicatorVariants = {
     scale: 1,
     opacity: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 20
     }
@@ -59,7 +59,7 @@ const indicatorVariants = {
   selected: {
     scale: [1, 1.2, 1],
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 400,
       damping: 15
     }
@@ -72,7 +72,7 @@ const iconVariants = {
     scale: 1,
     opacity: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 20
     }

@@ -352,7 +352,7 @@ export function useTouchOptimization(options: TouchOptimizationOptions = {}) {
     // Set touch event throttle based on device performance
     const setTouchThrottle = () => {
       if ('navigator' in window && 'hardwareConcurrency' in navigator) {
-        const cores = (navigator as any).hardwareConcurrency || 4
+        const cores = (navigator as { hardwareConcurrency?: number }).hardwareConcurrency || 4
         touchEventThrottleRef.current = cores < 4 ? 16 : 8 // 60fps vs 120fps
       } else {
         touchEventThrottleRef.current = 16 // Default 60fps

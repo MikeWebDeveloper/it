@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, ReactNode } from 'react'
 
 // Enhanced haptic feedback system
 export class EnhancedHaptics {
@@ -298,7 +298,7 @@ export class EnhancedHaptics {
 
 // React hook for enhanced haptics
 export function useEnhancedHaptics() {
-  const hapticsRef = useRef<EnhancedHaptics>()
+  const hapticsRef = useRef<EnhancedHaptics | undefined>(undefined)
   
   useEffect(() => {
     hapticsRef.current = EnhancedHaptics.getInstance()
@@ -337,18 +337,18 @@ export function HapticProvider({
 export function HapticButton({ 
   children, 
   onClick, 
-  hapticType = 'button-press',
-  hapticIntensity = 'normal',
-  className,
-  ...props 
-}: {
-  children: ReactNode
-  onClick?: () => void
-  hapticType?: string
-  hapticIntensity?: 'gentle' | 'normal' | 'strong'
-  className?: string
-  [key: string]: any
-}) {
+          hapticType = 'button-press',
+        hapticIntensity = 'normal',
+        className,
+        ...props
+      }: {
+        children: ReactNode
+        onClick?: () => void
+        hapticType?: string
+        hapticIntensity?: 'gentle' | 'normal' | 'strong'
+        className?: string
+        [key: string]: unknown
+      }) {
   const haptics = useEnhancedHaptics()
   
   const handleClick = () => {

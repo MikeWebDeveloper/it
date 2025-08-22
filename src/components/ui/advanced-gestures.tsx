@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useMotionValue, useTransform, PanInfo, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { useEffect, useState, useRef, ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { AnimatePresence } from 'framer-motion'
@@ -39,7 +39,7 @@ export function AdvancedGestures({
   const [lastTap, setLastTap] = useState(0)
   const [gestureState, setGestureState] = useState<'idle' | 'pinching' | 'rotating' | 'swiping'>('idle')
   
-  const longPressTimer = useRef<NodeJS.Timeout>()
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const initialDistance = useRef(0)
   const initialAngle = useRef(0)
@@ -346,7 +346,7 @@ export function PinchToZoom({
   className,
   minScale = 0.5,
   maxScale = 3,
-  onScaleChange?: (scale: number) => void
+  onScaleChange
 }: {
   children: ReactNode
   className?: string
@@ -382,7 +382,7 @@ export function PinchToZoom({
 export function RotateGesture({
   children,
   className,
-  onRotationChange?: (rotation: number) => void
+  onRotationChange
 }: {
   children: ReactNode
   className?: string
@@ -416,7 +416,7 @@ export function LongPress({
   children,
   className,
   delay = 500,
-  onLongPress?: () => void
+  onLongPress
 }: {
   children: ReactNode
   className?: string
@@ -438,7 +438,7 @@ export function LongPress({
 export function MultiTouch({
   children,
   className,
-  onTouchCountChange?: (count: number) => void
+  onTouchCountChange
 }: {
   children: ReactNode
   className?: string

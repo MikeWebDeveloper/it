@@ -8,9 +8,9 @@ import { FeedbackOverlay } from './FeedbackOverlay'
 import { QuestionNavigationMap } from './QuestionNavigationMap'
 import { QuizMode } from '@/types/quiz'
 import { formatTime } from '@/lib/utils'
-import { Clock, Pause, Play, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
+import { Clock, Pause, Play, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+
 import { useAutoSave } from '@/hooks/useAutoSave'
 import { SaveStatusIndicator } from '@/components/ui/SaveStatusIndicator'
 import { QuizSkeleton } from '@/components/skeletons'
@@ -43,7 +43,7 @@ const itemVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
       damping: 15
     }
@@ -57,7 +57,7 @@ const cardVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 80,
       damping: 20
     }
@@ -66,7 +66,7 @@ const cardVariants = {
     y: -4,
     scale: 1.01,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 20
     }
@@ -80,7 +80,7 @@ const feedbackVariants = {
     scale: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 200,
       damping: 20
     }
@@ -157,7 +157,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
         // Show warning when 5 minutes remaining
         if (newTime <= 5 * 60 * 1000 && !showTimeWarning) {
           setShowTimeWarning(true)
-          feedback.onTimeWarning()
+          feedback.onTimerWarning()
         }
         
         // Auto-complete when time runs out
@@ -251,18 +251,43 @@ export function QuizEngine({ mode }: QuizEngineProps) {
   // Toggle pause state
   const togglePause = useCallback(() => {
     setIsPaused(prev => !prev)
-    feedback.onTogglePause()
-  }, [feedback])
+    // Add haptic feedback for pause toggle
+    if ('vibrate' in navigator) {
+      navigator.vibrate(50)
+    }
+  }, [])
 
   // Keyboard shortcuts
   const shortcuts = useMemo(() => createQuizShortcuts({
     onNext: () => handleQuestionChange('next'),
     onPrevious: () => handleQuestionChange('previous'),
-    onTogglePause: togglePause,
-    onShowHelp: () => setShowKeyboardHelp(true)
-  }), [handleQuestionChange, togglePause])
+    onAnswer: (index: number) => {
+      // Handle answer selection via keyboard
+      if (currentSession && currentSession.questions[currentSession.currentQuestionIndex]) {
+        const question = currentSession.questions[currentSession.currentQuestionIndex]
+        if (question.options && question.options[index]) {
+          handleAnswerSubmit(question.options[index])
+        }
+      }
+    },
+    onSubmit: () => {
+      // Handle submit via keyboard
+      if (currentSession && currentSession.questions[currentSession.currentQuestionIndex]) {
+        const question = currentSession.questions[currentSession.currentQuestionIndex]
+        if (question.options && question.options.length > 0) {
+          handleAnswerSubmit(question.options[0])
+        }
+      }
+    },
+    onExit: () => {
+      // Handle exit via keyboard - could implement exit logic here
+      console.log('Exit requested via keyboard')
+    },
+    onPause: togglePause,
+    onHelp: () => setShowKeyboardHelp(true)
+  }), [handleQuestionChange, togglePause, currentSession, handleAnswerSubmit])
 
-  useKeyboardShortcuts(shortcuts)
+  useKeyboardShortcuts({ shortcuts })
 
   // Initialize component
   useEffect(() => {
@@ -462,7 +487,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
               questions={currentSession.questions}
               currentIndex={currentSession.currentQuestionIndex}
               onNavigate={handleQuestionChange}
-              userAnswers={currentSession.userAnswers}
+              answers={currentSession.answers}
             />
           </motion.div>
         </motion.main>
@@ -478,9 +503,19 @@ export function QuizEngine({ mode }: QuizEngineProps) {
               className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
             >
               <FeedbackOverlay
+                question={currentQuestion}
+                userAnswer={currentAnswer || ''}
                 isCorrect={isAnswerCorrect}
-                correctAnswer={currentQuestion.correctAnswer}
-                explanation={currentQuestion.explanation}
+                isVisible={showFeedback}
+                onContinue={() => {
+                  setShowFeedback(false)
+                  if (currentSession.currentQuestionIndex < currentSession.questions.length - 1) {
+                    nextQuestion()
+                    setHasAnsweredCurrentQuestion(false)
+                    setCurrentAnswer(null)
+                    setIsAnswerCorrect(false)
+                  }
+                }}
                 onClose={() => setShowFeedback(false)}
               />
             </motion.div>
@@ -499,6 +534,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
             >
               <KeyboardShortcutsHelp
                 shortcuts={shortcuts}
+                isOpen={showKeyboardHelp}
                 onClose={() => setShowKeyboardHelp(false)}
               />
             </motion.div>
