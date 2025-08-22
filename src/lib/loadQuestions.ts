@@ -30,7 +30,7 @@ function normalizeQuestion(rawQuestion: RawQuestion): Question {
     id: rawQuestion.id,
     question: rawQuestion.question,
     options: rawQuestion.options,
-    correctAnswer: 0, // default fallback
+    correctAnswer: 0, // Temporary placeholder, will be overwritten
     explanation: rawQuestion.explanation,
     topic: rawQuestion.topic,
     difficulty: rawQuestion.difficulty
@@ -54,8 +54,15 @@ function normalizeQuestion(rawQuestion: RawQuestion): Question {
     } else {
       // Single choice - convert string to index
       const answerIndex = rawQuestion.options.indexOf(rawQuestion.correct_answer)
-      normalized.correctAnswer = answerIndex !== -1 ? answerIndex : 0
+      normalized.correctAnswer = answerIndex !== -1 ? answerIndex : answerIndex
     }
+  }
+  
+  // Validate that we have a valid correctAnswer
+  if (normalized.correctAnswer === undefined || 
+      (Array.isArray(normalized.correctAnswer) && normalized.correctAnswer.length === 0)) {
+    console.error(`Question ${rawQuestion.id} has invalid correctAnswer:`, rawQuestion.correctAnswer)
+    throw new Error(`Question ${rawQuestion.id} has invalid correctAnswer`)
   }
 
   return normalized
