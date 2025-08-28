@@ -109,7 +109,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null)
   const [isPaused, setIsPaused] = useState(false)
-  const [showResults, setShowResults] = useState(false)
+  const [, setShowResults] = useState(false)
   const [showFeedback, setShowFeedback] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState<string | string[] | null>(null)
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(false)
@@ -119,7 +119,7 @@ export function QuizEngine({ mode }: QuizEngineProps) {
   const [showTimeWarning, setShowTimeWarning] = useState(false)
 
   // Auto-save functionality
-  const { saveStatus, lastSaved, saveNow } = useAutoSave({
+  const { saveStatus, lastSaved } = useAutoSave({
     data: currentSession,
     saveFunction: saveProgress,
     delay: 1500,

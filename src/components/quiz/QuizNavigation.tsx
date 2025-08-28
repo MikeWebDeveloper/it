@@ -3,7 +3,7 @@
 import { ChevronLeft, ChevronRight, Check, SkipForward, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { motion, AnimatePresence, PanInfo } from 'framer-motion'
+import { motion, PanInfo } from 'framer-motion'
 import { useRef } from 'react'
 
 interface QuizNavigationProps {

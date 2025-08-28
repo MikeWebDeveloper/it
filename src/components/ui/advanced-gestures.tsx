@@ -171,7 +171,7 @@ export function AdvancedGestures({
   }
 
   // Handle touch end
-  const handleTouchEnd = (event: React.TouchEvent) => {
+  const handleTouchEnd = () => {
     if (!enabled) return
     
     // Clear long press timer

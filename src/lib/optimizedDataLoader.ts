@@ -2,10 +2,19 @@
 
 import { Question } from '@/types/quiz'
 
-interface QuestionChunk {
+interface JsonData {
   questions: Question[]
-  chunkIndex: number
-  totalChunks: number
+  exam_info?: ExamInfo
+}
+
+interface ExamInfo {
+  title?: string
+  description?: string
+  version?: string
+  totalQuestions?: number
+  categories?: string[]
+  difficulty?: string
+  timeLimit?: number
 }
 
 interface DataLoaderState {
@@ -14,7 +23,7 @@ interface DataLoaderState {
   isLoading: boolean
   progress: number
   error: string | null
-  exam_info: any
+  exam_info: ExamInfo | null
 }
 
 class OptimizedDataLoader {
@@ -40,7 +49,7 @@ class OptimizedDataLoader {
         this.worker = new Worker('/workers/json-parser.js')
         this.worker.onmessage = this.handleWorkerMessage.bind(this)
         this.worker.onerror = this.handleWorkerError.bind(this)
-      } catch (error) {
+      } catch {
         console.warn('Web Worker not available, falling back to main thread')
         this.worker = null
       }
@@ -48,7 +57,7 @@ class OptimizedDataLoader {
   }
 
   private handleWorkerMessage(e: MessageEvent) {
-    const { type, chunk, progress, chunkIndex, totalChunks, questions, exam_info, error } = e.data
+    const { type, chunk, progress, chunkIndex, totalChunks, exam_info, error } = e.data
 
     switch (type) {
       case 'CHUNK_PROCESSED':
@@ -104,7 +113,7 @@ class OptimizedDataLoader {
     }
   }
 
-  public async loadQuestions(): Promise<{ questions: Question[], exam_info: any }> {
+  public async loadQuestions(): Promise<{ questions: Question[], exam_info: ExamInfo | null }> {
     if (this.state.questions.length > 0) {
       return { questions: this.state.questions, exam_info: this.state.exam_info }
     }
@@ -155,7 +164,7 @@ class OptimizedDataLoader {
     }
   }
 
-  private async parseOnMainThread(data: any): Promise<{ questions: Question[], exam_info: any }> {
+  private async parseOnMainThread(data: JsonData): Promise<{ questions: Question[], exam_info: ExamInfo | null }> {
     return new Promise((resolve) => {
       const processChunk = (questions: Question[], startIndex: number) => {
         const chunkSize = 25
@@ -168,8 +177,8 @@ class OptimizedDataLoader {
 
         if (endIndex < questions.length) {
           // Use scheduler.postTask for better performance
-          if ('scheduler' in window && 'postTask' in (window as any).scheduler) {
-            (window as any).scheduler.postTask(() => {
+          if ('scheduler' in window && 'postTask' in (window as unknown as { scheduler: { postTask: (callback: () => void, options: { priority: string }) => void } }).scheduler) {
+            (window as unknown as { scheduler: { postTask: (callback: () => void, options: { priority: string }) => void } }).scheduler.postTask(() => {
               processChunk(questions, endIndex)
             }, { priority: 'user-blocking' })
           } else {
@@ -262,7 +271,7 @@ class OptimizedDataLoader {
   public preload(): void {
     // Only preload on good connections and when idle
     if ('connection' in navigator && 'requestIdleCallback' in window) {
-      const connection = (navigator as any).connection
+      const connection = (navigator as unknown as { connection: { effectiveType: string, downlink: number } }).connection
       if (connection?.effectiveType === '4g' || connection?.downlink > 2) {
         requestIdleCallback(() => {
           this.loadQuestions().catch(console.error)

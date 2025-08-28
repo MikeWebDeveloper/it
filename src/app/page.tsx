@@ -19,8 +19,7 @@ import {
   BarChart3,
   RotateCcw,
   GraduationCap,
-  Brain,
-  Award
+  Brain
 } from 'lucide-react'
 import { loadQuestionsData, clearQuestionsCache } from '@/lib/loadQuestions'
 import { shuffleArray } from '@/lib/utils'

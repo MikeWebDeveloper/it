@@ -21,7 +21,6 @@ interface RawQuestion {
 
 // Cache for loaded questions with timestamp for invalidation
 let questionsCache: QuestionData | null = null
-let cacheTimestamp: number = 0
 
 /**
  * Transforms raw question data to standardized format
