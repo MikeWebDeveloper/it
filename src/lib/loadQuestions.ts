@@ -116,6 +116,5 @@ export function getQuestionsFromCache(): QuestionData | null {
  */
 export function clearQuestionsCache(): void {
   questionsCache = null
-  cacheTimestamp = 0
   console.log('DEBUG - Questions cache cleared')
 }
