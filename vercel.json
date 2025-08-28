@@ -1,4 +1,24 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "npm run build:vercel",
+  "installCommand": "npm ci",
+  "outputDirectory": ".next",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  
+  "functions": {
+    "src/app/**/*.{ts,tsx}": {
+      "memory": 1024,
+      "maxDuration": 30
+    },
+    "src/app/api/**/*.{ts,tsx}": {
+      "memory": 512,
+      "maxDuration": 15
+    }
+  },
+  
   "headers": [
     {
       "source": "/(.*)",
@@ -8,7 +28,7 @@
           "value": "nosniff"
         },
         {
-          "key": "X-Frame-Options", 
+          "key": "X-Frame-Options",
           "value": "DENY"
         },
         {
@@ -21,7 +41,37 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "geolocation=(), microphone=(), camera=()"
+          "value": "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "on"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'none'; frame-ancestors 'none'"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|webp|avif|ico|svg))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     },
@@ -31,17 +81,58 @@
         {
           "key": "Content-Type",
           "value": "application/manifest+json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
         }
       ]
     },
     {
-      "source": "/sw.js",
+      "source": "/(sw|sw-optimized)\\.js",
       "headers": [
         {
           "key": "Service-Worker-Allowed",
           "value": "/"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, must-revalidate"
         }
       ]
+    }
+  ],
+  
+  "redirects": [
+    {
+      "source": "/quiz/:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "mode",
+          "value": "(?<mode>.*)"
+        }
+      ],
+      "destination": "/quiz/:mode",
+      "statusCode": 301
+    }
+  ],
+  
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": "/api/health"
+    },
+    {
+      "source": "/metrics",
+      "destination": "/api/monitoring/metrics"
+    }
+  ],
+  
+  "crons": [
+    {
+      "path": "/api/health",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

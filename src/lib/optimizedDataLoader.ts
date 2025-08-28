@@ -77,7 +77,7 @@ class OptimizedDataLoader {
         }
         
         this.state.questions = allQuestions
-        this.state.exam_info = exam_info
+        this.state.exam_info = exam_info || null
         this.state.isLoading = false
         this.state.progress = 100
         this.notifyListeners()
@@ -193,11 +193,11 @@ class OptimizedDataLoader {
           }
           
           this.state.questions = allQuestions
-          this.state.exam_info = data.exam_info
+          this.state.exam_info = data.exam_info ?? null
           this.state.isLoading = false
           this.state.progress = 100
           this.notifyListeners()
-          resolve({ questions: allQuestions, exam_info: data.exam_info })
+          resolve({ questions: allQuestions, exam_info: data.exam_info ?? null })
         }
       }
 
@@ -259,7 +259,7 @@ class OptimizedDataLoader {
       return this.state.questions.filter(q => 
         q.question?.toLowerCase().includes(searchText) ||
         q.topic?.toLowerCase().includes(searchText) ||
-        q.choices?.some(choice => choice.toLowerCase().includes(searchText))
+        q.options?.some((option: string) => option.toLowerCase().includes(searchText))
       )
     }
   }

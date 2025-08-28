@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "incremental": true,
+    "target": "ES2022"
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx", 
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "__tests__/**/*",
+    "tests/**/*",
+    "**/__tests__/**/*",
+    "**/__mocks__/**/*",
+    "playwright.config.ts",
+    "jest.config.ts",
+    "jest.setup.ts",
+    "coverage/**/*",
+    "playwright-report/**/*",
+    "test-results/**/*",
+    "*.disabled.ts"
+  ]
+}

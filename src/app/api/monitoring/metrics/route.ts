@@ -1,11 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// GET endpoint for Vercel deployment metrics
+export async function GET() {
+  try {
+    const deploymentMetrics = {
+      timestamp: new Date().toISOString(),
+      deployment: {
+        id: process.env.VERCEL_DEPLOYMENT_ID,
+        url: process.env.VERCEL_URL,
+        region: process.env.VERCEL_REGION,
+        env: process.env.VERCEL_ENV,
+        branch_url: process.env.VERCEL_BRANCH_URL,
+      },
+      runtime: {
+        node_version: process.version,
+        platform: process.platform,
+        arch: process.arch,
+        uptime: process.uptime(),
+      },
+      memory: {
+        ...process.memoryUsage(),
+        formatted: {
+          rss: `${Math.round(process.memoryUsage().rss / 1024 / 1024)}MB`,
+          heapTotal: `${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)}MB`,
+          heapUsed: `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`,
+        }
+      },
+      cpu: process.cpuUsage(),
+    };
+
+    return NextResponse.json(deploymentMetrics);
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to get deployment metrics' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { metrics } = await request.json();
 
-    // Log metrics server-side
-    console.log('Performance metrics received:', metrics);
+    // Enhanced logging with Vercel context
+    console.log('Performance metrics received:', {
+      ...metrics,
+      deployment_id: process.env.VERCEL_DEPLOYMENT_ID,
+      region: process.env.VERCEL_REGION,
+      timestamp: new Date().toISOString()
+    });
 
     // In production, forward to analytics service
     if (process.env.NODE_ENV === 'production') {

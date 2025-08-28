@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "build:vercel": "NODE_ENV=production next build",
+    "build:vercel": "NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -21,10 +21,19 @@
     "security:audit": "npm audit --audit-level=high",
     "security:fix": "npm audit fix",
     "build:analyze": "ANALYZE=true npm run build",
-    "build:production": "NODE_ENV=production npm run build",
+    "build:production": "NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 npm run build",
     "validate": "npm run type-check && npm run lint && npm run security:audit",
     "precommit": "npm run validate && npm run test",
-    "health-check": "curl -f http://localhost:3000/api/health || exit 1"
+    "health-check": "curl -f http://localhost:3000/api/health || exit 1",
+    "vercel:dev": "vercel dev",
+    "vercel:build": "vercel build",
+    "vercel:deploy": "vercel --prod",
+    "vercel:pull": "vercel env pull",
+    "postbuild": "next-sitemap",
+    "build:analyze": "ANALYZE=true NODE_ENV=production next build",
+    "build:standalone": "NODE_ENV=production next build && next export",
+    "validate:deployment": "node scripts/validate-vercel-deployment.js",
+    "predeploy": "npm run validate:deployment && npm run build:vercel"
   },
   "dependencies": {
     "@radix-ui/react-progress": "^1.1.7",

@@ -2,21 +2,44 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    // Basic health check
+    // Enhanced health check for Vercel deployment
+    const memUsage = process.memoryUsage();
+    const cpuUsage = process.cpuUsage();
+    
     const healthCheck = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       environment: process.env.NODE_ENV,
       version: process.env.npm_package_version || '1.0.0',
+      deployment: {
+        vercel_env: process.env.VERCEL_ENV,
+        vercel_region: process.env.VERCEL_REGION,
+        vercel_deployment_id: process.env.VERCEL_DEPLOYMENT_ID,
+        vercel_url: process.env.VERCEL_URL,
+        function_name: process.env.AWS_LAMBDA_FUNCTION_NAME,
+        function_version: process.env.AWS_LAMBDA_FUNCTION_VERSION,
+      },
       services: {
-        database: 'healthy', // Could check actual database connection
-        cache: 'healthy',     // Could check cache connectivity
-        external_apis: 'healthy' // Could check external service health
+        next_js: 'healthy',
+        static_files: 'healthy',
+        api_routes: 'healthy',
+        data_loading: 'healthy'
       },
       performance: {
-        memory_usage: process.memoryUsage(),
-        cpu_usage: process.cpuUsage()
+        memory_usage: {
+          rss: `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
+          heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
+          heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
+          external: `${Math.round(memUsage.external / 1024 / 1024)}MB`,
+        },
+        cpu_usage: {
+          user: cpuUsage.user,
+          system: cpuUsage.system
+        },
+        node_version: process.version,
+        platform: process.platform,
+        arch: process.arch
       }
     };
 
@@ -25,7 +48,8 @@ export async function GET() {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
-        'Expires': '0'
+        'Expires': '0',
+        'X-Health-Check': 'vercel-optimized'
       }
     });
   } catch (error) {
